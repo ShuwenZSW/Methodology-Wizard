@@ -34,16 +34,3 @@ Interactive methodology atlas for internal team audits — 3 paradigms, 16 categ
    git push
    ```
 
-## First-time publishing on GitHub Pages
-
-```bash
-git init
-git add .
-git commit -m "Initial release"
-git branch -M main
-git remote add origin https://github.com/<your-username>/<repo-name>.git
-git push -u origin main
-```
-
-Then go to the repository's **Settings → Pages → Deploy from a branch → main / (root)**.
-The site goes live at `https://<your-username>.github.io/<repo-name>/` in about a minute.
