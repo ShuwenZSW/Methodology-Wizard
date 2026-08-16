@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Methodology List in Social Sciences · ReGovNet Research Group</title>
+<style>
+  :root{
+    --bg:#f9f5ec;
+    --ink:#17140f;
+    --muted:#7a756a;
+    --faint:#a8a294;
+    --paper:#fffefb;
+    --qual:#16ac7a;
+    --quant:#316ad3;
+    --mixed:#d5593f;
+    --line:#d8d1c2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden}
+  body{
+    background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:#e5ddc8}
+
+  /* ---- stage entrance ---- */
+  #stage{
+    position:fixed;inset:0;
+    transform:translateX(10vw);opacity:0;
+    animation:stageIn 1.6s cubic-bezier(.16,1,.3,1) .1s forwards;
+  }
+  @keyframes stageIn{to{transform:translateX(0);opacity:1}}
+
+  /* ---- dotted paper texture ---- */
+  #dots{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+  svg#map{position:fixed;inset:0;width:100vw;height:100vh;cursor:grab;touch-action:none}
+  svg#map.dragging{cursor:grabbing}
+
+  /* ---- header ---- */
+  header{
+    position:fixed;top:34px;left:40px;z-index:10;pointer-events:none;
+    animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .7s backwards;
+  }
+  header .kicker{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    display:flex;align-items:center;gap:10px;margin-bottom:10px;
+  }
+  header .kicker::before{content:"";width:26px;height:1px;background:var(--muted)}
+  header h1{
+    font-family:Georgia,"Times New Roman","Songti SC","SimSun",serif;
+    font-size:30px;font-weight:400;letter-spacing:-.01em;line-height:1.15;
+  }
+  header h1 em{font-style:normal;color:var(--faint)}
+  header .sub{
+    margin-top:8px;font-size:12.5px;color:var(--muted);letter-spacing:.02em;
+  }
+  @keyframes fadeUp{from{transform:translateY(14px)}to{transform:translateY(0)}}
+
+  /* ---- logo ---- */
+  #logo{
+    position:fixed;top:34px;right:40px;z-index:10;height:40px;width:auto;
+    animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .8s backwards;
+  }
+
+  /* ---- controls ---- */
+  #controls{
+    position:fixed;top:92px;right:40px;z-index:10;display:flex;gap:8px;
+    animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .9s backwards;
+  }
+  #controls button{
+    font-family:inherit;font-size:11.5px;letter-spacing:.06em;
+    padding:8px 15px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--line);background:var(--paper);color:var(--ink);
+    transition:all .18s ease;
+  }
+  #controls button:hover{border-color:var(--ink);transform:translateY(-1px)}
+  #controls button.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+  /* ---- legend ---- */
+  #legend{
+    position:fixed;left:40px;bottom:34px;z-index:10;
+    display:flex;flex-direction:column;gap:9px;
+    animation:fadeUp 1s cubic-bezier(.16,1,.3,1) 1.1s backwards;
+  }
+  #legend .row{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.02em}
+  #legend .dot{width:9px;height:9px;border-radius:50%}
+  #legend .row b{font-weight:600}
+  #legend .row span.cnt{color:var(--muted);font-size:11px}
+  #legend .hint{
+    margin-top:7px;padding-top:10px;border-top:1px dashed var(--line);
+    font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);
+  }
+
+  /* ---- zoom widget ---- */
+  #zoom{
+    position:fixed;right:40px;bottom:34px;z-index:10;display:flex;flex-direction:column;gap:6px;
+    animation:fadeUp 1s cubic-bezier(.16,1,.3,1) 1.2s backwards;
+  }
+  #zoom button{
+    width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
+    background:var(--paper);color:var(--ink);font-size:16px;line-height:1;cursor:pointer;
+    transition:all .18s ease;font-family:Georgia,serif;
+  }
+  #zoom button:hover{border-color:var(--ink)}
+
+  /* ---- svg nodes ---- */
+  .node{cursor:pointer}
+  .node .inner{transition:transform .12s ease-in-out;transform-box:fill-box;transform-origin:center}
+  .node:hover .inner{transform:scale(1.06)}
+  .node text{user-select:none;pointer-events:none}
+  .node.leaf{cursor:default}
+  .link{fill:none;transition:stroke .15s ease}
+  .link.hl{stroke-width:2.2 !important}
+
+  @media (max-width:820px){
+    header{left:20px;top:20px}
+    header h1{font-size:21px}
+    #legend{left:20px;bottom:20px}
+    #controls{right:20px;top:20px}
+    #zoom{right:20px;bottom:20px}
+  }
+</style>
+</head>
+<body>
+
+<svg id="dots"></svg>
+<svg id="map"><g id="world"><g id="links"></g><g id="nodes"></g></g></svg>
+
+<img id="logo" src="logo.png" alt="ReGovNet Research Group">
+
+<header>
+  <div class="kicker">Internal Team Audit · Visual Hierarchy · 2026</div>
+  <h1>Methodology List <em>in</em> Social Sciences</h1>
+  <div class="sub"><b>Shuwen Zhang, Ph.D.</b> · shuwenzhang@um.edu.mo · ReGovNet Research Group</div>
+  <div class="sub" style="margin-top:4px;color:var(--faint)">3 paradigms · 16 categories · 72 methods — click nodes to explore</div>
+</header>
+
+<div id="controls">
+  <button id="btnExpand">Expand All</button>
+  <button id="btnCollapse">Collapse</button>
+  <button id="btnFit" class="primary">Fit View</button>
+</div>
+
+<div id="legend">
+  <div class="row"><span class="dot" style="background:var(--qual)"></span><b>QUALITATIVE</b><span class="cnt" id="cntQual"></span></div>
+  <div class="row"><span class="dot" style="background:var(--quant)"></span><b>QUANTITATIVE</b><span class="cnt" id="cntQuant"></span></div>
+  <div class="row"><span class="dot" style="background:var(--mixed)"></span><b>MIXED METHODS</b><span class="cnt" id="cntMixed"></span></div>
+  <div class="hint">Drag to pan · Scroll to zoom · Click a method for its profile</div>
+</div>
+
+<div id="zoom">
+  <button id="zin">+</button>
+  <button id="zout">−</button>
+</div>
+
+<aside id="panel">
+  <button id="panelClose" title="Close">×</button>
+  <div class="p-tagrow"><span class="p-tag" id="pTag"></span><span class="p-star" id="pStar" style="display:none">★ Priority pick</span></div>
+  <h2 id="pName"></h2>
+  <div class="p-cat" id="pCat"></div>
+  <p class="p-use" id="pUse"></p>
+  <div class="p-grid">
+    <div><span class="p-lab">Data required</span><span class="p-val" id="pData"></span></div>
+    <div><span class="p-lab">Typical scale</span><span class="p-val" id="pN"></span></div>
+    <div><span class="p-lab">Skill level</span><span class="p-val" id="pSkill"></span></div>
+    <div><span class="p-lab">Time to implement</span><span class="p-val" id="pTime"></span></div>
+  </div>
+  <div class="p-sec">Key assumptions</div>
+  <p class="p-assume" id="pAssume"></p>
+  <div class="p-sec">Adoption priority</div>
+  <div class="p-adopt"><span id="pDots"></span><span class="p-val" id="pAdoptTxt"></span></div>
+  <div class="p-watch" id="pWatch"></div>
+</aside>
+
+<style>
+  #panel{
+    position:fixed;top:50%;right:40px;width:352px;max-height:80vh;overflow-y:auto;
+    background:var(--paper);border:1px solid var(--line);border-radius:7px;
+    padding:22px 24px 20px;z-index:20;
+    transform:translate(calc(100% + 80px),-50%);
+    transition:transform .55s cubic-bezier(.16,1,.3,1);
+    scrollbar-width:thin;
+  }
+  #panel.open{transform:translate(0,-50%)}
+  #panelClose{
+    position:absolute;top:10px;right:12px;border:none;background:none;
+    font-size:18px;color:var(--muted);cursor:pointer;font-family:Georgia,serif;
+  }
+  #panelClose:hover{color:var(--ink)}
+  .p-tagrow{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .p-tag{
+    font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    color:#fff;padding:3px 10px;border-radius:999px;
+  }
+  .p-star{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--ink);border:1px solid var(--ink);padding:2px 8px;border-radius:999px}
+  #panel h2{font-size:17px;font-weight:700;letter-spacing:-.01em;line-height:1.25;margin-bottom:3px}
+  .p-cat{font-size:11px;color:var(--muted);letter-spacing:.04em;margin-bottom:12px}
+  .p-use{font-size:13px;line-height:1.5;margin-bottom:14px}
+  .p-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:0;
+    border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);
+    margin-bottom:12px;
+  }
+  .p-grid>div{padding:9px 0;display:flex;flex-direction:column;gap:2px}
+  .p-grid>div:nth-child(odd){border-right:1px dashed var(--line);padding-right:12px}
+  .p-grid>div:nth-child(even){padding-left:12px}
+  .p-lab{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+  .p-val{font-size:12px;color:var(--ink);line-height:1.35}
+  .p-sec{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+  .p-assume{font-size:12px;line-height:1.45;color:var(--ink);margin-bottom:12px}
+  .p-adopt{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .p-adopt .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:3px;background:#e3dccb}
+  .p-watch{
+    font-size:12px;line-height:1.45;background:#f4efe2;border-radius:6px;
+    padding:10px 12px;color:var(--ink);
+  }
+  .p-watch b{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px;color:var(--muted)}
+  .node.leaf{cursor:pointer}
+  .node.selected .inner rect{stroke:var(--ink) !important;stroke-width:2 !important}
+  @media (max-width:820px){
+    #panel{right:12px;left:12px;width:auto;top:auto;bottom:12px;max-height:52vh;
+      transform:translateY(calc(100% + 30px))}
+    #panel.open{transform:translateY(0)}
+  }
+</style>
+
+<script>
+/* ================= DATA ================= */
+const DATA = {"name": "SOCIAL SCIENCE\nMETHODOLOGY", "children": [{"name": "QUALITATIVE", "color": "qual", "children": [{"name": "Interpretive & Ethnographic", "children": [{"name": "Ethnography & Participant Observation"}, {"name": "Phenomenology / IPA"}, {"name": "Grounded Theory"}, {"name": "Narrative & Life-History Analysis"}, {"name": "Discourse Analysis"}]}, {"name": "Interview-Based", "children": [{"name": "Semi-Structured Interviews"}, {"name": "Cognitive Interviews"}, {"name": "Expert & Elite Interviews"}, {"name": "Focus Groups"}, {"name": "Oral History"}]}, {"name": "Text & Document Analysis", "children": [{"name": "Qualitative Content Analysis"}, {"name": "Thematic Analysis"}, {"name": "Frame Analysis"}, {"name": "Critical Discourse Analysis"}, {"name": "Archival & Historical Methods"}]}, {"name": "Case-Oriented Comparison", "children": [{"name": "Process Tracing"}, {"name": "Comparative Historical Analysis"}, {"name": "QCA (csQCA / fsQCA)"}, {"name": "Most Similar / Different Systems"}]}, {"name": "Emerging Qualitative", "children": [{"name": "Digital & Virtual Ethnography"}, {"name": "Visual & Photo-Elicitation"}, {"name": "LLM-Assisted Qualitative Coding ★"}]}]}, {"name": "QUANTITATIVE", "color": "quant", "children": [{"name": "Experimental", "children": [{"name": "Lab Experiments"}, {"name": "Field Experiments & RCTs"}, {"name": "Survey Experiments & Conjoint ★"}, {"name": "Natural Experiments"}]}, {"name": "Causal Inference Core", "children": [{"name": "Randomized Controlled Trials"}, {"name": "Difference-in-Differences ★"}, {"name": "Instrumental Variables"}, {"name": "Regression Discontinuity"}, {"name": "Propensity Score Matching"}, {"name": "DAGs & Causal Identification ★"}, {"name": "Synthetic Control Method"}]}, {"name": "Statistical Modelling", "children": [{"name": "OLS & Generalised Linear Models"}, {"name": "Multilevel / Hierarchical Models"}, {"name": "Structural Equation Modelling"}, {"name": "Panel & Fixed-Effects Models"}, {"name": "Survival & Event History Analysis"}, {"name": "Bayesian Inference"}]}, {"name": "Survey & Measurement", "children": [{"name": "Survey Design & Sampling"}, {"name": "Psychometrics & Scale Validation"}, {"name": "IRT & Factor Analysis"}, {"name": "Weighting & Non-Response Adjustment"}]}, {"name": "Social Network Analysis", "children": [{"name": "Centrality Measures ★"}, {"name": "Community Detection & Clustering"}, {"name": "ERGM"}, {"name": "Longitudinal SNA / SAOM"}, {"name": "Two-Mode & Multiplex Networks"}]}, {"name": "Computational & Data-Driven", "children": [{"name": "NLP & Topic Modeling ★"}, {"name": "LLM-Based Text Annotation ★"}, {"name": "Agent-Based Modeling"}, {"name": "Geospatial Analysis & GIS ★"}, {"name": "Machine Learning Prediction"}, {"name": "Causal Machine Learning"}]}]}, {"name": "MIXED METHODS", "color": "mixed", "children": [{"name": "Core Designs", "children": [{"name": "Convergent Parallel Design"}, {"name": "Explanatory Sequential ★"}, {"name": "Exploratory Sequential"}, {"name": "Embedded Design"}]}, {"name": "Advanced Integration", "children": [{"name": "Case- & Variable-Based Integration"}, {"name": "QCA + Regression Triangulation"}, {"name": "Mixed-Methods SNA"}, {"name": "Text Mining + Close Reading"}]}, {"name": "Evaluation & Applied", "children": [{"name": "Theory-Based Evaluation"}, {"name": "Realist Evaluation"}, {"name": "Contribution Analysis"}, {"name": "Participatory Action Research"}]}, {"name": "Meta-Analytic", "children": [{"name": "Systematic Review & Meta-Analysis"}, {"name": "Meta-Ethnography"}, {"name": "Evidence Gap Mapping"}]}, {"name": "Deliberative & Participatory", "children": [{"name": "Delphi Method"}, {"name": "Citizen Juries & Deliberative Polling"}, {"name": "Community-Based Participatory Research"}]}]}]};
+</script>
+<script>
+/* ================= ENGINE ================= */
+const COLORS = {qual:"#16ac7a", quant:"#316ad3", mixed:"#d5593f", root:"#17140f"};
+const SVGNS = "http://www.w3.org/2000/svg";
+const EASE = t => 1 - Math.pow(1 - t, 4);           // outQuart
+const DUR = 800;
+
+/* measure text once with canvas */
+const mctx = document.createElement("canvas").getContext("2d");
+function textW(txt, font){ mctx.font = font; return mctx.measureText(txt).width; }
+const F_LEAF = "13px -apple-system,'Segoe UI',Roboto,sans-serif";
+const F_CAT  = "600 13px -apple-system,'Segoe UI',Roboto,sans-serif";
+const F_TRUNK= "700 15px -apple-system,'Segoe UI',Roboto,sans-serif";
+const F_CN   = "10.5px 'PingFang SC','Microsoft YaHei',sans-serif";
+
+let uid = 0;
+function build(raw, parent, depth, color){
+  const n = {
+    id: uid++, name: raw.name, cn: raw.cn || "",
+    parent, depth, color: raw.color || color || "root",
+    children: (raw.children||[]).map(c => build(c, null, depth+1, raw.color || color)),
+    collapsed: depth >= 2,            // default: show root → trunks → categories
+    // display state
+    x:0, y:0, tx:0, ty:0, op:0, top_:0, w:0, h:0, leafCount:0
+  };
+  n.children.forEach(c => c.parent = n);
+  n.leafCount = n.children.length ? n.children.reduce((s,c)=>s+c.leafCount,0) : 1;
+  return n;
+}
+const root = build(DATA, null, 0, "root");
+root.collapsed = false;
+root.children.forEach(t => t.collapsed = false);   // trunks expanded
+
+/* legend counts */
+document.getElementById("cntQual").textContent  = root.children[0].leafCount + " methods";
+document.getElementById("cntQuant").textContent = root.children[1].leafCount + " methods";
+document.getElementById("cntMixed").textContent = root.children[2].leafCount + " methods";
+
+/* ---- layout constants ---- */
+const LEVEL_X = [30, 330, 640, 950];
+const LEAF_GAP = 42, CAT_GAP = 54, TRUNK_GAP = 88;
+
+/* visible nodes in display order + target positions */
+function layout(){
+  const visible = [];
+  (function walk(n){
+    visible.push(n);
+    if(!n.collapsed) n.children.forEach(walk);
+  })(root);
+
+  /* assign y positions: post-order leaf sequencing */
+  let cursor = 0;
+  (function assign(n){
+    const kidsVisible = !n.collapsed && n.children.length;
+    if(!kidsVisible){
+      n.ty = cursor;
+      cursor += n.depth === 1 ? TRUNK_GAP : (n.depth === 2 ? CAT_GAP : LEAF_GAP);
+    } else {
+      n.children.forEach(assign);
+      n.ty = (n.children[0].ty + n.children[n.children.length-1].ty) / 2;
+    }
+    n.tx = LEVEL_X[n.depth];
+  })(root);
+  return {visible, height: cursor, width: 1250};
+}
+
+/* ---- DOM pools ---- */
+const gLinks = document.getElementById("links");
+const gNodes = document.getElementById("nodes");
+const nodeEls = new Map(), linkEls = new Map();
+
+function makeNodeEl(n){
+  const g = document.createElementNS(SVGNS,"g");
+  g.setAttribute("class","node" + (n.children.length ? "" : " leaf"));
+  const inner = document.createElementNS(SVGNS,"g");
+  inner.setAttribute("class","inner");
+  g.appendChild(inner);
+
+  const font = n.depth===1?F_TRUNK : n.depth===2?F_CAT : F_LEAF;
+  const label = n.name.replace("\n"," ");
+  let w = textW(label, font) + (n.depth===0?60 : n.depth===1?44 : 42);
+  if(n.depth===1) w = Math.max(w, 208);
+  const h = n.depth===0?58 : n.depth===1?52 : n.depth===2?40 : 34;
+  n.w = w; n.h = h;
+
+  const c = COLORS[n.color];
+  const rect = document.createElementNS(SVGNS,"rect");
+  rect.setAttribute("x",0); rect.setAttribute("y",-h/2);
+  rect.setAttribute("width",w); rect.setAttribute("height",h);
+  rect.setAttribute("rx", h/2);
+  if(n.depth===0){ rect.setAttribute("fill",COLORS.root); }
+  else if(n.depth===1){ rect.setAttribute("fill",c); }
+  else { rect.setAttribute("fill","#fffefb"); rect.setAttribute("stroke",n.depth===2?c:"#ddd5c4"); rect.setAttribute("stroke-width",n.depth===2?1.4:1); }
+  inner.appendChild(rect);
+
+  if(n.depth>=2){
+    const dot = document.createElementNS(SVGNS,"circle");
+    dot.setAttribute("cx",17); dot.setAttribute("cy",0);
+    dot.setAttribute("r",n.depth===2?5:3.6); dot.setAttribute("fill",c);
+    inner.appendChild(dot);
+  }
+
+  const t = document.createElementNS(SVGNS,"text");
+  t.setAttribute("x", n.depth===0?20 : n.depth===1?20 : 30);
+  t.setAttribute("y", n.depth===1?5 : 4.5);
+  t.setAttribute("font-size", n.depth===1?15:13);
+  t.setAttribute("font-weight", n.depth<=2? (n.depth===1?700:600) : 400);
+  t.setAttribute("fill", n.depth<=1 ? "#fffefb" : "#17140f");
+  t.setAttribute("letter-spacing", n.depth===1?".06em":"-0.01em");
+  t.textContent = label;
+  inner.appendChild(t);
+
+  /* badge for collapsed nodes: +N */
+  if(n.children.length){
+    const bg = document.createElementNS(SVGNS,"g");
+    bg.setAttribute("class","badge");
+    const bw = textW("+"+n.leafCount, F_CN) + 16;
+    const br = document.createElementNS(SVGNS,"rect");
+    br.setAttribute("x", w+8); br.setAttribute("y",-10);
+    br.setAttribute("width",bw); br.setAttribute("height",20);
+    br.setAttribute("rx",10);
+    br.setAttribute("fill", n.depth===1?"#17140f":c);
+    const bt = document.createElementNS(SVGNS,"text");
+    bt.setAttribute("x", w+8+bw/2); bt.setAttribute("y",4);
+    bt.setAttribute("text-anchor","middle");
+    bt.setAttribute("font-size","10.5px");
+    bt.setAttribute("fill","#fffefb");
+    bt.textContent = "+" + n.leafCount;
+    bg.appendChild(br); bg.appendChild(bt);
+    inner.appendChild(bg);
+  }
+
+  g.addEventListener("click", ev => {
+    ev.stopPropagation();
+    if(n.children.length){ n.collapsed = !n.collapsed; refresh(); }
+    else if(typeof showMethodPanel === "function"){ showMethodPanel(n); }
+  });
+  g.addEventListener("mouseenter", ()=> highlightPath(n,true));
+  g.addEventListener("mouseleave", ()=> highlightPath(n,false));
+  return g;
+}
+function makeLinkEl(){
+  const p = document.createElementNS(SVGNS,"path");
+  p.setAttribute("class","link");
+  gLinks.appendChild(p);
+  return p;
+}
+
+function linkPath(a,b){
+  const x1 = a.x + a.w, y1 = a.y, x2 = b.x, y2 = b.y;
+  const dx = Math.max(60, (x2-x1)*0.5);
+  return `M ${x1} ${y1} C ${x1+dx} ${y1}, ${x2-dx} ${y2}, ${x2} ${y2}`;
+}
+
+function highlightPath(n,on){
+  let cur = n;
+  while(cur.parent){
+    const l = linkEls.get(cur.id);
+    if(l){ l.classList.toggle("hl",on); l.style.stroke = on ? COLORS[n.color] : ""; }
+    cur = cur.parent;
+  }
+}
+
+/* ---- animation ---- */
+let anim = null;           // {start, nodes:[{n,fx,fy,fo,tx,ty,to,delay}]}
+let pendingRemoval = [];
+function refresh(instant){
+  const {visible} = layout();
+  const visSet = new Set(visible.map(n=>n.id));
+  const now = performance.now();
+  const items = [];
+
+  visible.forEach((n,i) => {
+    if(!nodeEls.has(n.id)){
+      const el = makeNodeEl(n);
+      gNodes.appendChild(el);
+      nodeEls.set(n.id, el);
+      const p = n.parent || n;
+      n.x = p.x; n.y = p.y; n.op = 0;
+    }
+    items.push({n, fx:n.x, fy:n.y, fo:n.op, tx:n.tx, ty:n.ty, to:1,
+                delay: instant?0 : n.depth*90 + Math.min(i*14, 260)});
+  });
+  /* exiting nodes: tween toward parent then remove */
+  pendingRemoval = [];
+  nodeEls.forEach((el,id) => {
+    if(!visSet.has(id)){
+      const n = findNode(root,id);
+      if(n){
+        const p = n.parent || n;
+        items.push({n, fx:n.x, fy:n.y, fo:n.op, tx:p.tx + p.w*0.35, ty:p.ty, to:0, delay:0, kill:true});
+      }
+    }
+  });
+  anim = {start:now, items};
+  if(instant){ step(now + DUR + 1000); anim = null; }
+}
+function findNode(n,id){
+  if(n.id===id) return n;
+  for(const c of n.children){ const r = findNode(c,id); if(r) return r; }
+  return null;
+}
+
+function step(now){
+  if(!anim) return;
+  let alive = false;
+  for(const it of anim.items){
+    let t = (now - anim.start - it.delay) / DUR;
+    t = Math.max(0, Math.min(1, t));
+    const e = EASE(t);
+    it.n.x = it.fx + (it.tx - it.fx)*e;
+    it.n.y = it.fy + (it.ty - it.fy)*e;
+    it.n.op = it.fo + (it.to - it.fo)*e;
+    if(t < 1) alive = true;
+    else if(it.kill) pendingRemoval.push(it.n.id);
+  }
+  /* paint */
+  gLinks.innerHTML = "";
+  linkEls.clear();
+  nodeEls.forEach((el,id) => {
+    const n = findNode(root,id); if(!n) return;
+    el.setAttribute("transform",`translate(${n.x},${n.y})`);
+    el.setAttribute("opacity",n.op.toFixed(3));
+    const badge = el.querySelector(".badge");
+    if(badge) badge.style.display = n.collapsed ? "" : "none";
+    if(n.parent && nodeEls.has(n.parent.id) && n.op > 0.01){
+      const p = document.createElementNS(SVGNS,"path");
+      p.setAttribute("class","link");
+      p.setAttribute("d", linkPath(n.parent,n));
+      p.setAttribute("stroke", COLORS[n.color]);
+      p.setAttribute("stroke-opacity", (0.38*n.op).toFixed(3));
+      p.setAttribute("stroke-width", n.depth===1 ? 2.2 : 1.4);
+      p.setAttribute("fill","none");
+      gLinks.appendChild(p);
+      linkEls.set(id,p);
+    }
+  });
+  pendingRemoval.forEach(id => {
+    const el = nodeEls.get(id);
+    if(el){ el.remove(); nodeEls.delete(id); }
+  });
+  pendingRemoval = [];
+  if(!alive) anim = null;
+}
+
+/* drive frames */
+(function loop(){ if(anim) step(performance.now()); requestAnimationFrame(loop); })();
+
+/* ================= PAN & ZOOM ================= */
+const svg = document.getElementById("map");
+const world = document.getElementById("world");
+let view = {x:0, y:0, k:1};
+function applyView(animate){
+  if(animate){
+    world.style.transition = "transform .6s cubic-bezier(.16,1,.3,1)";
+    setTimeout(()=>world.style.transition="", 620);
+  }
+  world.setAttribute("transform",`translate(${view.x},${view.y}) scale(${view.k})`);
+}
+function fitView(animate=true){
+  const {visible, height, width} = layout();
+  let minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9;
+  visible.forEach(n=>{
+    minX=Math.min(minX,n.tx-20); maxX=Math.max(maxX,n.tx+n.w+70);
+    minY=Math.min(minY,n.ty-n.h/2-14); maxY=Math.max(maxY,n.ty+n.h/2+14);
+  });
+  const W=innerWidth, H=innerHeight, pad=70;
+  const k = Math.min((W-pad*2)/(maxX-minX), (H-pad*2)/(maxY-minY), 1.15);
+  view.k = k;
+  view.x = (W-(maxX-minX)*k)/2 - minX*k;
+  view.y = (H-(maxY-minY)*k)/2 - minY*k;
+  applyView(animate);
+}
+
+let drag=null;
+svg.addEventListener("pointerdown", e=>{
+  drag={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};
+  svg.classList.add("dragging");
+  svg.setPointerCapture(e.pointerId);
+});
+svg.addEventListener("pointermove", e=>{
+  if(!drag) return;
+  view.x = drag.vx + (e.clientX-drag.x);
+  view.y = drag.vy + (e.clientY-drag.y);
+  applyView();
+});
+svg.addEventListener("pointerup", ()=>{drag=null;svg.classList.remove("dragging");});
+svg.addEventListener("wheel", e=>{
+  e.preventDefault();
+  const f = Math.exp(-e.deltaY*0.0012);
+  const k = Math.min(3, Math.max(0.15, view.k*f));
+  const r = svg.getBoundingClientRect();
+  const mx = e.clientX-r.left, my = e.clientY-r.top;
+  view.x = mx - (mx-view.x)*(k/view.k);
+  view.y = my - (my-view.y)*(k/view.k);
+  view.k = k;
+  applyView();
+},{passive:false});
+
+/* ---- controls ---- */
+function setAll(n,v){ n.collapsed=v; n.children.forEach(c=>setAll(c,v)); }
+document.getElementById("btnExpand").onclick = ()=>{
+  setAll(root,false); refresh(); setTimeout(()=>fitView(), 900);
+};
+document.getElementById("btnCollapse").onclick = ()=>{
+  root.children.forEach(t=>t.children.forEach(c=>setAll(c,true)));
+  refresh(); setTimeout(()=>fitView(), 900);
+};
+document.getElementById("btnFit").onclick = ()=>fitView();
+document.getElementById("zin").onclick = ()=>{view.k=Math.min(3,view.k*1.3);applyView(true);};
+document.getElementById("zout").onclick = ()=>{view.k=Math.max(.15,view.k/1.3);applyView(true);};
+
+/* ---- dotted texture ---- */
+(function(){
+  const d = document.getElementById("dots");
+  const s = 26, W=Math.ceil(innerWidth/s)+2, H=Math.ceil(innerHeight/s)+2;
+  let html = "";
+  for(let i=0;i<W;i++)for(let j=0;j<H;j++)
+    html += `<circle cx="${i*s}" cy="${j*s}" r="0.8" fill="#17140f" opacity="0.045"/>`;
+  d.innerHTML = `<g>${html}</g>`;
+  d.setAttribute("width",innerWidth); d.setAttribute("height",innerHeight);
+})();
+
+/* ---- boot ---- */
+layout();
+fitView(false);
+refresh();            // staggered entrance: nodes grow out from the root
+addEventListener("resize", ()=>fitView(false));
+</script>
+
+<script>
+/* ================= METHOD PROFILES ================= */
+const INFO = {"Ethnography & Participant Observation": {"use": "Understand a group's culture from the inside — street-level bureaucracy, organisations, online tribes.", "data": "Fieldnotes, observations, artefacts", "n": "1–3 sites, months–years", "assume": "Genuine access and rapport; disciplined reflexivity about your own role.", "skill": "Expert", "time": "Long", "adopt": 3, "watch": "Shallow access yields front-stage performances, not actual practice."}, "Phenomenology / IPA": {"use": "Lived experience of a phenomenon — illness, migration, identity transition.", "data": "In-depth interviews", "n": "3–15 participants", "assume": "A fairly homogeneous sample; bracketing of prior assumptions.", "skill": "Intermediate", "time": "Medium", "adopt": 3, "watch": "A heterogeneous sample dilutes the 'essence' you claim to find."}, "Grounded Theory": {"use": "Build theory bottom-up where existing theory is thin or missing.", "data": "Iterative interviews + fieldwork", "n": "20–60 interviews to saturation", "assume": "Theoretical sampling and constant comparison are followed strictly.", "skill": "Expert", "time": "Long", "adopt": 3, "watch": "Declaring 'saturation' too early is the most common reviewer criticism."}, "Narrative & Life-History Analysis": {"use": "Identity construction and biographical turning points.", "data": "Long-form interviews, diaries, letters", "n": "5–30 narratives", "assume": "Stories are treated as meaning-making, not factual records.", "skill": "Intermediate", "time": "Medium", "adopt": 3, "watch": "Don't fact-check narratives against reality — analyse why the story is told this way."}, "Discourse Analysis": {"use": "How language constructs objects, subjects and power relations.", "data": "Texts, talk, policy documents", "n": "10–500 texts", "assume": "Language is constitutive of social reality, not merely descriptive.", "skill": "Intermediate", "time": "Medium", "adopt": 3, "watch": "Cherry-picked quotes — show a systematic text selection strategy."}, "Semi-Structured Interviews": {"use": "Explore experiences and perceptions, e.g. of marginalized groups.", "data": "Primary interviews", "n": "15–40, to saturation", "assume": "Rapport and interviewer reflexivity.", "skill": "Beginner", "time": "Medium", "adopt": 5, "watch": "Leading questions, and stopping before real saturation is reached."}, "Cognitive Interviews": {"use": "Pre-test whether survey items are understood as intended.", "data": "Think-aloud / probing sessions", "n": "5–15 per round", "assume": "Verbal reports reflect actual comprehension.", "skill": "Beginner", "time": "Short", "adopt": 5, "watch": "Small convenience samples miss subgroup misunderstandings."}, "Expert & Elite Interviews": {"use": "Process knowledge and the institutional backstage — how decisions were really made.", "data": "Primary access to elites", "n": "10–30", "assume": "Access can be secured; positionality is managed.", "skill": "Intermediate", "time": "Medium", "adopt": 4, "watch": "Elites perform for the record — triangulate with documents."}, "Focus Groups": {"use": "Group norms and contested views; how people justify positions socially.", "data": "Moderated group discussions", "n": "4–10 groups × 6–10 people", "assume": "Interaction reveals shared norms rather than suppressing them.", "skill": "Beginner–Intermediate", "time": "Medium", "adopt": 3, "watch": "Dominant voices suppress dissent; unsuitable for sensitive disclosures."}, "Oral History": {"use": "Memory of events by those who lived them — movements, institutions, communities.", "data": "Recorded life narratives, archives", "n": "10–50 narrators", "assume": "Memory is constructive but still evidentiary.", "skill": "Intermediate", "time": "Long", "adopt": 2, "watch": "Retrospective bias — corroborate dates and facts independently."}, "Qualitative Content Analysis": {"use": "Systematic description of themes in documents or open-ended answers.", "data": "Archived text, transcripts", "n": "20–1,000 texts", "assume": "Codebook reliability (inter-coder agreement) is reported.", "skill": "Beginner", "time": "Short–Medium", "adopt": 5, "watch": "Counting themes without reporting coder agreement."}, "Thematic Analysis": {"use": "Flexible identification of patterns in interview data.", "data": "Transcripts", "n": "15–40 interviews", "assume": "A disciplined phase process (familiarise → code → theme → review).", "skill": "Beginner", "time": "Short–Medium", "adopt": 5, "watch": "Topic summaries masquerading as themes — a theme needs a central organising concept."}, "Frame Analysis": {"use": "How media or politicians package issues (conflict, human interest, responsibility frames).", "data": "News, speeches, documents", "n": "100–5,000 texts", "assume": "Frames are operationalised from prior literature, not invented ad hoc.", "skill": "Intermediate", "time": "Medium", "adopt": 3, "watch": "Ad-hoc frame definitions that cannot be replicated."}, "Critical Discourse Analysis": {"use": "Expose ideology and power in language — policy, media, institutions.", "data": "Texts plus social context", "n": "10–200 key texts", "assume": "The analyst's interpretive chain is made transparent.", "skill": "Intermediate", "time": "Medium", "adopt": 3, "watch": "High subjectivity — without transparency it reads as opinion."}, "Archival & Historical Methods": {"use": "Reconstruct past processes from primary sources.", "data": "Archives, official records, newspapers", "n": "One collection to many", "assume": "Source criticism: authenticity, provenance, bias.", "skill": "Intermediate", "time": "Long", "adopt": 3, "watch": "Survival bias — what was archived is not what happened."}, "Process Tracing": {"use": "Test causal mechanisms within a single case.", "data": "Documents, interviews, primary sources", "n": "1–5 cases", "assume": "Explicit evidence tests (hoop, smoking-gun) for each clue.", "skill": "Expert", "time": "Long", "adopt": 4, "watch": "Storytelling without naming the test each piece of evidence performs."}, "Comparative Historical Analysis": {"use": "Macro outcomes: revolutions, welfare states, democratisation.", "data": "Historical archives, secondary literature", "n": "2–20 cases", "assume": "Cases are comparable across time and context.", "skill": "Expert", "time": "Long", "adopt": 2, "watch": "Selecting cases on the dependent variable."}, "QCA (csQCA / fsQCA)": {"use": "Necessary/sufficient conditions and equifinal paths to an outcome.", "data": "Calibrated case knowledge", "n": "10–50 cases", "assume": "Calibration anchors are justified; consistency thresholds are principled.", "skill": "Intermediate–Expert", "time": "Medium", "adopt": 3, "watch": "Arbitrary calibration — every threshold needs a substantive defence."}, "Most Similar / Different Systems": {"use": "Classic small-N comparison isolating key similarities or differences.", "data": "Comparative case data", "n": "2–6 cases", "assume": "Ceteris paribus roughly holds across systems.", "skill": "Intermediate", "time": "Medium", "adopt": 2, "watch": "Cases are rarely truly 'most similar' — treat as heuristic, not proof."}, "Digital & Virtual Ethnography": {"use": "Online communities and platform cultures.", "data": "Platform observation, posts, interactions", "n": "Weeks–months of immersion", "assume": "Ethics of observing public / semi-public data is resolved.", "skill": "Intermediate", "time": "Medium", "adopt": 4, "watch": "ToS and consent grey zones — seek ethics approval early."}, "Visual & Photo-Elicitation": {"use": "Access tacit or hard-to-verbalise experience through images.", "data": "Participant- or researcher-made photos", "n": "10–30 participants", "assume": "Images prompt richer talk than questions alone.", "skill": "Intermediate", "time": "Medium", "adopt": 2, "watch": "Analysing the photo itself instead of the talk it elicited."}, "LLM-Assisted Qualitative Coding ★": {"use": "Accelerate coding of large qualitative corpora with human validation.", "data": "Transcripts + LLM access", "n": "100s–10,000s of segments", "assume": "Human-in-the-loop validation; agreement metrics vs human coders.", "skill": "Intermediate", "time": "Short", "adopt": 5, "watch": "Never skip the human gold standard — report inter-rater agreement."}, "Lab Experiments": {"use": "Isolate causal mechanisms under maximal control (bias, decision-making).", "data": "Primary behavioural data", "n": "50–300 participants", "assume": "Random assignment; no demand characteristics.", "skill": "Intermediate", "time": "Medium", "adopt": 4, "watch": "Student samples and artificial tasks limit external validity."}, "Field Experiments & RCTs": {"use": "Average treatment effects of real interventions — policy, education, development.", "data": "Primary trial data", "n": "200–10,000+ units", "assume": "SUTVA; no spillovers; compliance; randomisation integrity.", "skill": "Expert", "time": "Long", "adopt": 4, "watch": "Attrition and spillovers quietly destroy identification."}, "Survey Experiments & Conjoint ★": {"use": "Causal effects of information or framing; decompose multi-attribute preferences.", "data": "Primary survey with embedded randomisation", "n": "500–5,000 respondents", "assume": "Random assignment; no profile-order contamination.", "skill": "Beginner–Intermediate", "time": "Short", "adopt": 5, "watch": "Underpowered interaction tests; artificial profiles ≠ real decisions."}, "Natural Experiments": {"use": "Exploit lotteries or arbitrary thresholds as as-if random variation.", "data": "Administrative / observational data", "n": "1k–1M units", "assume": "Genuine as-if randomness; excludability.", "skill": "Expert", "time": "Medium–Long", "adopt": 3, "watch": "The 'natural' randomisation is often less random than claimed — interrogate it."}, "Randomized Controlled Trials": {"use": "The gold standard for estimating average treatment effects.", "data": "Primary trial data", "n": "200–10,000+ units", "assume": "SUTVA; compliance; randomisation integrity.", "skill": "Expert", "time": "Long", "adopt": 4, "watch": "Cost, ethics and attrition constraints — pre-register and monitor."}, "Difference-in-Differences ★": {"use": "Evaluate policy rollouts with panel data when randomisation is impossible.", "data": "Panel / repeated cross-sections", "n": "2+ periods, 100s–millions of units", "assume": "Parallel trends; no anticipation; modern staggered estimators.", "skill": "Intermediate", "time": "Medium", "adopt": 5, "watch": "Two-way FE under staggered timing can flip signs — use Callaway–Sant'Anna or Sun–Abraham."}, "Instrumental Variables": {"use": "Causal effects despite unobserved confounding (returns to education, institutions).", "data": "Observational data + valid instrument", "n": "1,000+ typically", "assume": "Relevance; exclusion restriction; monotonicity (LATE).", "skill": "Expert", "time": "Medium", "adopt": 3, "watch": "Weak instruments and indefensible exclusion restrictions sink the paper."}, "Regression Discontinuity": {"use": "Local treatment effects at cutoffs — grant thresholds, election margins.", "data": "Administrative data near the cutoff", "n": "1,000+ within bandwidth", "assume": "Continuity of potential outcomes; no manipulation of the running variable.", "skill": "Intermediate", "time": "Medium", "adopt": 4, "watch": "Bunching near the cutoff signals manipulation — always run a density test."}, "Propensity Score Matching": {"use": "Balance treated and control groups on observed covariates.", "data": "Cross-section or panel with rich covariates", "n": "500–100,000", "assume": "Conditional independence (selection on observables); common support.", "skill": "Intermediate", "time": "Short", "adopt": 4, "watch": "Balances only what you measured — unobserved confounding remains."}, "DAGs & Causal Identification ★": {"use": "Map causal structure, choose valid adjustment sets, spot colliders — before running anything.", "data": "None — theory-driven", "n": "n/a", "assume": "The drawn structure is defensible.", "skill": "Intermediate", "time": "Short", "adopt": 5, "watch": "A DAG you cannot defend is decoration — commit to every arrow and non-arrow."}, "Synthetic Control Method": {"use": "Evaluate a single treated unit (country, state, city) against a weighted donor pool.", "data": "Long pre-treatment panel of aggregate units", "n": "1 treated + 5–30 donors, 10+ pre-periods", "assume": "Good pre-treatment fit; no interference.", "skill": "Expert", "time": "Medium", "adopt": 4, "watch": "Cherry-picked donors — report in-space placebo tests."}, "OLS & Generalised Linear Models": {"use": "Baseline description, associative modelling, control strategies.", "data": "Any structured data", "n": "100+", "assume": "Linearity; exogeneity; appropriate (robust) standard errors.", "skill": "Beginner", "time": "Short", "adopt": 4, "watch": "Reading associations as causal effects."}, "Multilevel / Hierarchical Models": {"use": "Nested data — students in schools, citizens in regions; contextual effects.", "data": "Hierarchically structured data", "n": "30+ groups, 500+ individuals", "assume": "Random-effects distribution; correct level-2 specification.", "skill": "Intermediate", "time": "Medium", "adopt": 4, "watch": "Fewer than ~30 level-2 units gives unreliable variance estimates."}, "Structural Equation Modelling": {"use": "Test latent-variable measurement and path theories jointly.", "data": "Survey with multi-item scales", "n": "200–500+", "assume": "Correct measurement model; normality or a robust estimator.", "skill": "Intermediate–Expert", "time": "Medium", "adopt": 3, "watch": "Chasing fit via modification indices until the model is overfit."}, "Panel & Fixed-Effects Models": {"use": "Control all time-invariant unobserved confounding.", "data": "Panel data, 2+ waves", "n": "100+ units × 3+ waves", "assume": "Strict exogeneity; sufficient within-unit variation.", "skill": "Intermediate", "time": "Medium", "adopt": 4, "watch": "No within-unit variation means no identification."}, "Survival & Event History Analysis": {"use": "Duration outcomes — job exit, policy adoption, conflict onset.", "data": "Time-to-event data with censoring", "n": "300+ events", "assume": "Proportional hazards (Cox); independent censoring.", "skill": "Intermediate", "time": "Medium", "adopt": 3, "watch": "Violated proportional hazards — test it, don't assume it."}, "Bayesian Inference": {"use": "Small samples, partial pooling, full uncertainty quantification.", "data": "Any; shines with sparse data", "n": "Even 50–500", "assume": "Priors are appropriate and justifiable.", "skill": "Expert", "time": "Long", "adopt": 3, "watch": "Computational cost; reviewers will probe every prior."}, "Survey Design & Sampling": {"use": "Population-representative description of attitudes and behaviours.", "data": "Primary fieldwork", "n": "1,000–5,000", "assume": "Known inclusion probabilities; frame coverage.", "skill": "Intermediate", "time": "Long", "adopt": 4, "watch": "Coverage gaps in the sampling frame bias everything downstream."}, "Psychometrics & Scale Validation": {"use": "Build and validate multi-item measures.", "data": "Multi-item survey data", "n": "300–1,000", "assume": "Dimensionality; local independence.", "skill": "Intermediate", "time": "Medium", "adopt": 3, "watch": "Reporting Cronbach's alpha as if it were validation."}, "IRT & Factor Analysis": {"use": "Item calibration; measurement invariance across groups.", "data": "Multi-item response data", "n": "300–1,000+", "assume": "Model fit; unidimensionality or a correctly specified structure.", "skill": "Intermediate", "time": "Medium", "adopt": 3, "watch": "Comparing groups without first establishing measurement invariance."}, "Weighting & Non-Response Adjustment": {"use": "Correct non-probability samples; small-area opinion via MRP.", "data": "Survey + census/auxiliary margins", "n": "1,000+ survey cases", "assume": "The adjustment model captures the selection mechanism.", "skill": "Expert", "time": "Medium", "adopt": 4, "watch": "Weighting cannot fix variables you never measured."}, "Centrality Measures ★": {"use": "Identify influential actors, brokers and diffusion paths.", "data": "Relational edge-lists / adjacency matrices", "n": "30–10,000 nodes", "assume": "Accurate tie measurement; defensible network boundary.", "skill": "Beginner–Intermediate", "time": "Short", "adopt": 5, "watch": "Centrality ≠ importance without a theory of what flows through the network."}, "Community Detection & Clustering": {"use": "Find factions, echo chambers and field structure.", "data": "Edge-lists", "n": "100–1M nodes", "assume": "The network actually has block structure.", "skill": "Intermediate", "time": "Short", "adopt": 4, "watch": "The resolution limit silently merges small communities."}, "ERGM": {"use": "Model tie formation: homophily vs influence, triadic closure.", "data": "Complete network, one wave", "n": "50–500 nodes", "assume": "Dependence assumptions; model convergence.", "skill": "Expert", "time": "Medium", "adopt": 3, "watch": "Model degeneracy — always run goodness-of-fit checks."}, "Longitudinal SNA / SAOM": {"use": "Disentangle selection from influence over time.", "data": "Panel networks, 2+ waves", "n": "50–300 actors × 3+ waves", "assume": "Markov evolution; actor-oriented decision rules.", "skill": "Expert", "time": "Long", "adopt": 2, "watch": "Heavy computation and fragile convergence — budget time."}, "Two-Mode & Multiplex Networks": {"use": "Board interlocks, event participation, co-authorship structures.", "data": "Bipartite edge-lists", "n": "100–10,000 nodes", "assume": "Projection choices are made deliberately.", "skill": "Intermediate", "time": "Short", "adopt": 3, "watch": "Projecting two-mode data inflates clustering coefficients."}, "NLP & Topic Modeling ★": {"use": "Discover latent themes in large text corpora — policy documents, social media.", "data": "Archived / digital text", "n": "1,000–10M documents", "assume": "Justified k; validation against close reading.", "skill": "Intermediate", "time": "Short–Medium", "adopt": 5, "watch": "Topics are not themes — validate with human reading of exemplars."}, "LLM-Based Text Annotation ★": {"use": "Scale hand-coding of stance, frames or sentiment at near-zero marginal cost.", "data": "Text corpora + LLM access", "n": "10k–1M documents", "assume": "Prompt validity established against a human gold standard.", "skill": "Intermediate", "time": "Short", "adopt": 5, "watch": "Model version drift — lock versions, report agreement metrics."}, "Agent-Based Modeling": {"use": "Show how macro patterns emerge from micro rules — segregation, diffusion.", "data": "Theory + calibration data", "n": "100–100k agents × many runs", "assume": "Rule validity; thorough sensitivity analysis.", "skill": "Expert", "time": "Long", "adopt": 2, "watch": "Anything can emerge from a simulation — validation standards are contested."}, "Geospatial Analysis & GIS ★": {"use": "Spatial inequality, exposure to hazards, service access, place-based policy evaluation.", "data": "Geocoded administrative / survey / satellite data", "n": "100s of areas to millions of points", "assume": "Spatial autocorrelation handled; MAUP acknowledged.", "skill": "Intermediate", "time": "Medium", "adopt": 4, "watch": "Naive maps invite MAUP and autocorrelation critiques from reviewers."}, "Machine Learning Prediction": {"use": "Prediction tasks — risk scores, forecasting, variable discovery.", "data": "Large structured data", "n": "5,000+", "assume": "No leakage; honest train/test separation; calibration.", "skill": "Intermediate", "time": "Medium", "adopt": 4, "watch": "Data leakage and uncalibrated probabilities."}, "Causal Machine Learning": {"use": "Heterogeneous treatment effects with high-dimensional controls (causal forests, double ML).", "data": "Large observational datasets", "n": "5,000+", "assume": "Unconfoundedness; overlap; honest sample splitting.", "skill": "Expert", "time": "Long", "adopt": 3, "watch": "ML cannot fix selection on unobservables — the DAG still comes first."}, "Convergent Parallel Design": {"use": "Triangulate qualitative and quantitative evidence on the same question at once.", "data": "Both strands collected in parallel", "n": "Full Ql + Qn samples", "assume": "Both strands genuinely address the same construct.", "skill": "Intermediate", "time": "Medium", "adopt": 4, "watch": "Two studies stapled together — plan the integration joint display upfront."}, "Explanatory Sequential ★": {"use": "Follow up surprising or significant quantitative results with targeted interviews.", "data": "Survey / experiment → interviews", "n": "500+ survey → 15–30 interviews", "assume": "Purposeful follow-up sampling from the quantitative results.", "skill": "Intermediate", "time": "Medium–Long", "adopt": 5, "watch": "Interviewing a convenience sample instead of outliers and informative cases."}, "Exploratory Sequential": {"use": "Build instruments from qualitative insight, then test them at scale.", "data": "Interviews → pilot → survey", "n": "20 interviews → 300+ survey", "assume": "Construct coverage from the Ql phase; psychometric validation.", "skill": "Intermediate", "time": "Long", "adopt": 4, "watch": "Skipping the validation phase between strands."}, "Embedded Design": {"use": "One strand supports the other — e.g. interviews nested inside a trial.", "data": "Primary strand + supplemental strand", "n": "Varies", "assume": "A clear priority of one strand over the other.", "skill": "Intermediate", "time": "Medium", "adopt": 3, "watch": "The supplemental strand ends up too thin to support any claim."}, "Case- & Variable-Based Integration": {"use": "Combine within-case mechanism insight with cross-case estimation.", "data": "Cases + full dataset", "n": "2–5 cases + full N", "assume": "Cases are selected deliberately from the regression geometry.", "skill": "Expert", "time": "Long", "adopt": 3, "watch": "Case selection on the dependent variable without justification."}, "QCA + Regression Triangulation": {"use": "Cross-validate correlational and configurational causal claims.", "data": "Calibrated cases + dataset", "n": "20–100 cases", "assume": "Both models are correctly specified.", "skill": "Expert", "time": "Medium", "adopt": 2, "watch": "Presenting contradictory results without resolving why they differ."}, "Mixed-Methods SNA": {"use": "Combine network structure with the meaning of ties — why ties exist.", "data": "Edge-lists + interviews", "n": "50–500 nodes + 15–30 interviews", "assume": "Tie meanings actually match the relational data.", "skill": "Expert", "time": "Long", "adopt": 3, "watch": "Treating structural ties as self-explanatory."}, "Text Mining + Close Reading": {"use": "Distant reading to find patterns, close reading to verify them.", "data": "Large corpus + sampled passages", "n": "10k documents + 50–200 passages", "assume": "Algorithmic patterns survive qualitative scrutiny.", "skill": "Intermediate", "time": "Medium", "adopt": 4, "watch": "Reporting algorithm output without the close-reading check."}, "Theory-Based Evaluation": {"use": "Evaluate programmes by testing their theory of change, step by step.", "data": "Programme records, interviews, admin data", "n": "1 programme, multi-source", "assume": "An explicit, testable theory of change exists.", "skill": "Intermediate", "time": "Long", "adopt": 3, "watch": "A theory of change written after the fact to fit the data."}, "Realist Evaluation": {"use": "What works, for whom, in what circumstances (context–mechanism–outcome).", "data": "Multi-source programme data", "n": "1 programme, multiple sites", "assume": "Generative mechanisms exist and are empirically accessible.", "skill": "Expert", "time": "Long", "adopt": 3, "watch": "CMO jargon without empirical bite."}, "Contribution Analysis": {"use": "Make credible contribution claims where RCTs are infeasible.", "data": "Theory of change + multiple evidence streams", "n": "1 intervention", "assume": "The assembled contribution story is verifiable.", "skill": "Intermediate–Expert", "time": "Long", "adopt": 3, "watch": "Confusing contribution with attribution."}, "Participatory Action Research": {"use": "Research with communities, aimed at change, not just knowledge.", "data": "Co-generated data", "n": "Community-defined", "assume": "Authentic power-sharing with participants.", "skill": "Expert", "time": "Long", "adopt": 3, "watch": "Token participation — communities treated as data sources only."}, "Systematic Review & Meta-Analysis": {"use": "Synthesise effect sizes across a literature; funder-friendly evidence.", "data": "Published studies and effect sizes", "n": "20–200+ studies", "assume": "Publication bias handled; preregistered protocol.", "skill": "Intermediate", "time": "Medium–Long", "adopt": 4, "watch": "Garbage in, garbage out — screen study quality rigorously."}, "Meta-Ethnography": {"use": "Synthesise qualitative studies into higher-order interpretations.", "data": "Published qualitative studies", "n": "5–40 studies", "assume": "Studies are conceptually translatable into one another.", "skill": "Expert", "time": "Long", "adopt": 2, "watch": "Forcing synthesis of incommensurable studies."}, "Evidence Gap Mapping": {"use": "Show funders where evidence exists — and where the holes are.", "data": "Systematic literature search", "n": "100s–1,000s of studies", "assume": "A consistent, piloted coding framework.", "skill": "Intermediate", "time": "Medium", "adopt": 3, "watch": "A gap map without a quality dimension misleads decision-makers."}, "Delphi Method": {"use": "Expert consensus forecasting — policy priorities, scenario building.", "data": "Iterative expert questionnaires", "n": "10–50 experts, 2–4 rounds", "assume": "Panel representativeness; controlled feedback between rounds.", "skill": "Beginner–Intermediate", "time": "Medium", "adopt": 3, "watch": "Attrition between rounds quietly skews the consensus."}, "Citizen Juries & Deliberative Polling": {"use": "Informed public judgement on contested policy questions.", "data": "Deliberation transcripts + pre/post surveys", "n": "12–24 (juries) / 100–300 (polls)", "assume": "Balanced briefing materials; near-random recruitment.", "skill": "Intermediate", "time": "Long", "adopt": 2, "watch": "Unbalanced briefings manufacture consent rather than measure it."}, "Community-Based Participatory Research": {"use": "Co-production of knowledge with marginalized populations.", "data": "Co-generated data", "n": "Community-defined", "assume": "Ethical partnership and shared ownership of outputs.", "skill": "Expert", "time": "Long", "adopt": 3, "watch": "Extraction dressed up as participation."}}; = {1:"1/5 — legacy, skip",2:"2/5 — niche, adopt if a project demands it",3:"3/5 — valuable, moderate learning curve",4:"4/5 — strong ROI, adopt within 6 months",5:"5/5 — high priority, adopt right now"};
+
+/* ================= PANEL LOGIC ================= */
+let selectedNode = null;
+function showMethodPanel(n){
+  const key = n.name.replace(/\s*★\s*$/,"");
+  const d = INFO[key] || INFO[n.name];
+  if(!d) return;
+  if(selectedNode) selectedNode.classList.remove("selected");
+  const g = nodeEls.get(n.id);
+  if(g){ g.classList.add("selected"); selectedNode = g; }
+  const trunk = (function up(m){ while(m.parent && m.parent.parent) m = m.parent; return m; })(n);
+  const col = COLORS[n.color];
+  const tag = document.getElementById("pTag");
+  tag.textContent = trunk.name;
+  tag.style.background = col;
+  document.getElementById("pStar").style.display = n.name.includes("★") ? "" : "none";
+  document.getElementById("pName").textContent = key;
+  document.getElementById("pCat").textContent = n.parent ? n.parent.name : "";
+  document.getElementById("pUse").textContent = d.use;
+  document.getElementById("pData").textContent = d.data;
+  document.getElementById("pN").textContent = d.n;
+  document.getElementById("pSkill").textContent = d.skill;
+  document.getElementById("pTime").textContent = d.time;
+  document.getElementById("pAssume").textContent = d.assume;
+  document.getElementById("pDots").innerHTML =
+    Array.from({length:5},(_,i)=>`<span class="dot" style="${i<d.adopt?`background:${col}`:""}"></span>`).join("");
+  document.getElementById("pAdoptTxt").textContent = ADOPT_TXT[d.adopt];
+  document.getElementById("pWatch").innerHTML = "<b>Watch out — when it fails</b>" + d.watch;
+  document.getElementById("panel").classList.add("open");
+}
+function hideMethodPanel(){
+  document.getElementById("panel").classList.remove("open");
+  if(selectedNode){ selectedNode.classList.remove("selected"); selectedNode = null; }
+}
+document.getElementById("panelClose").addEventListener("click", hideMethodPanel);
+document.getElementById("map").addEventListener("click", hideMethodPanel);
+document.addEventListener("keydown", e => { if(e.key === "Escape") hideMethodPanel(); });
+</script>
+</body>
+</html>
