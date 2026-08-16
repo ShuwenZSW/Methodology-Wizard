@@ -369,6 +369,7 @@ function makeNodeEl(n){
     if(n.children.length){ n.collapsed = !n.collapsed; refresh(); }
     else if(typeof showMethodPanel === "function"){ showMethodPanel(n); }
   });
+  g.addEventListener("pointerdown", ev => ev.stopPropagation());
   g.addEventListener("mouseenter", ()=> highlightPath(n,true));
   g.addEventListener("mouseleave", ()=> highlightPath(n,false));
   return g;
