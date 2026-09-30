@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ReGovNet Research Maps · A Small, Beautiful Scholarly Community</title>
+<title>Tiny Atlas · Small Maps of Big Fields · ReGovNet</title>
 <style>
   :root{
     --bg:#f6f1e7;
@@ -54,6 +54,7 @@
     font-family:Georgia,"Times New Roman","Songti SC","SimSun",serif;
     font-size:46px;font-weight:400;letter-spacing:-.015em;line-height:1.1;
   }
+  h1.hero-title{font-size:64px;letter-spacing:-.02em}
   h1 em{
     font-style:normal;
     background:linear-gradient(120deg,var(--qual),var(--quant) 55%,var(--mixed) 85%,var(--gold));
@@ -157,6 +158,7 @@
   @media (max-width:760px){
     .wrap{padding:48px 20px 60px}
     h1{font-size:28px}
+    h1.hero-title{font-size:42px}
     #logo{height:32px}
     .maps{grid-template-columns:1fr}
     .fb-grid{grid-template-columns:1fr}
@@ -172,11 +174,13 @@
   <img id="logo" src="logo.png" alt="ReGovNet Research Group">
 
   <header>
-    <div class="kicker">ReGovNet Research Group · Living Reference Maps</div>
-    <h1>Two Maps,<br>One Community <em>of Scholars</em></h1>
+    <div class="kicker">ReGovNet Research Group · Tiny Atlas</div>
+    <h1 class="hero-title">Tiny <em>Atlas</em></h1>
     <div class="tagline">
-      Curated, open, and continuously corrected maps of <b>methodology</b> and of <b>Public Administration
-      theory</b> — maintained by ReGovNet as a small, beautiful scholarly community, polished by every reader.
+      Small maps of big fields — every node is a rabbit hole.
+      <b>Methodology</b>, <b>Public Administration theory</b>, and more to come:
+      an open, continuously corrected atlas maintained by ReGovNet as a small,
+      beautiful scholarly community, polished by every reader.
     </div>
     <div class="byline">
       <b>Shuwen Zhang, Ph.D.</b> · shuwenzhang@um.edu.mo · ReGovNet Research Group ·
@@ -255,7 +259,7 @@
   </section>
 
   <footer>
-    <span>© 2026 ReGovNet Research Group · Built as an open academic commons</span>
+    <span>© 2026 ReGovNet Research Group · Tiny Atlas, an open academic commons</span>
     <span><a href="https://github.com/ShuwenZSW/Methodology-Wizard">Repository</a> · <a href="mailto:shuwenzhang@um.edu.mo">Contact</a></span>
   </footer>
 
@@ -290,7 +294,7 @@ document.getElementById("fbForm").addEventListener("submit", function(e){
     details || "(none provided)",
     ``,
     `---`,
-    `Submitted from the ReGovNet Research Maps home page.`,
+    `Submitted from the Tiny Atlas home page.`,
   ].filter(x => x !== null).join("\n");
   const url = "https://github.com/ShuwenZSW/Methodology-Wizard/issues/new"
             + `?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;

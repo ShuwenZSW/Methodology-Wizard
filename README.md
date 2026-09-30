@@ -1,7 +1,9 @@
-# ReGovNet Research Maps
+# Tiny Atlas
 
-Two living reference maps maintained by the ReGovNet Research Group as a small,
-open scholarly community:
+**Small maps of big fields** — an open, growing atlas of research knowledge,
+maintained by the ReGovNet Research Group as a small, beautiful scholarly
+community. New maps join the atlas as new pages, so the name (and the URLs)
+never go stale.
 
 | Map | What's inside | Live URL |
 |---|---|---|
