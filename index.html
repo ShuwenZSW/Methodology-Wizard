@@ -58,6 +58,11 @@
   header .sub{
     margin-top:8px;font-size:12.5px;color:var(--muted);letter-spacing:.02em;
   }
+  header a.sister{
+    pointer-events:auto;color:var(--muted);text-decoration:none;
+    border-bottom:1px dashed var(--line);transition:color .15s ease, border-color .15s ease;
+  }
+  header a.sister:hover{color:var(--ink);border-color:var(--ink)}
   @keyframes fadeUp{from{transform:translateY(14px)}to{transform:translateY(0)}}
 
   /* ---- logo ---- */
@@ -137,6 +142,7 @@
   <h1>Methodology List <em>in</em> Social Sciences</h1>
   <div class="sub"><b>Shuwen Zhang, Ph.D.</b> · shuwenzhang@um.edu.mo · ReGovNet Research Group</div>
   <div class="sub" style="margin-top:4px;color:var(--faint)">3 paradigms · 16 categories · 72 methods — click nodes to explore</div>
+  <div class="sub" style="margin-top:4px"><a class="sister" href="pa/index.html">→ Companion map · PA Theories &amp; Research Topics</a></div>
 </header>
 
 <div id="controls">
