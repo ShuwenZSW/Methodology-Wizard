@@ -60,6 +60,15 @@
     display:flex;align-items:center;gap:10px;margin-bottom:14px;
   }
   .kicker::before{content:"";width:34px;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+  .home-btn{
+    display:inline-flex;align-items:center;gap:7px;margin-bottom:22px;
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+    padding:9px 18px;border-radius:999px;text-decoration:none;
+    border:1px solid var(--ink);background:var(--ink);color:var(--bg);
+    transition:all .18s ease;
+  }
+  .home-btn:hover{background:var(--gold);border-color:var(--gold);transform:translateY(-1px);
+    box-shadow:0 10px 22px -12px rgba(184,137,46,.55)}
   h1{
     font-family:Georgia,"Times New Roman",serif;
     font-size:52px;font-weight:400;letter-spacing:-.02em;line-height:1.1;
@@ -170,7 +179,8 @@
 <div class="wrap">
 
   <header>
-    <div class="kicker"><a href="../index.html" style="color:inherit;text-decoration:none">← Tiny Atlas</a> · ReGovNet Research Group</div>
+    <a class="home-btn" href="../index.html">← Atlas Home</a>
+    <div class="kicker">ReGovNet Research Group · Tiny Atlas</div>
     <h1>The <em>Cartographers</em></h1>
     <div class="tagline">
       The people behind the maps. ReGovNet is a small group of researchers from

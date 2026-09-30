@@ -84,6 +84,15 @@
     border-bottom:1px dashed var(--line);transition:color .15s ease, border-color .15s ease;
   }
   header a.sister:hover{color:var(--ink);border-color:var(--ink)}
+  header a.home-btn{
+    pointer-events:auto;display:inline-flex;align-items:center;gap:7px;
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+    padding:8px 16px;border-radius:999px;text-decoration:none;
+    border:1px solid var(--ink);background:var(--ink);color:var(--bg);
+    transition:all .18s ease;
+  }
+  header a.home-btn:hover{background:var(--gold);border-color:var(--gold);transform:translateY(-1px);
+    box-shadow:0 10px 22px -12px rgba(184,137,46,.55)}
   @keyframes fadeUp{from{transform:translateY(14px)}to{transform:translateY(0)}}
 
   /* ---- logo ---- */
@@ -167,7 +176,7 @@
   <h1>Methodology List <em>in</em> Social Sciences</h1>
   <div class="sub"><b>Shuwen Zhang, Ph.D.</b> · shuwenzhang@um.edu.mo · ReGovNet Research Group</div>
   <div class="sub" style="margin-top:4px;color:var(--faint)">3 paradigms · 16 categories · 72 methods — click nodes to explore</div>
-  <div class="sub" style="margin-top:4px"><a class="sister" href="../index.html">← Home</a>&nbsp;&nbsp;<a class="sister" href="../pa/index.html">→ Public Administration Theories &amp; Research Topics</a></div>
+  <div class="sub" style="margin-top:8px"><a class="home-btn" href="../index.html">← Atlas Home</a>&nbsp;&nbsp;<a class="sister" href="../pa/index.html">→ Public Administration Theories &amp; Research Topics</a></div>
 </header>
 
 <div id="controls">

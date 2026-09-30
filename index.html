@@ -111,7 +111,12 @@
   }
   .map-card .go::after{content:"→";transition:transform .2s ease}
   .map-card:hover .go::after{transform:translateX(4px)}
-  .maps.minor{margin:-40px 0 58px}
+  .block{margin-bottom:44px}
+  .block-label{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);
+    font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:12px;
+  }
+  .block-label::after{content:"";flex:1;height:1px;background:var(--line)}
   .map-card.m-team .stripe{background:linear-gradient(90deg,var(--qual),var(--quant) 55%,var(--mixed))}
   .map-card.m-guide .stripe{background:linear-gradient(90deg,var(--gold),var(--qual) 55%,var(--quant))}
 
@@ -201,27 +206,43 @@
     </div>
   </header>
 
-  <div class="maps">
-    <a class="map-card m1" href="methods/index.html">
-      <span class="stripe"></span>
-      <h2>Methodology List<br>in Social Sciences</h2>
-      <div class="cnt">3 paradigms · 16 categories · 72 methods</div>
-      <p>From ethnography to causal machine learning: every method node opens an adoption card —
-         when to use it, data required, assumptions, skill, and priority.</p>
-      <div class="go">Enter the map</div>
-    </a>
-    <a class="map-card m2" href="pa/index.html">
-      <span class="stripe"></span>
-      <h2>Public Administration<br>Theories &amp; Research Topics</h2>
-      <div class="cnt">3 schools · 9 branches · 36 theories</div>
-      <p>From Weber to behavioral public administration: core proposition, key concepts, founders,
-         classic readings, analytical frameworks — with method names that link straight into the
-         methodology map.</p>
-      <div class="go">Enter the map</div>
-    </a>
-  </div>
+  <section class="block">
+    <div class="block-label">Maps</div>
+    <div class="maps" style="margin-bottom:0">
+      <a class="map-card m1" href="methods/index.html">
+        <span class="stripe"></span>
+        <h2>Methodology List<br>in Social Sciences</h2>
+        <div class="cnt">3 paradigms · 16 categories · 72 methods</div>
+        <p>From ethnography to causal machine learning: every method node opens an adoption card —
+           when to use it, data required, assumptions, skill, and priority.</p>
+        <div class="go">Enter the map</div>
+      </a>
+      <a class="map-card m2" href="pa/index.html">
+        <span class="stripe"></span>
+        <h2>Public Administration<br>Theories &amp; Research Topics</h2>
+        <div class="cnt">3 schools · 9 branches · 36 theories</div>
+        <p>From Weber to behavioral public administration: core proposition, key concepts, founders,
+           classic readings, analytical frameworks — with method names that link straight into the
+           methodology map.</p>
+        <div class="go">Enter the map</div>
+      </a>
+    </div>
+  </section>
 
-  <div class="maps minor">
+  <section class="block">
+    <div class="block-label">Field Guides</div>
+    <a class="map-card m-guide" href="guides/sna/index.html">
+      <span class="stripe"></span>
+      <h2>Social Network Analysis</h2>
+      <div class="cnt">Field Guide No. 1 · A Field Guide to Networks</div>
+      <p>From centrality to ERGM — concepts, measures, and the model path, taught the way the group's
+         methodologists teach it, with an interactive playground.</p>
+      <div class="go">Read the guide</div>
+    </a>
+  </section>
+
+  <section class="block">
+    <div class="block-label">The Team</div>
     <a class="map-card m-team" href="team/index.html">
       <span class="stripe"></span>
       <h2>The Cartographers</h2>
@@ -230,15 +251,7 @@
          governance networks, interlocal management — led by Shuwen Zhang.</p>
       <div class="go">Meet the team</div>
     </a>
-    <a class="map-card m-guide" href="guides/sna/index.html">
-      <span class="stripe"></span>
-      <h2>Field Guide No. 1</h2>
-      <div class="cnt">A Field Guide to Networks</div>
-      <p>Social Network Analysis the way the group's methodologists teach it:
-         foundations, measures, the model path — plus an interactive playground.</p>
-      <div class="go">Read the guide</div>
-    </a>
-  </div>
+  </section>
 
   <section class="community" id="feedback">
     <h2>Community Feedback</h2>
