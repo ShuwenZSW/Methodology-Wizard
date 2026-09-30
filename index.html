@@ -111,8 +111,9 @@
   }
   .map-card .go::after{content:"→";transition:transform .2s ease}
   .map-card:hover .go::after{transform:translateX(4px)}
-  .team-strip{margin:-40px 0 58px}
-  .team-strip .stripe{background:linear-gradient(90deg,var(--gold),var(--qual) 55%,var(--quant))}
+  .maps.minor{margin:-40px 0 58px}
+  .map-card.m-team .stripe{background:linear-gradient(90deg,var(--qual),var(--quant) 55%,var(--mixed))}
+  .map-card.m-guide .stripe{background:linear-gradient(90deg,var(--gold),var(--qual) 55%,var(--quant))}
 
   /* ---- community ---- */
   section.community h2{
@@ -220,15 +221,24 @@
     </a>
   </div>
 
-  <a class="map-card team-strip" href="team/index.html">
-    <span class="stripe"></span>
-    <h2>The Cartographers</h2>
-    <div class="cnt">Meet the ReGovNet Research Group</div>
-    <p>A small group of Public Administration researchers — regional governance, governance networks,
-       interlocal management — with methodological depth in causal inference and social network analysis.
-       Led by Shuwen Zhang.</p>
-    <div class="go">Meet the team</div>
-  </a>
+  <div class="maps minor">
+    <a class="map-card m-team" href="team/index.html">
+      <span class="stripe"></span>
+      <h2>The Cartographers</h2>
+      <div class="cnt">Meet the ReGovNet Research Group</div>
+      <p>A small group of Public Administration researchers — regional governance,
+         governance networks, interlocal management — led by Shuwen Zhang.</p>
+      <div class="go">Meet the team</div>
+    </a>
+    <a class="map-card m-guide" href="guides/sna/index.html">
+      <span class="stripe"></span>
+      <h2>Field Guide No. 1</h2>
+      <div class="cnt">A Field Guide to Networks</div>
+      <p>Social Network Analysis the way the group's methodologists teach it:
+         foundations, measures, the model path — plus an interactive playground.</p>
+      <div class="go">Read the guide</div>
+    </a>
+  </div>
 
   <section class="community" id="feedback">
     <h2>Community Feedback</h2>

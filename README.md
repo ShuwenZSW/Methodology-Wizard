@@ -11,6 +11,7 @@ never go stale.
 | **Methodology Map** | 3 paradigms · 16 categories · 72 methods, each with an adoption card (when to use, data, assumptions, skill, priority) | https://shuwenzsw.github.io/Methodology-Wizard/methods/ |
 | **Public Administration Map** | 3 schools · 9 branches · 36 theories, each with a canon card (core proposition, key concepts, founders, classic readings, frameworks, research-design guide) | https://shuwenzsw.github.io/Methodology-Wizard/pa/ |
 | **Team** | The ReGovNet Research Group — regional governance, governance networks, interlocal management; methodological strengths in causal inference and social network analysis; led by Shuwen Zhang | https://shuwenzsw.github.io/Methodology-Wizard/team/ |
+| **Field Guide No. 1: Networks** | Social Network Analysis as a guided path — foundations, centrality measures, models (QAP → blockmodels → ERGM → latent space → SAOM), an interactive network playground, software, datasets, and the canon | https://shuwenzsw.github.io/Methodology-Wizard/guides/sna/ |
 
 **Maintainer:** Shuwen Zhang, Ph.D. (shuwenzhang@um.edu.mo) · ReGovNet Research Group
 
@@ -22,6 +23,7 @@ never go stale.
 |---|---|---|
 | `index.html` | Home page (group intro + feedback box) | Yes — standalone static page |
 | `team/index.html` | Team page (research areas, methods, principal) | Yes — standalone static page |
+| `guides/sna/index.html` | Field Guide No. 1 — Social Network Analysis (standalone static page with inline JS playground) | Yes — standalone static page |
 | `methods/` | Methodology map site | |
 | `methods/data_methods.py` | All content: `TREE` (method hierarchy) + `PROFILES` (method cards) | Yes — content lives here |
 | `methods/build_site.py` | Generator: validates data, injects into template | No |

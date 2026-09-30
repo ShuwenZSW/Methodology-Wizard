@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Field Guide to Networks · Tiny Atlas · ReGovNet Research Group</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<meta name="description" content="Field Guide No. 1 — Social Network Analysis: foundations, centrality measures, statistical models from QAP to SAOM, an interactive network playground, software, datasets, and the canon.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A Field Guide to Networks · Tiny Atlas">
+<meta property="og:description" content="Social Network Analysis, guided: foundations, measures, models from QAP to SAOM, an interactive playground, and the canon. Field Guide No. 1 by the ReGovNet Research Group.">
+<meta property="og:image" content="https://shuwenzsw.github.io/Methodology-Wizard/assets/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    --bg:#f6f1e7;
+    --ink:#1a1712;
+    --muted:#6f6a5e;
+    --faint:#a89f8d;
+    --paper:#fffdf7;
+    --qual:#0e7d66;
+    --quant:#3a4fd0;
+    --mixed:#c8501f;
+    --line:#ddd3bf;
+    --gold:#b8892e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(1100px 700px at 8% -10%, rgba(62,79,208,.08), transparent 62%),
+      radial-gradient(900px 620px at 102% 4%, rgba(200,80,31,.07), transparent 60%),
+      radial-gradient(820px 560px at 50% 112%, rgba(14,125,102,.07), transparent 62%);
+  }
+  ::selection{background:rgba(184,137,46,.25)}
+
+  #dots{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+  .wrap{
+    position:relative;z-index:1;max-width:900px;margin:0 auto;
+    padding:72px 32px 90px;
+    animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) .1s backwards;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---- header ---- */
+  header{margin-bottom:44px}
+  .kicker{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .kicker::before{content:"";width:34px;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+  .kicker a{color:inherit;text-decoration:none}
+  .kicker a:hover{color:var(--ink)}
+  h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:46px;font-weight:400;letter-spacing:-.02em;line-height:1.12;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(120deg,var(--qual),var(--quant) 55%,var(--mixed) 85%,var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1::after{
+    content:"";display:block;width:120px;height:3px;margin-top:18px;border-radius:2px;
+    background:linear-gradient(90deg,var(--gold),var(--mixed) 55%,var(--quant));
+  }
+  .tagline{
+    margin-top:16px;font-size:15px;color:var(--muted);line-height:1.6;max-width:680px;
+  }
+  .tagline b{color:var(--ink);font-weight:600}
+
+  /* ---- sections ---- */
+  section{margin-bottom:52px}
+  section h2{
+    font-family:Georgia,"Times New Roman",serif;font-size:22px;font-weight:400;
+    margin-bottom:6px;
+  }
+  .lead{font-size:13.5px;line-height:1.65;color:var(--muted);max-width:680px;margin-bottom:22px}
+  .lead b{color:var(--ink);font-weight:600}
+  .num{
+    display:inline-block;font-size:10px;letter-spacing:.14em;color:var(--gold);
+    text-transform:uppercase;margin-bottom:6px;font-weight:600;
+  }
+
+  /* ---- concept grid (foundation) ---- */
+  .concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .concept{
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px 17px;
+    transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .concept:hover{transform:translateY(-3px);border-color:var(--ink);
+    box-shadow:0 14px 34px -20px rgba(26,23,18,.3)}
+  .concept h3{
+    font-family:Georgia,"Times New Roman",serif;font-size:15px;font-weight:400;margin-bottom:6px;
+  }
+  .concept p{font-size:12px;line-height:1.55;color:var(--muted)}
+  .concept p i{color:var(--ink);font-style:italic}
+
+  /* ---- measure cards ---- */
+  .measures{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .measure{
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;
+    padding:20px 22px;position:relative;overflow:hidden;
+    transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .measure:hover{transform:translateY(-4px);border-color:var(--ink);
+    box-shadow:0 16px 40px -20px rgba(26,23,18,.32)}
+  .measure .stripe{position:absolute;top:0;left:0;right:0;height:4px}
+  .measure.s1 .stripe{background:linear-gradient(90deg,var(--qual),var(--quant))}
+  .measure.s2 .stripe{background:linear-gradient(90deg,var(--quant),var(--mixed))}
+  .measure.s3 .stripe{background:linear-gradient(90deg,var(--mixed),var(--gold))}
+  .measure.s4 .stripe{background:linear-gradient(90deg,var(--gold),var(--qual))}
+  .measure h3{font-family:Georgia,"Times New Roman",serif;font-size:17px;font-weight:400;margin-bottom:4px}
+  .measure .src{font-size:10.5px;color:var(--faint);letter-spacing:.06em;margin-bottom:10px}
+  .measure .what{font-size:12.5px;line-height:1.55;color:var(--muted);margin-bottom:10px}
+  .measure .when{
+    font-size:12px;line-height:1.5;color:var(--ink);
+    background:rgba(14,125,102,.07);border-left:3px solid var(--qual);
+    padding:8px 12px;border-radius:0 6px 6px 0;
+  }
+  .when b{color:var(--qual);font-weight:600;font-size:10px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:2px}
+
+  /* ---- model path ---- */
+  .path{position:relative;margin-left:10px;padding-left:34px;border-left:2px dashed var(--line)}
+  .model{
+    position:relative;background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    padding:22px 24px;margin-bottom:18px;
+    box-shadow:0 18px 44px -28px rgba(26,23,18,.3);
+    transition:transform .25s cubic-bezier(.16,1,.3,1), border-color .25s ease;
+  }
+  .model:hover{transform:translateY(-3px);border-color:var(--ink)}
+  .model::before{
+    content:attr(data-step);position:absolute;left:-51px;top:18px;
+    width:32px;height:32px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;color:var(--gold);
+  }
+  .model h3{font-family:Georgia,"Times New Roman",serif;font-size:18px;font-weight:400;margin-bottom:6px}
+  .model .what{font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:12px}
+  .model .req{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .req span{
+    font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    border:1px solid var(--line);border-radius:999px;padding:4px 11px;color:var(--muted);
+  }
+  .req span.data{border-color:var(--quant);color:var(--quant)}
+  .req span.cost{border-color:var(--gold);color:var(--gold)}
+  .model .maplink{font-size:12px}
+  .model .maplink a{color:var(--quant);text-decoration:none;border-bottom:1px dashed var(--quant)}
+  .model .maplink a:hover{color:var(--ink);border-color:var(--ink)}
+
+  /* ---- playground ---- */
+  .play{
+    background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    box-shadow:0 24px 56px -30px rgba(26,23,18,.28);
+    padding:20px 22px 16px;
+  }
+  .play .toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+  .play label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .play select{
+    font-family:inherit;font-size:12.5px;color:var(--ink);
+    background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 10px;outline:none;
+  }
+  .play button{
+    font-family:inherit;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+    padding:8px 16px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--ink);background:var(--ink);color:var(--bg);transition:all .18s ease;
+  }
+  .play button:hover{background:var(--gold);border-color:var(--gold)}
+  .play .hint{font-size:11px;color:var(--faint);margin-left:auto}
+  #net{width:100%;height:400px;display:block;touch-action:none;cursor:default}
+  #net .edge{stroke:var(--line);stroke-width:1.4;opacity:.85}
+  #net .node{fill:var(--qual);cursor:grab;transition:fill .15s ease}
+  #net .node:hover{fill:var(--quant)}
+  #net .node.drag{fill:var(--mixed);cursor:grabbing}
+  #net .node.top{stroke:var(--gold);stroke-width:3}
+  #net .nlabel{font-size:10.5px;fill:#fffdf7;font-weight:600;pointer-events:none}
+  #tip{
+    position:fixed;display:none;pointer-events:none;z-index:10;
+    background:var(--ink);color:var(--bg);font-size:11.5px;line-height:1.5;
+    padding:8px 12px;border-radius:6px;box-shadow:0 10px 24px -10px rgba(26,23,18,.5);
+  }
+  #tip b{color:var(--gold);font-weight:600}
+  .play .footnote{font-size:11px;color:var(--faint);margin-top:10px;line-height:1.5}
+
+  /* ---- toolkit & canon ---- */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .panel{
+    background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:22px 24px;
+  }
+  .panel h3{
+    font-family:Georgia,"Times New Roman",serif;font-size:17px;font-weight:400;margin-bottom:14px;
+    padding-bottom:10px;border-bottom:1px dashed var(--line);
+  }
+  .panel ul{list-style:none}
+  .panel li{font-size:12.5px;line-height:1.55;color:var(--muted);margin-bottom:9px;padding-left:16px;position:relative}
+  .panel li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--qual)}
+  .panel.books li::before{background:var(--gold)}
+  .panel li b{color:var(--ink);font-weight:600}
+
+  footer{
+    margin-top:64px;padding-top:18px;border-top:1px dashed var(--line);
+    font-size:11px;color:var(--faint);letter-spacing:.04em;
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  }
+  footer a{color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line)}
+  footer a:hover{color:var(--ink)}
+
+  @media (max-width:760px){
+    .wrap{padding:48px 20px 60px}
+    h1{font-size:32px}
+    .concepts{grid-template-columns:1fr}
+    .measures{grid-template-columns:1fr}
+    .duo{grid-template-columns:1fr}
+    .path{margin-left:4px;padding-left:26px}
+    .model::before{left:-44px;width:26px;height:26px;font-size:10.5px}
+  }
+</style>
+</head>
+<body>
+
+<svg id="dots"></svg>
+<div id="tip"></div>
+
+<div class="wrap">
+
+  <header>
+    <div class="kicker"><a href="../../index.html">← Tiny Atlas</a> · Field Guide No. 1</div>
+    <h1>A Field Guide<br>to <em>Networks</em></h1>
+    <div class="tagline">
+      Social Network Analysis, the way the ReGovNet group teaches it to itself:
+      <b>concepts first, measures second, models when the question demands it</b> —
+      with a playground, a toolkit, and the canon.
+    </div>
+  </header>
+
+  <section>
+    <span class="num">Orientation</span>
+    <h2>Foundation</h2>
+    <div class="lead">
+      Nine ideas everything else in this guide is built from. If a term elsewhere
+      feels fuzzy, come back here.
+    </div>
+    <div class="concepts">
+      <div class="concept"><h3>Nodes &amp; Ties</h3><p>Actors (people, organizations, governments) and the relationships between them. Ties may be <i>directed or undirected</i>, <i>dichotomous or valued</i> — the data type decides most of what you can do later.</p></div>
+      <div class="concept"><h3>Boundary Specification</h3><p>Who is <i>in</i> the network is a theoretical decision, not a technical one (Laumann et al., 1983). Every network finding is conditional on its boundary — state it.</p></div>
+      <div class="concept"><h3>One-mode vs Two-mode</h3><p>Actor-by-actor matrices versus actor-by-event <i>incidence</i> matrices. Projecting two-mode data (e.g., boards → interlocks) inflates ties; say so when you do it.</p></div>
+      <div class="concept"><h3>Density</h3><p>Realized ties ÷ possible ties. Highly sensitive to network size and boundary — compare densities only within comparably bounded networks.</p></div>
+      <div class="concept"><h3>Reciprocity &amp; Transitivity</h3><p>The two local rules that generate structure: ties tend to be returned, and friends of friends tend to become friends. The raw material of balance and clustering theory.</p></div>
+      <div class="concept"><h3>Triads</h3><p>Sixteen possible directed triad types (Holland &amp; Leinhardt, 1976); each is a structural signature — hierarchy, brokerage, or closure.</p></div>
+      <div class="concept"><h3>Homophily</h3><p>Similarity breeds connection (McPherson, Smith-Lovin &amp; Cook, 2001). The perennial confound: do similar nodes connect, or do connected nodes converge?</p></div>
+      <div class="concept"><h3>Structural Holes</h3><p>Actors bridging disconnected groups occupy <i>structural holes</i> (Burt, 1992) — brokerage advantage, measured by <i>constraint</i>.</p></div>
+      <div class="concept"><h3>Small Worlds</h3><p>High local clustering with surprisingly short global paths (Watts &amp; Strogatz, 1998) — the architecture of fast diffusion and short reach.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Descriptive Layer</span>
+    <h2>Measures</h2>
+    <div class="lead">
+      Centrality answers <b>"who occupies which position?"</b> — but each family of measures
+      answers a different <i>who</i>. Choose the measure that matches your theory of what flows
+      through the network.
+    </div>
+    <div class="measures">
+      <div class="measure s1">
+        <span class="stripe"></span>
+        <h3>Degree Centrality</h3>
+        <div class="src">Shaw (1954) · Freeman (1979)</div>
+        <div class="what">The number of ties a node has. Direct, local, robust — the simplest count of embeddedness or raw activity.</div>
+        <div class="when"><b>Use when</b> prominence within the immediate neighborhood matters: visibility, direct exposure, communication load.</div>
+      </div>
+      <div class="measure s2">
+        <span class="stripe"></span>
+        <h3>Betweenness Centrality</h3>
+        <div class="src">Freeman (1977)</div>
+        <div class="what">The share of all shortest paths that pass through a node. Captures brokerage and gatekeeping — being <i>between</i> groups rather than merely active.</div>
+        <div class="when"><b>Use when</b> a node can control diffusion, information, or coordination — the structural power measure.</div>
+      </div>
+      <div class="measure s3">
+        <span class="stripe"></span>
+        <h3>Closeness Centrality</h3>
+        <div class="src">Bavelas (1950) · Sabidussi (1966)</div>
+        <div class="what">Reciprocal of average distance to all other nodes. How efficiently a node can reach everyone — independence from mediators.</div>
+        <div class="when"><b>Use when</b> speed of access or reach matters and the network has no giant disconnected component.</div>
+      </div>
+      <div class="measure s4">
+        <span class="stripe"></span>
+        <h3>Eigenvector &amp; PageRank</h3>
+        <div class="src">Bonacich (1972) · Page et al. (1999)</div>
+        <div class="what">Centrality weighted by the centrality of one's alters: it is not how many you know, but <i>who</i> you know.</div>
+        <div class="when"><b>Use when</b> prestige, status diffusion, or influence-through-connection is the mechanism.</div>
+      </div>
+    </div>
+    <div class="lead" style="margin-top:16px;margin-bottom:0">
+      At the network level, pair these with <b>centralization</b> (how unequal the distribution is),
+      <b>clustering coefficient</b> (local closure), and <b>average path length</b>. See how the map
+      frames the centrality family: <a href="../../methods/index.html?m=Centrality%20Measures" style="color:var(--quant)">Centrality Measures → methodology map</a>.
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Inferential Layer</span>
+    <h2>The Model Path</h2>
+    <div class="lead">
+      Five models in the order we would teach them. Each step answers a harder question
+      and demands more of your data. Stop where your question stops.
+    </div>
+
+    <div class="path">
+      <div class="model" data-step="01">
+        <h3>QAP / MRQAP</h3>
+        <div class="what">
+          Regress one network on other networks or covariate matrices, testing coefficients by
+          permutation of rows and columns. The permutation respects the autocorrelation that
+          ordinary regression ignores, making standard errors defensible.
+        </div>
+        <div class="req">
+          <span class="data">Data: one-mode matrices, 1 wave</span>
+          <span class="cost">Entry: low</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Social%20Network%20Analysis">Social Network Analysis → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="02">
+        <h3>Community Detection &amp; Blockmodels</h3>
+        <div class="what">
+          Find cohesive subgroups or equivalent positions: modularity maximization (Louvain),
+          spectral methods, or classic CONCOR blockmodeling. Exploratory — generates hypotheses
+          about where the seams of a network are.
+        </div>
+        <div class="req">
+          <span class="data">Data: any cross-section</span>
+          <span class="cost">Entry: low</span>
+        </div>
+      </div>
+
+      <div class="model" data-step="03">
+        <h3>ERGM — Exponential Random Graph Models</h3>
+        <div class="what">
+          Model <i>tie formation</i>: which local configurations — edges, reciprocity, triangles,
+          homophily, popularity — generate the observed network? Each parameter is a structural
+          tendency, tested while holding the others constant. The workhorse of cross-sectional
+          network statistics.
+        </div>
+        <div class="req">
+          <span class="data">Data: complete network, 1 wave</span>
+          <span class="cost">Entry: medium</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=ERGM">ERGM → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="04">
+        <h3>Latent Space Models &amp; Stochastic Blockmodels</h3>
+        <div class="what">
+          Place nodes in a latent geometry (Hoff, Raftery &amp; Handcock, 2002) or assign them to
+          unobserved blocks (Nowicki &amp; Snijders, 2001); ties become more likely at short
+          latent distance or within the same block. Goodness-of-fit visualization comes naturally.
+        </div>
+        <div class="req">
+          <span class="data">Data: complete network, 1 wave</span>
+          <span class="cost">Entry: medium</span>
+        </div>
+      </div>
+
+      <div class="model" data-step="05">
+        <h3>SAOM / SIENA — Stochastic Actor-Oriented Models</h3>
+        <div class="what">
+          The model of network <i>dynamics</i> (Snijders, 2001; Snijders, van de Bunt &amp;
+          Steglich, 2010): actors make tie choices given their local network, micro-steps
+          accumulate into panel change — and, jointly, behavior and network co-evolve.
+          This is the design that can finally separate <b>selection</b> from <b>influence</b>.
+        </div>
+        <div class="req">
+          <span class="data">Data: panel networks, 2+ waves</span>
+          <span class="cost">Entry: high</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Playground</span>
+    <h2>Feel the Measures</h2>
+    <div class="lead">
+      A living toy network. <b>Drag nodes</b> to rewire the structure, switch the metric,
+      and watch the same graph tell four different stories about who is central.
+    </div>
+    <div class="play">
+      <div class="toolbar">
+        <label for="metric">Metric</label>
+        <select id="metric">
+          <option value="degree">Degree</option>
+          <option value="betweenness">Betweenness</option>
+          <option value="closeness">Closeness</option>
+        </select>
+        <button id="shuffle" type="button">Shuffle ties</button>
+        <span class="hint">hover a node for its values</span>
+      </div>
+      <svg id="net" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="footnote" id="pfoot"></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Supplies</span>
+    <h2>Toolkit &amp; Canon</h2>
+    <div class="lead">What we install, and what we keep within arm's reach.</div>
+    <div class="duo">
+      <div class="panel">
+        <h3>Software</h3>
+        <ul>
+          <li><b>R:</b> statnet (<i>ergm</i>, <i>network</i>, <i>sna</i>), <i>igraph</i>, <i>RSiena</i>, tidygraph + ggraph for grammar-of-graphics plotting.</li>
+          <li><b>Python:</b> <i>networkx</i>, <i>graph-tool</i>, python-igraph — for pipelines and large graphs.</li>
+          <li><b>GUI:</b> Gephi (exploration), UCINET + NetDraw (classics), Pajek (large networks), visone, E-NET (egonets), ORA, NodeXL (Excel-native).</li>
+          <li><b>Datasets:</b> Add Health, Stanford SNAP, KONECT, Netzschleuder, plus the datasets bundled with UCINET and RSiena.</li>
+        </ul>
+      </div>
+      <div class="panel books">
+        <h3>Canon</h3>
+        <ul>
+          <li><b>Wasserman &amp; Faust (1994)</b>, <i>Social Network Analysis: Methods and Applications</i> — the bible.</li>
+          <li><b>Scott (2017, 4th ed.)</b>, <i>Social Network Analysis</i> — the short on-ramp.</li>
+          <li><b>Borgatti, Everett &amp; Johnson (2013)</b>, <i>Analyzing Social Networks</i> — the practical handbook.</li>
+          <li><b>Newman (2010)</b>, <i>Networks: An Introduction</i> — the mathematical foundations.</li>
+          <li><b>Easley &amp; Kleinberg (2010)</b>, <i>Networks, Crowds, and Markets</i> — the CS–economics crossover.</li>
+          <li><b>Robins (2015)</b>, <i>Doing Social Network Research</i> — research design and boundaries.</li>
+          <li><b>Snijders, van de Bunt &amp; Steglich (2010)</b> — the SAOM/SIENA paper in <i>Social Networks</i> 32(1).</li>
+          <li><b>McPherson, Smith-Lovin &amp; Cook (2001)</b> — "Birds of a Feather," <i>Annual Review of Sociology</i>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 ReGovNet Research Group · Tiny Atlas, an open academic commons</span>
+    <span><a href="../../index.html">Atlas Home</a> · <a href="../../team/index.html">Team</a> · <a href="../../index.html#feedback">Corrections</a> · <a href="https://github.com/ShuwenZSW/Methodology-Wizard">Repository</a></span>
+  </footer>
+
+</div>
+
+<script>
+/* ---- dotted paper texture ---- */
+(function(){
+  const d = document.getElementById("dots");
+  const s = 26, W = Math.ceil(innerWidth/s)+2, H = Math.ceil(innerHeight/s)+2;
+  let html = "";
+  for(let i=0;i<W;i++)for(let j=0;j<H;j++)
+    html += `<circle cx="${i*s}" cy="${j*s}" r="0.8" fill="#1a1712" opacity="0.045"/>`;
+  d.innerHTML = `<g>${html}</g>`;
+  d.setAttribute("width",innerWidth); d.setAttribute("height",innerHeight);
+})();
+
+/* ---- network playground ---- */
+(function(){
+  const svg = document.getElementById("net");
+  const NS = "http://www.w3.org/2000/svg";
+  const tip = document.getElementById("tip");
+  const foot = document.getElementById("pfoot");
+  const W = 640, H = 400;
+  const labels = "ABCDEFGHIJKL".split("");
+  let seed = 42;
+  const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+
+  const nodes = labels.map((l,i) => {
+    const a = (i / labels.length) * Math.PI * 2 - Math.PI/2;
+    return { id:i, label:l,
+      x: W/2 + Math.cos(a)*150 + (rnd()-0.5)*60,
+      y: H/2 + Math.sin(a)*120 + (rnd()-0.5)*60 };
+  });
+  let edges = [];
+
+  function buildEdges(){
+    edges = [];
+    const has = new Set();
+    const key = (a,b) => a<b ? a+"-"+b : b+"-"+a;
+    const ring = [[0,3],[3,6],[6,9],[9,0],[2,7],[4,10],[1,8],[5,11]];
+    const extra = 8 + Math.floor(rnd()*5);
+    ring.concat(Array.from({length:extra}, () => [Math.floor(rnd()*12), Math.floor(rnd()*12)]))
+      .forEach(([a,b]) => {
+        if(a!==b && !has.has(key(a,b))){ has.add(key(a,b)); edges.push([a,b]); }
+      });
+  }
+
+  function layout(iters){
+    const k = 52;
+    for(let it=0; it<iters; it++){
+      for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+        let dx = nodes[i].x-nodes[j].x, dy = nodes[i].y-nodes[j].y;
+        let d = Math.max(4, Math.hypot(dx,dy));
+        const f = k*k/d/d*6;
+        dx*=f; dy*=f;
+        nodes[i].x+=dx; nodes[i].y+=dy; nodes[j].x-=dx; nodes[j].y-=dy;
+      }
+      edges.forEach(([a,b]) => {
+        let dx = nodes[b].x-nodes[a].x, dy = nodes[b].y-nodes[a].y;
+        const d = Math.max(4, Math.hypot(dx,dy));
+        const f = d/k*0.04*Math.min(d-k,60);
+        dx*=f/d*10; dy*=f/d*10;
+        nodes[a].x+=dx; nodes[a].y+=dy; nodes[b].x-=dx; nodes[b].y-=dy;
+      });
+      nodes.forEach(n => {
+        n.x += (W/2-n.x)*0.03; n.y += (H/2-n.y)*0.03;
+      });
+    }
+    nodes.forEach(n => {
+      n.x = Math.max(28, Math.min(W-28, n.x));
+      n.y = Math.max(28, Math.min(H-28, n.y));
+    });
+  }
+
+  /* metrics */
+  const adj = () => { const a = nodes.map(()=>[]); edges.forEach(([u,v])=>{a[u].push(v);a[v].push(u);}); return a; };
+  function bfsDist(src){
+    const A = adj(), dist = new Array(12).fill(Infinity);
+    dist[src]=0; const q=[src];
+    while(q.length){ const u=q.shift();
+      for(const v of A[u]) if(dist[v]===Infinity){ dist[v]=dist[u]+1; q.push(v); } }
+    return dist;
+  }
+  function metrics(){
+    const A = adj();
+    const degree = A.map(a => a.length);
+    const close = nodes.map((_,i) => {
+      const d = bfsDist(i).filter(x=>x>0);
+      return d.length ? d.length / d.reduce((s,x)=>s+x,0) : 0;
+    });
+    /* betweenness: count shortest paths through each node (undirected) */
+    const betw = new Array(12).fill(0);
+    for(let s=0;s<12;s++){
+      const dist = bfsDist(s), A2 = A;
+      const count = new Array(12).fill(0), stack = [s];
+      const preds = Array.from({length:12}, ()=>[]);
+      count[s]=1;
+      /* BFS order */
+      const order=[s], seen=new Set([s]);
+      while(order.length){ /* process in increasing dist */
+        order.sort((a,b)=>dist[a]-dist[b]); const u=order.shift();
+        stack.push(u);
+        for(const v of A2[u]){
+          if(dist[v]===dist[u]+1){
+            preds[v].push(u);
+            if(!seen.has(v)){ seen.add(v); order.push(v); }
+          }
+        }
+      }
+      const sigma = new Array(12).fill(0); sigma[s]=1;
+      const sorted = [...Array(12).keys()].sort((a,b)=>dist[a]-dist[b]);
+      for(const u of sorted) for(const p of preds[u]) sigma[u]+=sigma[p];
+      const delta = new Array(12).fill(0);
+      for(let ii=sorted.length-1; ii>=0; ii--){
+        const u=sorted[ii];
+        for(const p of preds[u]) delta[p] += (sigma[p]/sigma[u])*(1+delta[u]);
+      }
+      for(let v=0;v<12;v++) if(v!==s) betw[v]+=delta[v];
+    }
+    const norm = betw.map(b => b/2); /* each path counted twice */
+    return { degree, close, betw: norm };
+  }
+
+  /* render */
+  const edgeEls = [], nodeEls = [], labelEls = [];
+  function render(){
+    svg.innerHTML = "";
+    edgeEls.length = nodeEls.length = labelEls.length = 0;
+    edges.forEach(([a,b]) => {
+      const l = document.createElementNS(NS,"line");
+      l.setAttribute("class","edge");
+      svg.appendChild(l); edgeEls.push([l,a,b]);
+    });
+    const m = metrics();
+    const metric = document.getElementById("metric").value;
+    const vals = metric==="degree" ? m.degree : metric==="betweenness" ? m.betw : m.close;
+    const max = Math.max(...vals, 1e-9);
+    let top = 0; vals.forEach((v,i)=>{ if(v>vals[top]) top=i; });
+    nodes.forEach((n,i) => {
+      const c = document.createElementNS(NS,"circle");
+      c.setAttribute("class","node"+(i===top?" top":""));
+      c.dataset.i = i;
+      svg.appendChild(c); nodeEls.push(c);
+      const t = document.createElementNS(NS,"text");
+      t.setAttribute("class","nlabel");
+      t.setAttribute("text-anchor","middle");
+      t.textContent = n.label;
+      svg.appendChild(t); labelEls.push(t);
+    });
+    foot.textContent = `Showing ${metric}. Top node: ${labels[top]} · degree ${m.degree[top]}, ` +
+      `betweenness ${m.betw[top].toFixed(1)}, closeness ${m.close[top].toFixed(2)}. ` +
+      `Node size is proportional to the selected metric.`;
+    position();
+  }
+  function position(){
+    edgeEls.forEach(([l,a,b]) => {
+      l.setAttribute("x1",nodes[a].x); l.setAttribute("y1",nodes[a].y);
+      l.setAttribute("x2",nodes[b].x); l.setAttribute("y2",nodes[b].y);
+    });
+    const m = metrics();
+    const metric = document.getElementById("metric").value;
+    const vals = metric==="degree" ? m.degree : metric==="betweenness" ? m.betw : m.close;
+    const max = Math.max(...vals, 1e-9);
+    nodeEls.forEach((c,i) => {
+      const r = 9 + 20*Math.pow(vals[i]/max, 0.6);
+      c.setAttribute("cx",nodes[i].x); c.setAttribute("cy",nodes[i].y);
+      c.setAttribute("r",r);
+      labelEls[i].setAttribute("x",nodes[i].x);
+      labelEls[i].setAttribute("y",nodes[i].y + 3.5);
+    });
+  }
+
+  /* drag */
+  let dragI = -1;
+  function evtPt(e){
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX; pt.y = e.clientY;
+    return pt.matrixTransform(svg.getScreenCTM().inverse());
+  }
+  svg.addEventListener("pointerdown", e => {
+    const c = e.target.closest(".node"); if(!c) return;
+    dragI = +c.dataset.i; c.classList.add("drag");
+    svg.setPointerCapture(e.pointerId); e.preventDefault();
+  });
+  svg.addEventListener("pointermove", e => {
+    if(dragI>=0){
+      const p = evtPt(e);
+      nodes[dragI].x = Math.max(24,Math.min(W-24,p.x));
+      nodes[dragI].y = Math.max(24,Math.min(H-24,p.y));
+      position();
+    } else if(e.target.closest && e.target.closest(".node")){
+      const i = +e.target.closest(".node").dataset.i;
+      const m = metrics();
+      tip.style.display = "block";
+      tip.style.left = (e.clientX+14)+"px";
+      tip.style.top = (e.clientY+14)+"px";
+      tip.innerHTML = `<b>Node ${labels[i]}</b><br>degree ${m.degree[i]} · betweenness ${m.betw[i].toFixed(1)} · closeness ${m.close[i].toFixed(2)}`;
+    } else {
+      tip.style.display = "none";
+    }
+  });
+  const endDrag = () => { dragI = -1; nodeEls.forEach(c=>c.classList.remove("drag")); };
+  svg.addEventListener("pointerup", endDrag);
+  svg.addEventListener("pointercancel", endDrag);
+  svg.addEventListener("pointerleave", () => { tip.style.display="none"; });
+
+  document.getElementById("metric").addEventListener("change", render);
+  document.getElementById("shuffle").addEventListener("click", () => {
+    buildEdges(); layout(160); render();
+  });
+
+  buildEdges(); layout(300); render();
+})();
+</script>
+</body>
+</html>
