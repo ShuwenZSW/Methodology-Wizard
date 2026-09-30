@@ -6,15 +6,16 @@
 <title>ReGovNet Research Maps · A Small, Beautiful Scholarly Community</title>
 <style>
   :root{
-    --bg:#f9f5ec;
-    --ink:#17140f;
-    --muted:#7a756a;
-    --faint:#a8a294;
-    --paper:#fffefb;
-    --qual:#16ac7a;
-    --quant:#316ad3;
-    --mixed:#d5593f;
-    --line:#d8d1c2;
+    --bg:#f6f1e7;
+    --ink:#1a1712;
+    --muted:#6f6a5e;
+    --faint:#a89f8d;
+    --paper:#fffdf7;
+    --qual:#0e7d66;
+    --quant:#3a4fd0;
+    --mixed:#c8501f;
+    --line:#ddd3bf;
+    --gold:#b8892e;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{
@@ -24,7 +25,14 @@
     -webkit-font-smoothing:antialiased;
     min-height:100vh;
   }
-  ::selection{background:#e5ddc8}
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(1100px 700px at 8% -10%, rgba(62,79,208,.08), transparent 62%),
+      radial-gradient(900px 620px at 102% 4%, rgba(200,80,31,.07), transparent 60%),
+      radial-gradient(820px 560px at 50% 112%, rgba(14,125,102,.07), transparent 62%);
+  }
+  ::selection{background:rgba(184,137,46,.25)}
 
   #dots{position:fixed;inset:0;pointer-events:none;z-index:0}
 
@@ -41,15 +49,24 @@
     font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
     display:flex;align-items:center;gap:10px;margin-bottom:14px;
   }
-  .kicker::before{content:"";width:26px;height:1px;background:var(--muted)}
+  .kicker::before{content:"";width:34px;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
   h1{
     font-family:Georgia,"Times New Roman","Songti SC","SimSun",serif;
-    font-size:40px;font-weight:400;letter-spacing:-.015em;line-height:1.12;
+    font-size:46px;font-weight:400;letter-spacing:-.015em;line-height:1.1;
   }
-  h1 em{font-style:normal;color:var(--faint)}
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(120deg,var(--qual),var(--quant) 55%,var(--mixed) 85%,var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1::after{
+    content:"";display:block;width:120px;height:3px;margin-top:18px;border-radius:2px;
+    background:linear-gradient(90deg,var(--gold),var(--mixed) 55%,var(--quant));
+  }
   .tagline{
-    margin-top:12px;font-size:15px;color:var(--muted);line-height:1.6;max-width:640px;
+    margin-top:16px;font-size:15px;color:var(--muted);line-height:1.6;max-width:640px;
   }
+  .tagline b{color:var(--ink);font-weight:600}
   .tagline .zh{color:var(--faint)}
   .byline{margin-top:18px;font-size:12.5px;color:var(--muted);letter-spacing:.02em}
   .byline b{font-weight:600}
@@ -68,10 +85,10 @@
     transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, border-color .25s ease;
   }
   .map-card:hover{transform:translateY(-4px);border-color:var(--ink);
-    box-shadow:0 14px 34px -18px rgba(23,20,15,.35)}
+    box-shadow:0 16px 40px -20px rgba(26,23,18,.32)}
   .map-card .stripe{position:absolute;top:0;left:0;right:0;height:4px}
-  .map-card.m1 .stripe{background:linear-gradient(90deg,var(--qual),var(--quant),var(--mixed))}
-  .map-card.m2 .stripe{background:linear-gradient(90deg,var(--quant),var(--qual),var(--mixed))}
+  .map-card.m1 .stripe{background:linear-gradient(90deg,var(--qual),var(--quant) 55%,var(--mixed))}
+  .map-card.m2 .stripe{background:linear-gradient(90deg,var(--quant),var(--qual) 55%,var(--mixed))}
   .map-card h2{
     font-family:Georgia,"Times New Roman",serif;font-size:20px;font-weight:400;
     letter-spacing:-.01em;line-height:1.25;margin-bottom:8px;
@@ -94,7 +111,8 @@
   .community .lead .zh{color:var(--ink);font-weight:600}
 
   .fb{
-    background:var(--paper);border:1px solid var(--line);border-radius:8px;
+    background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    box-shadow:0 24px 56px -30px rgba(26,23,18,.28);
     padding:28px 28px 24px;
   }
   .fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
@@ -104,10 +122,12 @@
   }
   .fb select,.fb input,.fb textarea{
     width:100%;font-family:inherit;font-size:13px;color:var(--ink);
-    background:var(--bg);border:1px solid var(--line);border-radius:5px;
-    padding:9px 11px;outline:none;transition:border-color .15s ease;
+    background:var(--bg);border:1px solid var(--line);border-radius:6px;
+    padding:9px 11px;outline:none;transition:border-color .15s ease, box-shadow .15s ease;
   }
-  .fb select:focus,.fb input:focus,.fb textarea:focus{border-color:var(--ink)}
+  .fb select:focus,.fb input:focus,.fb textarea:focus{
+    border-color:var(--quant);box-shadow:0 0 0 3px rgba(62,79,208,.14);
+  }
   .fb textarea{min-height:110px;resize:vertical;line-height:1.5}
   .fb .row{margin-bottom:14px}
   .fb .actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
@@ -117,7 +137,8 @@
     border:1px solid var(--ink);background:var(--ink);color:var(--bg);
     transition:all .18s ease;
   }
-  .fb button:hover{transform:translateY(-1px)}
+  .fb button:hover{background:var(--gold);border-color:var(--gold);transform:translateY(-1px);
+    box-shadow:0 10px 22px -12px rgba(184,137,46,.55)}
   .fb .mailto{font-size:12px;color:var(--muted)}
   .fb .mailto a{color:var(--quant);text-decoration:none;border-bottom:1px dashed var(--quant)}
   .fb .mailto a:hover{color:var(--ink);border-color:var(--ink)}
@@ -250,7 +271,7 @@
   const s = 26, W = Math.ceil(innerWidth/s)+2, H = Math.ceil(innerHeight/s)+2;
   let html = "";
   for(let i=0;i<W;i++)for(let j=0;j<H;j++)
-    html += `<circle cx="${i*s}" cy="${j*s}" r="0.8" fill="#17140f" opacity="0.045"/>`;
+    html += `<circle cx="${i*s}" cy="${j*s}" r="0.8" fill="#1a1712" opacity="0.045"/>`;
   d.innerHTML = `<g>${html}</g>`;
   d.setAttribute("width",innerWidth); d.setAttribute("height",innerHeight);
 })();

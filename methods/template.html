@@ -6,15 +6,16 @@
 <title>Methodology List in Social Sciences · ReGovNet Research Group</title>
 <style>
   :root{
-    --bg:#f9f5ec;
-    --ink:#17140f;
-    --muted:#7a756a;
-    --faint:#a8a294;
-    --paper:#fffefb;
-    --qual:#16ac7a;
-    --quant:#316ad3;
-    --mixed:#d5593f;
-    --line:#d8d1c2;
+    --bg:#f6f1e7;
+    --ink:#1a1712;
+    --muted:#6f6a5e;
+    --faint:#a89f8d;
+    --paper:#fffdf7;
+    --qual:#0e7d66;
+    --quant:#3a4fd0;
+    --mixed:#c8501f;
+    --line:#ddd3bf;
+    --gold:#b8892e;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%;overflow:hidden}
@@ -24,7 +25,14 @@
     color:var(--ink);
     -webkit-font-smoothing:antialiased;
   }
-  ::selection{background:#e5ddc8}
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(900px 620px at 12% -8%, rgba(14,125,102,.07), transparent 60%),
+      radial-gradient(820px 560px at 95% 6%, rgba(62,79,208,.06), transparent 60%),
+      radial-gradient(760px 520px at 55% 112%, rgba(200,80,31,.06), transparent 60%);
+  }
+  ::selection{background:rgba(184,137,46,.25)}
 
   /* ---- stage entrance ---- */
   #stage{
@@ -54,7 +62,11 @@
     font-family:Georgia,"Times New Roman","Songti SC","SimSun",serif;
     font-size:30px;font-weight:400;letter-spacing:-.01em;line-height:1.15;
   }
-  header h1 em{font-style:normal;color:var(--faint)}
+  header h1 em{
+    font-style:normal;
+    background:linear-gradient(120deg,var(--qual),var(--quant) 60%,var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
   header .sub{
     margin-top:8px;font-size:12.5px;color:var(--muted);letter-spacing:.02em;
   }
@@ -82,8 +94,12 @@
     border:1px solid var(--line);background:var(--paper);color:var(--ink);
     transition:all .18s ease;
   }
-  #controls button:hover{border-color:var(--ink);transform:translateY(-1px)}
+  #controls button:hover{
+    border-color:var(--ink);transform:translateY(-1px);
+    box-shadow:0 8px 18px -10px rgba(26,23,18,.35);
+  }
   #controls button.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  #controls button.primary:hover{background:var(--gold);border-color:var(--gold)}
 
   /* ---- legend ---- */
   #legend{
@@ -185,7 +201,8 @@
 <style>
   #panel{
     position:fixed;top:50%;right:40px;width:352px;max-height:80vh;overflow-y:auto;
-    background:var(--paper);border:1px solid var(--line);border-radius:7px;
+    background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    box-shadow:0 28px 64px -26px rgba(26,23,18,.30);
     padding:22px 24px 20px;z-index:20;
     transform:translate(calc(100% + 80px),-50%);
     transition:transform .55s cubic-bezier(.16,1,.3,1);
@@ -202,7 +219,7 @@
     font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
     color:#fff;padding:3px 10px;border-radius:999px;
   }
-  .p-star{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--ink);border:1px solid var(--ink);padding:2px 8px;border-radius:999px}
+  .p-star{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--gold);border:1px solid var(--gold);padding:2px 8px;border-radius:999px}
   #panel h2{font-size:17px;font-weight:700;letter-spacing:-.01em;line-height:1.25;margin-bottom:3px}
   .p-cat{font-size:11px;color:var(--muted);letter-spacing:.04em;margin-bottom:12px}
   .p-use{font-size:13px;line-height:1.5;margin-bottom:14px}
@@ -240,7 +257,7 @@ const DATA = __DATA_JSON__;
 </script>
 <script>
 /* ================= ENGINE ================= */
-const COLORS = {qual:"#16ac7a", quant:"#316ad3", mixed:"#d5593f", root:"#17140f"};
+const COLORS = {qual:"#0e7d66", quant:"#3a4fd0", mixed:"#c8501f", root:"#1a1712"};
 const SVGNS = "http://www.w3.org/2000/svg";
 const EASE = t => 1 - Math.pow(1 - t, 4);           // outQuart
 const DUR = 800;
@@ -330,7 +347,7 @@ function makeNodeEl(n){
   rect.setAttribute("rx", h/2);
   if(n.depth===0){ rect.setAttribute("fill",COLORS.root); }
   else if(n.depth===1){ rect.setAttribute("fill",c); }
-  else { rect.setAttribute("fill","#fffefb"); rect.setAttribute("stroke",n.depth===2?c:"#ddd5c4"); rect.setAttribute("stroke-width",n.depth===2?1.4:1); }
+  else { rect.setAttribute("fill","#fffdf7"); rect.setAttribute("stroke",n.depth===2?c:"#ddd3bf"); rect.setAttribute("stroke-width",n.depth===2?1.4:1); }
   inner.appendChild(rect);
 
   if(n.depth>=2){
@@ -345,7 +362,7 @@ function makeNodeEl(n){
   t.setAttribute("y", n.depth===1?5 : 4.5);
   t.setAttribute("font-size", n.depth===1?15:13);
   t.setAttribute("font-weight", n.depth<=2? (n.depth===1?700:600) : 400);
-  t.setAttribute("fill", n.depth<=1 ? "#fffefb" : "#17140f");
+  t.setAttribute("fill", n.depth<=1 ? "#fffdf7" : "#1a1712");
   t.setAttribute("letter-spacing", n.depth===1?".06em":"-0.01em");
   t.textContent = label;
   inner.appendChild(t);
@@ -359,12 +376,12 @@ function makeNodeEl(n){
     br.setAttribute("x", w+8); br.setAttribute("y",-10);
     br.setAttribute("width",bw); br.setAttribute("height",20);
     br.setAttribute("rx",10);
-    br.setAttribute("fill", n.depth===1?"#17140f":c);
+    br.setAttribute("fill", n.depth===1?"#1a1712":c);
     const bt = document.createElementNS(SVGNS,"text");
     bt.setAttribute("x", w+8+bw/2); bt.setAttribute("y",4);
     bt.setAttribute("text-anchor","middle");
     bt.setAttribute("font-size","10.5px");
-    bt.setAttribute("fill","#fffefb");
+    bt.setAttribute("fill","#fffdf7");
     bt.textContent = "+" + n.leafCount;
     bg.appendChild(br); bg.appendChild(bt);
     inner.appendChild(bg);
@@ -557,7 +574,7 @@ document.getElementById("zout").onclick = ()=>{view.k=Math.max(.15,view.k/1.3);a
   const s = 26, W=Math.ceil(innerWidth/s)+2, H=Math.ceil(innerHeight/s)+2;
   let html = "";
   for(let i=0;i<W;i++)for(let j=0;j<H;j++)
-    html += `<circle cx="${i*s}" cy="${j*s}" r="0.8" fill="#17140f" opacity="0.045"/>`;
+    html += `<circle cx="${i*s}" cy="${j*s}" r="0.8" fill="#1a1712" opacity="0.045"/>`;
   d.innerHTML = `<g>${html}</g>`;
   d.setAttribute("width",innerWidth); d.setAttribute("height",innerHeight);
 })();
