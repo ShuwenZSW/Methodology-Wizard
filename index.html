@@ -111,6 +111,8 @@
   }
   .map-card .go::after{content:"→";transition:transform .2s ease}
   .map-card:hover .go::after{transform:translateX(4px)}
+  .team-strip{margin:-40px 0 58px}
+  .team-strip .stripe{background:linear-gradient(90deg,var(--gold),var(--qual) 55%,var(--quant))}
 
   /* ---- community ---- */
   section.community h2{
@@ -218,7 +220,17 @@
     </a>
   </div>
 
-  <section class="community">
+  <a class="map-card team-strip" href="team/index.html">
+    <span class="stripe"></span>
+    <h2>The Cartographers</h2>
+    <div class="cnt">Meet the ReGovNet Research Group</div>
+    <p>A small group of Public Administration researchers — regional governance, governance networks,
+       interlocal management — with methodological depth in causal inference and social network analysis.
+       Led by Shuwen Zhang.</p>
+    <div class="go">Meet the team</div>
+  </a>
+
+  <section class="community" id="feedback">
     <h2>Community Feedback</h2>
     <div class="lead">
       These maps are not finished products — they are living references. If you spot an error,
@@ -270,7 +282,7 @@
 
   <footer>
     <span>© 2026 ReGovNet Research Group · Tiny Atlas, an open academic commons</span>
-    <span><a href="https://github.com/ShuwenZSW/Methodology-Wizard">Repository</a> · <a href="mailto:shuwenzhang@um.edu.mo">Contact</a></span>
+    <span><a href="team/index.html">Team</a> · <a href="https://github.com/ShuwenZSW/Methodology-Wizard">Repository</a> · <a href="mailto:shuwenzhang@um.edu.mo">Contact</a></span>
   </footer>
 
 </div>

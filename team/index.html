@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Team · Tiny Atlas · ReGovNet Research Group</title>
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<meta name="description" content="ReGovNet Research Group — a small team of Public Administration researchers led by Shuwen Zhang, working on regional governance, governance networks, and interlocal management, with methodological depth in causal inference and social network analysis.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Team · Tiny Atlas">
+<meta property="og:description" content="A small group of Public Administration researchers — regional governance, governance networks, interlocal management — with methodological depth in causal inference and social network analysis. Led by Shuwen Zhang.">
+<meta property="og:image" content="https://shuwenzsw.github.io/Methodology-Wizard/assets/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    --bg:#f6f1e7;
+    --ink:#1a1712;
+    --muted:#6f6a5e;
+    --faint:#a89f8d;
+    --paper:#fffdf7;
+    --qual:#0e7d66;
+    --quant:#3a4fd0;
+    --mixed:#c8501f;
+    --line:#ddd3bf;
+    --gold:#b8892e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(1100px 700px at 8% -10%, rgba(62,79,208,.08), transparent 62%),
+      radial-gradient(900px 620px at 102% 4%, rgba(200,80,31,.07), transparent 60%),
+      radial-gradient(820px 560px at 50% 112%, rgba(14,125,102,.07), transparent 62%);
+  }
+  ::selection{background:rgba(184,137,46,.25)}
+
+  #dots{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+  .wrap{
+    position:relative;z-index:1;max-width:900px;margin:0 auto;
+    padding:72px 32px 90px;
+    animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) .1s backwards;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---- header ---- */
+  header{margin-bottom:44px}
+  .kicker{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .kicker::before{content:"";width:34px;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+  h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:52px;font-weight:400;letter-spacing:-.02em;line-height:1.1;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(120deg,var(--qual),var(--quant) 55%,var(--mixed) 85%,var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1::after{
+    content:"";display:block;width:120px;height:3px;margin-top:18px;border-radius:2px;
+    background:linear-gradient(90deg,var(--gold),var(--mixed) 55%,var(--quant));
+  }
+  .tagline{
+    margin-top:16px;font-size:15px;color:var(--muted);line-height:1.6;max-width:660px;
+  }
+  .tagline b{color:var(--ink);font-weight:600}
+
+  /* ---- section headings ---- */
+  section{margin-bottom:46px}
+  section h2{
+    font-family:Georgia,"Times New Roman",serif;font-size:22px;font-weight:400;
+    margin-bottom:6px;
+  }
+  .lead{font-size:13.5px;line-height:1.65;color:var(--muted);max-width:660px;margin-bottom:22px}
+
+  /* ---- research area cards ---- */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .cards.two{grid-template-columns:repeat(2,1fr);max-width:640px}
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;
+    padding:22px 20px 20px;position:relative;overflow:hidden;
+    transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .card:hover{transform:translateY(-4px);border-color:var(--ink);
+    box-shadow:0 16px 40px -20px rgba(26,23,18,.32)}
+  .card .stripe{position:absolute;top:0;left:0;right:0;height:4px}
+  .card.c1 .stripe{background:linear-gradient(90deg,var(--qual),var(--quant))}
+  .card.c2 .stripe{background:linear-gradient(90deg,var(--quant),var(--mixed))}
+  .card.c3 .stripe{background:linear-gradient(90deg,var(--mixed),var(--gold))}
+  .card h3{
+    font-family:Georgia,"Times New Roman",serif;font-size:17px;font-weight:400;
+    letter-spacing:-.01em;line-height:1.3;margin-bottom:8px;
+  }
+  .card p{font-size:12.5px;line-height:1.55;color:var(--muted)}
+  .card .tag{
+    display:inline-block;margin-top:12px;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--faint);
+  }
+
+  /* ---- principal ---- */
+  .principal{
+    display:flex;gap:24px;align-items:flex-start;
+    background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    box-shadow:0 24px 56px -30px rgba(26,23,18,.28);
+    padding:26px 28px;
+  }
+  .avatar{
+    flex:none;width:84px;height:84px;border-radius:50%;
+    background:linear-gradient(135deg,var(--qual),var(--quant) 60%,var(--mixed));
+    display:flex;align-items:center;justify-content:center;
+    font-family:Georgia,serif;font-size:32px;color:#fffdf7;
+    border:3px solid var(--bg);box-shadow:0 0 0 1px var(--line);
+  }
+  .principal .info h3{
+    font-family:Georgia,"Times New Roman",serif;font-size:20px;font-weight:400;
+    margin-bottom:2px;
+  }
+  .principal .role{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .principal .info p{font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:8px}
+  .principal .links{font-size:12.5px}
+  .principal .links a{color:var(--quant);text-decoration:none;border-bottom:1px dashed var(--quant)}
+  .principal .links a:hover{color:var(--ink);border-color:var(--ink)}
+  .principal .links span{color:var(--faint);margin:0 8px}
+
+  /* ---- community note ---- */
+  .join{
+    border:1px dashed var(--line);border-radius:10px;padding:20px 24px;
+    font-size:13px;line-height:1.6;color:var(--muted);background:rgba(255,253,247,.6);
+  }
+  .join b{color:var(--ink);font-weight:600}
+  .join a{color:var(--quant);text-decoration:none;border-bottom:1px dashed var(--quant)}
+  .join a:hover{color:var(--ink);border-color:var(--ink)}
+
+  footer{
+    margin-top:64px;padding-top:18px;border-top:1px dashed var(--line);
+    font-size:11px;color:var(--faint);letter-spacing:.04em;
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  }
+  footer a{color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line)}
+  footer a:hover{color:var(--ink)}
+
+  @media (max-width:760px){
+    .wrap{padding:48px 20px 60px}
+    h1{font-size:36px}
+    .cards,.cards.two{grid-template-columns:1fr}
+    .principal{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+<svg id="dots"></svg>
+
+<div class="wrap">
+
+  <header>
+    <div class="kicker"><a href="../index.html" style="color:inherit;text-decoration:none">← Tiny Atlas</a> · ReGovNet Research Group</div>
+    <h1>The <em>Cartographers</em></h1>
+    <div class="tagline">
+      The people behind the maps. ReGovNet is a small group of researchers from
+      <b>Public Administration</b>, led by <b>Shuwen Zhang</b> — studying how regions and
+      local governments govern together, and building the methodological tools to study it well.
+    </div>
+  </header>
+
+  <section>
+    <h2>What we study</h2>
+    <div class="lead">
+      Our substantive work sits where public organizations meet across boundaries —
+      the regional and intergovernmental spaces where single jurisdictions no longer suffice.
+    </div>
+    <div class="cards">
+      <div class="card c1">
+        <span class="stripe"></span>
+        <h3>Regional Governance</h3>
+        <p>How metropolitan regions, city-regions, and cross-border areas coordinate policy
+           when no single authority is in charge — institutions, leadership, and performance.</p>
+        <span class="tag">Substantive focus</span>
+      </div>
+      <div class="card c2">
+        <span class="stripe"></span>
+        <h3>Governance Networks</h3>
+        <p>Public agencies, nonprofits, and firms woven into networks of collective action —
+           how structure shapes collaboration, trust, and outcomes.</p>
+        <span class="tag">Substantive focus</span>
+      </div>
+      <div class="card c3">
+        <span class="stripe"></span>
+        <h3>Interlocal Management</h3>
+        <p>The everyday machinery of cooperation between local governments — service agreements,
+           shared delivery, contracting, and the manager's craft of making collaboration work.</p>
+        <span class="tag">Substantive focus</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>How we study it</h2>
+    <div class="lead">
+      The group works as its own methodology shop: every argument we make is expected to
+      survive a serious design. These are our home tools.
+    </div>
+    <div class="cards two">
+      <div class="card c1">
+        <span class="stripe"></span>
+        <h3>Causal Inference</h3>
+        <p>From quasi-experimental designs — difference-in-differences, regression discontinuity,
+           synthetic control — to matching and modern causal machine learning: identifying
+           what actually works, not just what correlates.</p>
+        <span class="tag">Methodological strength</span>
+      </div>
+      <div class="card c2">
+        <span class="stripe"></span>
+        <h3>Social Network Analysis</h3>
+        <p>Exponential random graph models, network autocorrelation, and visualization —
+           treating the web of relationships itself as the unit of analysis.</p>
+        <span class="tag">Methodological strength</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Principal</h2>
+    <div class="lead">Tiny Atlas is maintained by the group's lead.</div>
+    <div class="principal">
+      <div class="avatar">SZ</div>
+      <div class="info">
+        <h3>Shuwen Zhang, Ph.D.</h3>
+        <div class="role">Lead · ReGovNet Research Group</div>
+        <p>Public Administration scholar and methodologist. Researches regional governance,
+           governance networks, and interlocal management, with methodological specialization
+           in causal inference and social network analysis. Leads the Tiny Atlas project —
+           the group's open, continuously corrected maps of methodology and theory.</p>
+        <div class="links">
+          <a href="mailto:shuwenzhang@um.edu.mo">shuwenzhang@um.edu.mo</a>
+          <span>·</span>
+          <a href="https://github.com/ShuwenZSW">GitHub</a>
+          <span>·</span>
+          <a href="https://shuwenzsw.github.io/Methodology-Wizard/">Tiny Atlas</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="join">
+      <b>Work with us.</b> We treat every reader as a potential co-author of these maps —
+      if you spot an error or want to propose a collaboration, use the
+      <a href="../index.html#feedback">feedback box</a> on the home page or write to us directly.
+      Good corrections are credited in the repository history.
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 ReGovNet Research Group · Tiny Atlas, an open academic commons</span>
+    <span><a href="../index.html">Atlas Home</a> · <a href="https://github.com/ShuwenZSW/Methodology-Wizard">Repository</a> · <a href="mailto:shuwenzhang@um.edu.mo">Contact</a></span>
+  </footer>
+
+</div>
+
+<script>
+/* ---- dotted paper texture ---- */
+(function(){
+  const d = document.getElementById("dots");
+  const s = 26, W = Math.ceil(innerWidth/s)+2, H = Math.ceil(innerHeight/s)+2;
+  let html = "";
+  for(let i=0;i<W;i++)for(let j=0;j<H;j++)
+    html += `<circle cx="${i*s}" cy="${j*s}" r="0.8" fill="#1a1712" opacity="0.045"/>`;
+  d.innerHTML = `<g>${html}</g>`;
+  d.setAttribute("width",innerWidth); d.setAttribute("height",innerHeight);
+})();
+</script>
+</body>
+</html>
