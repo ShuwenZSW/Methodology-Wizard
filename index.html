@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,7 +67,6 @@
     margin-top:16px;font-size:15px;color:var(--muted);line-height:1.6;max-width:640px;
   }
   .tagline b{color:var(--ink);font-weight:600}
-  .tagline .zh{color:var(--faint)}
   .byline{margin-top:18px;font-size:12.5px;color:var(--muted);letter-spacing:.02em}
   .byline b{font-weight:600}
   .byline a{color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line)}
@@ -108,7 +107,6 @@
     margin-bottom:8px;
   }
   .community .lead{font-size:13.5px;line-height:1.65;color:var(--muted);max-width:640px;margin-bottom:26px}
-  .community .lead .zh{color:var(--ink);font-weight:600}
 
   .fb{
     background:var(--paper);border:1px solid var(--line);border-radius:10px;
@@ -178,8 +176,7 @@
     <h1>Two Maps,<br>One Community <em>of Scholars</em></h1>
     <div class="tagline">
       Curated, open, and continuously corrected maps of <b>methodology</b> and of <b>Public Administration
-      theory</b> — maintained by ReGovNet as a small, beautiful scholarly community.
-      <span class="zh">小而美的学术社区 · 由每一位读者共同打磨</span>
+      theory</b> — maintained by ReGovNet as a small, beautiful scholarly community, polished by every reader.
     </div>
     <div class="byline">
       <b>Shuwen Zhang, Ph.D.</b> · shuwenzhang@um.edu.mo · ReGovNet Research Group ·
@@ -210,8 +207,8 @@
   <section class="community">
     <h2>Community Feedback</h2>
     <div class="lead">
-      <span class="zh">这两张地图不是成品，而是活的参考文献。</span>
-      They are living references. If you spot an error, would like to suggest an addition or revision,
+      These maps are not finished products — they are living references. If you spot an error,
+      would like to suggest an addition or revision,
       or believe an entry should be removed, tell us below — every message is reviewed by the group,
       and accepted changes are credited in the repository history.
     </div>
@@ -219,33 +216,33 @@
     <form class="fb" id="fbForm">
       <div class="fb-grid">
         <div>
-          <label for="fbType">Feedback type 反馈类型</label>
+          <label for="fbType">Feedback type</label>
           <select id="fbType">
-            <option value="Error correction">Error correction 错误指正</option>
-            <option value="Addition">Addition 内容补充</option>
-            <option value="Deletion request">Deletion request 建议删除</option>
-            <option value="General suggestion">General suggestion 其他建议</option>
+            <option value="Error correction">Error correction</option>
+            <option value="Addition">Addition</option>
+            <option value="Deletion request">Deletion request</option>
+            <option value="General suggestion">General suggestion</option>
           </select>
         </div>
         <div>
-          <label for="fbMap">Which map 相关地图</label>
+          <label for="fbMap">Which map</label>
           <select id="fbMap">
-            <option value="Methodology Map">Methodology Map 方法地图</option>
-            <option value="Public Administration Map">Public Administration Map 理论地图</option>
-            <option value="Home page">Home page 主页面</option>
+            <option value="Methodology Map">Methodology Map</option>
+            <option value="Public Administration Map">Public Administration Map</option>
+            <option value="Home page">Home page</option>
           </select>
         </div>
       </div>
       <div class="row">
-        <label for="fbNode">Node / entry involved 相关条目（可选）</label>
+        <label for="fbNode">Node / entry involved (optional)</label>
         <input id="fbNode" type="text" placeholder="e.g. Multiple Streams Framework, or Process Tracing">
       </div>
       <div class="row">
-        <label for="fbDetails">Details 详细说明</label>
+        <label for="fbDetails">Details</label>
         <textarea id="fbDetails" placeholder="What is wrong, what should be added or changed, and why — sources welcome."></textarea>
       </div>
       <div class="row">
-        <label for="fbWho">Your name / affiliation（可选，便于致谢）</label>
+        <label for="fbWho">Your name / affiliation (optional, for credit)</label>
         <input id="fbWho" type="text" placeholder="Anonymous is fine too">
       </div>
       <div class="actions">
