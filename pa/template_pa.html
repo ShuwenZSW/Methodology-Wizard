@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PA Theories &amp; Research Topics · ReGovNet Research Group</title>
+<title>Public Administration Theories &amp; Research Topics · ReGovNet Research Group</title>
 <style>
   :root{
     --bg:#f9f5ec;
@@ -139,10 +139,10 @@
 
 <header>
   <div class="kicker">Theory Map · Research Agenda · 2026</div>
-  <h1>PA Theories <em>&amp;</em> Research Topics</h1>
+  <h1>Public Administration <em>Theories &amp;</em> Research Topics</h1>
   <div class="sub"><b>Shuwen Zhang, Ph.D.</b> · shuwenzhang@um.edu.mo · ReGovNet Research Group</div>
   <div class="sub" style="margin-top:4px;color:var(--faint)">3 schools · 9 branches · 36 theories — click a node for its canon</div>
-  <div class="sub" style="margin-top:4px"><a class="sister" href="../index.html">← Companion map · Social Science Methodology</a></div>
+  <div class="sub" style="margin-top:4px"><a class="sister" href="../index.html">← Home</a>&nbsp;&nbsp;<a class="sister" href="../methods/index.html">→ Social Science Methodology Map</a></div>
 </header>
 
 <div id="controls">
@@ -155,7 +155,7 @@
   <div class="row"><span class="dot" style="background:var(--quant)"></span><b>ORG &amp; MANAGEMENT</b><span class="cnt" id="cntQual"></span></div>
   <div class="row"><span class="dot" style="background:var(--qual)"></span><b>INSTITUTIONS &amp; POLICY</b><span class="cnt" id="cntQuant"></span></div>
   <div class="row"><span class="dot" style="background:var(--mixed)"></span><b>DEMOCRACY &amp; VALUES</b><span class="cnt" id="cntMixed"></span></div>
-  <div class="hint">Drag to pan · Scroll to zoom · Click a theory for its canon</div>
+  <div class="hint">Drag to pan · Scroll to zoom · Click a theory — method names inside cards link to the Methodology Map</div>
 </div>
 
 <div id="zoom">
@@ -240,6 +240,11 @@
     font-size:12px;line-height:1.5;background:#f4efe2;border-radius:6px;
     padding:10px 12px;color:var(--ink);margin-bottom:12px;
   }
+  .p-apply a{
+    color:var(--quant);text-decoration:none;font-weight:600;
+    border-bottom:1px dashed var(--quant);transition:color .15s ease;
+  }
+  .p-apply a:hover{color:var(--ink);border-color:var(--ink)}
   .node.leaf{cursor:pointer}
   .node.selected .inner rect{stroke:var(--ink) !important;stroke-width:2 !important}
   @media (max-width:820px){
@@ -588,6 +593,43 @@ addEventListener("resize", ()=>fitView(false));
 /* ================= THEORY CANON ================= */
 const INFO = __PROFILES_JSON__;
 
+/* ================= METHOD CROSS-LINKS ================= */
+const ALIASES = __ALIASES_JSON__;
+const NEEDLES = [
+  ...__METHODS_JSON__.map(s => s.replace(/\s*★\s*$/,"")).map(m => ({t:m, m})),
+  ...Object.entries(ALIASES).map(([t,m]) => ({t,m})),
+].sort((a,b) => b.t.length - a.t.length);
+function escapeHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function linkify(text){
+  const lower = text.toLowerCase();
+  const occupied = new Int8Array(text.length);
+  const spans = [];
+  for(let i=0;i<NEEDLES.length;i++){
+    const needle = NEEDLES[i].t.toLowerCase();
+    let from = 0;
+    while(from <= lower.length - needle.length){
+      const p = lower.indexOf(needle, from);
+      if(p < 0) break;
+      let free = true;
+      for(let k=p;k<p+needle.length;k++){ if(occupied[k]){ free=false; break; } }
+      if(free){
+        for(let k=p;k<p+needle.length;k++) occupied[k]=1;
+        spans.push([p, p+needle.length, i]);
+      }
+      from = p+1;
+    }
+  }
+  spans.sort((a,b)=>a[0]-b[0]);
+  let out = "", last = 0;
+  for(const [s,e,i] of spans){
+    out += escapeHtml(text.slice(last,s))
+          + `<a href="../methods/index.html?m=${encodeURIComponent(NEEDLES[i].m)}">`
+          + escapeHtml(text.slice(s,e)) + `</a>`;
+    last = e;
+  }
+  return out + escapeHtml(text.slice(last));
+}
+
 /* ================= PANEL LOGIC ================= */
 let selectedNode = null;
 function fillList(id, items){
@@ -616,7 +658,7 @@ function showMethodPanel(n){
   document.getElementById("pFounders").textContent = d.founders;
   fillList("pClassics", d.classics);
   fillList("pFrameworks", d.frameworks);
-  document.getElementById("pApply").textContent = d.apply;
+  document.getElementById("pApply").innerHTML = linkify(d.apply);
   document.getElementById("panel").classList.add("open");
 }
 function hideMethodPanel(){

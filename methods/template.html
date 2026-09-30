@@ -135,14 +135,14 @@
 <svg id="dots"></svg>
 <svg id="map"><g id="world"><g id="links"></g><g id="nodes"></g></g></svg>
 
-<img id="logo" src="logo.png" alt="ReGovNet Research Group">
+<img id="logo" src="../logo.png" alt="ReGovNet Research Group">
 
 <header>
   <div class="kicker">Internal Team Audit · Visual Hierarchy · 2026</div>
   <h1>Methodology List <em>in</em> Social Sciences</h1>
   <div class="sub"><b>Shuwen Zhang, Ph.D.</b> · shuwenzhang@um.edu.mo · ReGovNet Research Group</div>
   <div class="sub" style="margin-top:4px;color:var(--faint)">3 paradigms · 16 categories · 72 methods — click nodes to explore</div>
-  <div class="sub" style="margin-top:4px"><a class="sister" href="pa/index.html">→ Companion map · PA Theories &amp; Research Topics</a></div>
+  <div class="sub" style="margin-top:4px"><a class="sister" href="../index.html">← Home</a>&nbsp;&nbsp;<a class="sister" href="../pa/index.html">→ Public Administration Theories &amp; Research Topics</a></div>
 </header>
 
 <div id="controls">
@@ -567,6 +567,31 @@ layout();
 fitView(false);
 refresh();            // staggered entrance: nodes grow out from the root
 addEventListener("resize", ()=>fitView(false));
+
+/* ---- deep link: ?m=<method name> opens that method's card ---- */
+(function(){
+  const q = new URLSearchParams(location.search).get("m");
+  if(!q) return;
+  const findByName = (n, name) => {
+    if(n.name.replace(/\s*★\s*$/,"") === name) return n;
+    for(const c of n.children){ const r = findByName(c, name); if(r) return r; }
+    return null;
+  };
+  const target = findByName(root, q);
+  if(!target) return;
+  let cur = target.parent;
+  while(cur){ cur.collapsed = false; cur = cur.parent; }
+  root.children.forEach(t => t.collapsed = false);
+  refresh();
+  setTimeout(() => {
+    const k = Math.max(0.8, Math.min(1.15, view.k));
+    view.k = k;
+    view.x = innerWidth * 0.55 - (target.x + target.w * 0.5) * k;
+    view.y = innerHeight * 0.5 - target.y * k;
+    applyView(true);
+    showMethodPanel(target);
+  }, 1500);
+})();
 </script>
 
 <script>

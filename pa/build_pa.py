@@ -24,10 +24,38 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
-from data_pa import TREE, PROFILES
-
 HERE = Path(__file__).parent
+
+# Short aliases: text mentions in "Applying It" that should link to a
+# canonical method card (plurals, common abbreviations, spelling variants).
+METHOD_ALIASES = {
+    "fsQCA": "QCA (csQCA / fsQCA)",
+    "csQCA": "QCA (csQCA / fsQCA)",
+    "QCA": "QCA (csQCA / fsQCA)",
+    "structural equation model": "Structural Equation Modelling",
+    "field experiments": "Field Experiments & RCTs",
+    "lab-in-field": "Field Experiments & RCTs",
+    "survey experiments": "Survey Experiments & Conjoint",
+    "online experiments": "Survey Experiments & Conjoint",
+    "vignette": "Survey Experiments & Conjoint",
+    "lab experiments": "Lab Experiments",
+    "RCTs": "Randomized Controlled Trials",
+    "event history analysis": "Survival & Event History Analysis",
+    "agent-based": "Agent-Based Modeling",
+    "synthetic control": "Synthetic Control Method",
+    "deliberative poll": "Citizen Juries & Deliberative Polling",
+    "panel econometrics": "Panel & Fixed-Effects Models",
+    "elite interviews": "Expert & Elite Interviews",
+    "ethnography": "Ethnography & Participant Observation",
+    "surveys": "Survey Design & Sampling",
+    "survey": "Survey Design & Sampling",
+    "meta-analysis": "Systematic Review & Meta-Analysis",
+    "multilevel": "Multilevel / Hierarchical Models",
+}
+sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent / "methods"))   # the sister site's method tree
+from data_pa import TREE, PROFILES
+from data_methods import TREE as METHOD_TREE
 
 
 def iter_leaves(node):
@@ -78,9 +106,18 @@ def main():
     html = html.replace("__PROFILES_JSON__",
                         json.dumps(PROFILES, ensure_ascii=False))
 
-    if "__DATA_JSON__" in html or "__PROFILES_JSON__" in html:
-        print("[error] placeholders not fully replaced — check template_pa.html")
-        sys.exit(1)
+    # inject the sister site's method names so "Applying It" texts can be
+    # auto-linked to the corresponding method cards
+    method_names = [n["name"] for n in iter_leaves(METHOD_TREE)]
+    html = html.replace("__METHODS_JSON__",
+                        json.dumps(method_names, ensure_ascii=False))
+    html = html.replace("__ALIASES_JSON__",
+                        json.dumps(METHOD_ALIASES, ensure_ascii=False))
+
+    for ph in ("__DATA_JSON__", "__PROFILES_JSON__", "__METHODS_JSON__", "__ALIASES_JSON__"):
+        if ph in html:
+            print(f"[error] placeholder not fully replaced: {ph} — check template_pa.html")
+            sys.exit(1)
 
     out = HERE / "index.html"
     out.write_text(html, encoding="utf-8")
