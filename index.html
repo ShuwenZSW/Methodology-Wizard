@@ -119,6 +119,7 @@
   .block-label::after{content:"";flex:1;height:1px;background:var(--line)}
   .map-card.m-team .stripe{background:linear-gradient(90deg,var(--qual),var(--quant) 55%,var(--mixed))}
   .map-card.m-guide .stripe{background:linear-gradient(90deg,var(--gold),var(--qual) 55%,var(--quant))}
+  .map-card.m-guide2 .stripe{background:linear-gradient(90deg,var(--mixed),var(--gold) 55%,var(--qual))}
 
   /* ---- community ---- */
   section.community h2{
@@ -231,14 +232,24 @@
 
   <section class="block">
     <div class="block-label">Field Guides</div>
-    <a class="map-card m-guide" href="guides/sna/index.html">
-      <span class="stripe"></span>
-      <h2>Social Network Analysis</h2>
-      <div class="cnt">Field Guide No. 1 · A Field Guide to Networks</div>
-      <p>From centrality to ERGM — concepts, measures, and the model path, taught the way the group's
-         methodologists teach it, with an interactive playground.</p>
-      <div class="go">Read the guide</div>
-    </a>
+    <div class="maps" style="margin-bottom:0">
+      <a class="map-card m-guide" href="guides/sna/index.html">
+        <span class="stripe"></span>
+        <h2>Social Network Analysis</h2>
+        <div class="cnt">Field Guide No. 1 · A Field Guide to Networks</div>
+        <p>From centrality to ERGM — concepts, measures, and the model path, with an
+           interactive network playground.</p>
+        <div class="go">Read the guide</div>
+      </a>
+      <a class="map-card m-guide2" href="guides/causal-inference/index.html">
+        <span class="stripe"></span>
+        <h2>Causal Inference</h2>
+        <div class="cnt">Field Guide No. 2 · A Field Guide to Causes</div>
+        <p>From potential outcomes to DAGs, from natural experiments to causal machine
+           learning — with an interactive confounding laboratory.</p>
+        <div class="go">Read the guide</div>
+      </a>
+    </div>
   </section>
 
   <section class="block">

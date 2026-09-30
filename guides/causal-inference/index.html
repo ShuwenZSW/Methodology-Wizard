@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Field Guide to Causes · Tiny Atlas · ReGovNet Research Group</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<meta name="description" content="Field Guide No. 2 — Causal Inference: foundations from potential outcomes to DAGs, six identification designs, the model path from backdoor adjustment to causal machine learning, an interactive confounding laboratory, software, datasets, and the canon.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A Field Guide to Causes · Tiny Atlas">
+<meta property="og:description" content="Causal inference, guided: potential outcomes, identification designs from RCT to synthetic control, the model path to causal machine learning — with an interactive confounding laboratory. Field Guide No. 2 by the ReGovNet Research Group.">
+<meta property="og:image" content="https://shuwenzsw.github.io/Methodology-Wizard/assets/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    --bg:#f6f1e7;
+    --ink:#1a1712;
+    --muted:#6f6a5e;
+    --faint:#a89f8d;
+    --paper:#fffdf7;
+    --qual:#0e7d66;
+    --quant:#3a4fd0;
+    --mixed:#c8501f;
+    --line:#ddd3bf;
+    --gold:#b8892e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(1100px 700px at 8% -10%, rgba(62,79,208,.08), transparent 62%),
+      radial-gradient(900px 620px at 102% 4%, rgba(200,80,31,.07), transparent 60%),
+      radial-gradient(820px 560px at 50% 112%, rgba(14,125,102,.07), transparent 62%);
+  }
+  ::selection{background:rgba(184,137,46,.25)}
+
+  #dots{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+  .wrap{
+    position:relative;z-index:1;max-width:900px;margin:0 auto;
+    padding:72px 32px 90px;
+    animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) .1s backwards;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---- header ---- */
+  header{margin-bottom:44px}
+  .kicker{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .kicker::before{content:"";width:34px;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+  .kicker a{color:inherit;text-decoration:none}
+  .kicker a:hover{color:var(--ink)}
+  .home-btn{
+    display:inline-flex;align-items:center;gap:7px;margin-bottom:22px;
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+    padding:9px 18px;border-radius:999px;text-decoration:none;
+    border:1px solid var(--ink);background:var(--ink);color:var(--bg);
+    transition:all .18s ease;
+  }
+  .home-btn:hover{background:var(--gold);border-color:var(--gold);transform:translateY(-1px);
+    box-shadow:0 10px 22px -12px rgba(184,137,46,.55)}
+  h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:46px;font-weight:400;letter-spacing:-.02em;line-height:1.12;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(120deg,var(--qual),var(--quant) 55%,var(--mixed) 85%,var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1::after{
+    content:"";display:block;width:120px;height:3px;margin-top:18px;border-radius:2px;
+    background:linear-gradient(90deg,var(--gold),var(--mixed) 55%,var(--quant));
+  }
+  .tagline{
+    margin-top:16px;font-size:15px;color:var(--muted);line-height:1.6;max-width:680px;
+  }
+  .tagline b{color:var(--ink);font-weight:600}
+
+  /* ---- sections ---- */
+  section{margin-bottom:52px}
+  section h2{
+    font-family:Georgia,"Times New Roman",serif;font-size:22px;font-weight:400;
+    margin-bottom:6px;
+  }
+  .lead{font-size:13.5px;line-height:1.65;color:var(--muted);max-width:680px;margin-bottom:22px}
+  .lead b{color:var(--ink);font-weight:600}
+  .num{
+    display:inline-block;font-size:10px;letter-spacing:.14em;color:var(--gold);
+    text-transform:uppercase;margin-bottom:6px;font-weight:600;
+  }
+
+  /* ---- concept grid ---- */
+  .concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .concept{
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px 17px;
+    transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .concept:hover{transform:translateY(-3px);border-color:var(--ink);
+    box-shadow:0 14px 34px -20px rgba(26,23,18,.3)}
+  .concept h3{font-family:Georgia,"Times New Roman",serif;font-size:15px;font-weight:400;margin-bottom:6px}
+  .concept p{font-size:12px;line-height:1.55;color:var(--muted)}
+  .concept p i{color:var(--ink);font-style:italic}
+
+  /* ---- design cards ---- */
+  .measures{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .measure{
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;
+    padding:20px 22px;position:relative;overflow:hidden;
+    transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .measure:hover{transform:translateY(-4px);border-color:var(--ink);
+    box-shadow:0 16px 40px -20px rgba(26,23,18,.32)}
+  .measure .stripe{position:absolute;top:0;left:0;right:0;height:4px}
+  .measure.s1 .stripe{background:linear-gradient(90deg,var(--qual),var(--quant))}
+  .measure.s2 .stripe{background:linear-gradient(90deg,var(--quant),var(--mixed))}
+  .measure.s3 .stripe{background:linear-gradient(90deg,var(--mixed),var(--gold))}
+  .measure.s4 .stripe{background:linear-gradient(90deg,var(--gold),var(--qual))}
+  .measure.s5 .stripe{background:linear-gradient(90deg,var(--qual),var(--gold))}
+  .measure.s6 .stripe{background:linear-gradient(90deg,var(--mixed),var(--quant))}
+  .measure h3{font-family:Georgia,"Times New Roman",serif;font-size:17px;font-weight:400;margin-bottom:4px}
+  .measure .src{font-size:10.5px;color:var(--faint);letter-spacing:.06em;margin-bottom:10px}
+  .measure .what{font-size:12.5px;line-height:1.55;color:var(--muted);margin-bottom:10px}
+  .measure .when{
+    font-size:12px;line-height:1.5;color:var(--ink);
+    background:rgba(14,125,102,.07);border-left:3px solid var(--qual);
+    padding:8px 12px;border-radius:0 6px 6px 0;
+  }
+  .when b{color:var(--qual);font-weight:600;font-size:10px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:2px}
+
+  /* ---- model path ---- */
+  .path{position:relative;margin-left:10px;padding-left:34px;border-left:2px dashed var(--line)}
+  .model{
+    position:relative;background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    padding:22px 24px;margin-bottom:18px;
+    box-shadow:0 18px 44px -28px rgba(26,23,18,.3);
+    transition:transform .25s cubic-bezier(.16,1,.3,1), border-color .25s ease;
+  }
+  .model:hover{transform:translateY(-3px);border-color:var(--ink)}
+  .model::before{
+    content:attr(data-step);position:absolute;left:-51px;top:18px;
+    width:32px;height:32px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;color:var(--gold);
+  }
+  .model h3{font-family:Georgia,"Times New Roman",serif;font-size:18px;font-weight:400;margin-bottom:6px}
+  .model .what{font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:12px}
+  .model .req{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .req span{
+    font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    border:1px solid var(--line);border-radius:999px;padding:4px 11px;color:var(--muted);
+  }
+  .req span.data{border-color:var(--quant);color:var(--quant)}
+  .req span.cost{border-color:var(--gold);color:var(--gold)}
+  .model .maplink{font-size:12px}
+  .model .maplink a{color:var(--quant);text-decoration:none;border-bottom:1px dashed var(--quant)}
+  .model .maplink a:hover{color:var(--ink);border-color:var(--ink)}
+
+  /* ---- laboratory (playground) ---- */
+  .play{
+    background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    box-shadow:0 24px 56px -30px rgba(26,23,18,.28);
+    padding:20px 22px 16px;
+  }
+  .play .toolbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+  .play label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
+    display:flex;align-items:center;gap:8px}
+  .play input[type=range]{width:110px;accent-color:var(--quant)}
+  .play .toggle{color:var(--muted);cursor:pointer;user-select:none}
+  .play .toggle input{accent-color:var(--qual);width:14px;height:14px;cursor:pointer}
+  .play button{
+    font-family:inherit;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+    padding:8px 16px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--ink);background:var(--ink);color:var(--bg);transition:all .18s ease;
+  }
+  .play button:hover{background:var(--gold);border-color:var(--gold)}
+  #lab{width:100%;height:390px;display:block}
+  #lab .axis{stroke:var(--line);stroke-width:1.2}
+  #lab .tick{font-size:9.5px;fill:var(--faint)}
+  #lab .axislab{font-size:9.5px;fill:var(--muted);letter-spacing:.08em}
+  #lab .pt{stroke:var(--paper);stroke-width:.8;opacity:.8}
+  #lab .pt.treat{fill:var(--mixed)}
+  #lab .pt.ctrl{fill:var(--qual)}
+  #lab .fit{fill:none;stroke-width:2.4;stroke-dasharray:7 5}
+  #lab .fit.naive{stroke:var(--ink)}
+  #lab .fit.adj{stroke:var(--quant)}
+  .readout{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+  .stat{
+    flex:1;min-width:150px;border:1px solid var(--line);border-radius:8px;
+    padding:10px 14px;background:var(--bg);
+  }
+  .stat .k{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:3px}
+  .stat .v{font-family:Georgia,serif;font-size:20px}
+  .stat.true .v{color:var(--gold)}
+  .stat.naive .v{color:var(--mixed)}
+  .stat.adj .v{color:var(--qual)}
+  .play .footnote{font-size:11px;color:var(--faint);margin-top:12px;line-height:1.5}
+
+  /* ---- toolkit & canon ---- */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:22px 24px}
+  .panel h3{
+    font-family:Georgia,"Times New Roman",serif;font-size:17px;font-weight:400;margin-bottom:14px;
+    padding-bottom:10px;border-bottom:1px dashed var(--line);
+  }
+  .panel ul{list-style:none}
+  .panel li{font-size:12.5px;line-height:1.55;color:var(--muted);margin-bottom:9px;padding-left:16px;position:relative}
+  .panel li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--mixed)}
+  .panel.books li::before{background:var(--gold)}
+  .panel li b{color:var(--ink);font-weight:600}
+
+  footer{
+    margin-top:64px;padding-top:18px;border-top:1px dashed var(--line);
+    font-size:11px;color:var(--faint);letter-spacing:.04em;
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  }
+  footer a{color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line)}
+  footer a:hover{color:var(--ink)}
+
+  @media (max-width:760px){
+    .wrap{padding:48px 20px 60px}
+    h1{font-size:32px}
+    .concepts{grid-template-columns:1fr}
+    .measures{grid-template-columns:1fr}
+    .duo{grid-template-columns:1fr}
+    .path{margin-left:4px;padding-left:26px}
+    .model::before{left:-44px;width:26px;height:26px;font-size:10.5px}
+  }
+</style>
+</head>
+<body>
+
+<svg id="dots"></svg>
+
+<div class="wrap">
+
+  <header>
+    <a class="home-btn" href="../../index.html">← Atlas Home</a>
+    <div class="kicker">Tiny Atlas · Field Guide No. 2</div>
+    <h1>A Field Guide<br>to <em>Causes</em></h1>
+    <div class="tagline">
+      Causal inference, the way the ReGovNet group's methodologists teach it:
+      <b>what would have happened, had things been different</b> — from potential outcomes
+      to DAGs, from natural experiments to causal machine learning.
+    </div>
+  </header>
+
+  <section>
+    <span class="num">Orientation</span>
+    <h2>Foundation</h2>
+    <div class="lead">
+      Nine ideas everything else in this guide is built from. Causal inference is not a
+      technique — it is a discipline of stating what you must believe before any number
+      can be trusted.
+    </div>
+    <div class="concepts">
+      <div class="concept"><h3>Potential Outcomes</h3><p>Each unit has two possible outcomes, <i>Y(1)</i> and <i>Y(0)</i> (Rubin, 1974). The causal effect is their difference — and only one of the two is ever observed.</p></div>
+      <div class="concept"><h3>The Counterfactual</h3><p>The missing potential outcome is <i>the fundamental problem of causal inference</i>. Every design in this guide is a different strategy for approximating it.</p></div>
+      <div class="concept"><h3>Ignorability</h3><p>Treatment assignment is independent of potential outcomes, given observed covariates <i>X</i> ("selection on observables"). The assumption that good design buys — rarely for free.</p></div>
+      <div class="concept"><h3>Overlap (Positivity)</h3><p>Every unit needs some chance of either treatment. Where overlap fails, estimates silently extrapolate into regions with no comparable data.</p></div>
+      <div class="concept"><h3>Consistency &amp; SUTVA</h3><p>The treatment is well-defined, and units do not interfere with one another. Spillovers and network effects violate SUTVA — where Guide No. 1 takes over.</p></div>
+      <div class="concept"><h3>Confounding</h3><p>A variable that causes both treatment and outcome. The classic bias — its direction is unknowable without theory, which is why design must precede data.</p></div>
+      <div class="concept"><h3>Colliders</h3><p>A common <i>effect</i> of treatment and outcome. Conditioning on a collider opens a non-causal path and manufactures association — the most dangerous "control variable."</p></div>
+      <div class="concept"><h3>DAGs &amp; the Backdoor</h3><p>Draw your assumptions before your model (Pearl, 1995). A DAG makes confounding visible; the backdoor criterion says exactly what to adjust for — and what to leave alone.</p></div>
+      <div class="concept"><h3>Identification vs Estimation</h3><p>Identification is a claim about the <i>world</i> (design); estimation is arithmetic on data. No estimator, however sophisticated, repairs failed identification.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Design Layer</span>
+    <h2>Identification Designs</h2>
+    <div class="lead">
+      Six strategies for making the counterfactual credible. Each trades on a different
+      source of <b>as-if randomness</b> — choose the one your setting actually offers.
+    </div>
+    <div class="measures">
+      <div class="measure s1">
+        <span class="stripe"></span>
+        <h3>Randomized Controlled Trials</h3>
+        <div class="src">Fisher (1925) · Neyman (1923/1990)</div>
+        <div class="what">Randomization makes treatment assignment independent of everything, observed and unobserved — ignorability by construction, balance in expectation.</div>
+        <div class="when"><b>Use when</b> you can assign treatment; field and survey experiments extend the logic to real-world settings.</div>
+      </div>
+      <div class="measure s2">
+        <span class="stripe"></span>
+        <h3>Instrumental Variables</h3>
+        <div class="src">Wright (1928) · Angrist, Imbens &amp; Rubin (1996)</div>
+        <div class="what">A variable that moves treatment but affects the outcome only through it — isolating variation that is as-if random, even with unobserved confounding.</div>
+        <div class="when"><b>Use when</b> a credible instrument exists; the estimand is a local effect for compliers, not the whole population.</div>
+      </div>
+      <div class="measure s3">
+        <span class="stripe"></span>
+        <h3>Difference-in-Differences</h3>
+        <div class="src">Card &amp; Krueger (1994)</div>
+        <div class="what">Compare how a treated group changes relative to an untreated group. Parallel trends substitute for ignorability: confounders may exist, but their effect must be common.</div>
+        <div class="when"><b>Use when</b> a policy arrives for some units and not others, and pre-trends look alike.</div>
+      </div>
+      <div class="measure s4">
+        <span class="stripe"></span>
+        <h3>Regression Discontinuity</h3>
+        <div class="src">Thistlethwaite &amp; Campbell (1960)</div>
+        <div class="what">Units just above and just below an eligibility cutoff are near-identical, so the jump in outcomes at the threshold estimates the effect — a local experiment at the boundary.</div>
+        <div class="when"><b>Use when</b> treatment follows a score threshold — budgets, test cutoffs, eligibility indices.</div>
+      </div>
+      <div class="measure s5">
+        <span class="stripe"></span>
+        <h3>Matching &amp; Weighting</h3>
+        <div class="src">Rosenbaum &amp; Rubin (1983)</div>
+        <div class="what">Construct the missing counterfactual from observables: match or reweight untreated units to resemble treated ones on the propensity score. Balance, not model fit, is the target.</div>
+        <div class="when"><b>Use when</b> all confounders are measured; report covariate balance, not just estimates.</div>
+      </div>
+      <div class="measure s6">
+        <span class="stripe"></span>
+        <h3>Synthetic Control</h3>
+        <div class="src">Abadie &amp; Gardeazabal (2003) · Abadie, Diamond &amp; Hainmueller (2010)</div>
+        <div class="what">Build the counterfactual unit as a weighted combination of untreated units that reproduces the treated unit's pre-period trajectory — then study the divergence.</div>
+        <div class="when"><b>Use when</b> one unit (city, region, country) is treated and many donors are available.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Inferential Layer</span>
+    <h2>The Model Path</h2>
+    <div class="lead">
+      Six steps in the order we would teach them. Identification first, estimation second —
+      stop where your design stops.
+    </div>
+
+    <div class="path">
+      <div class="model" data-step="01">
+        <h3>DAGs &amp; Backdoor Adjustment</h3>
+        <div class="what">
+          Start here — it costs nothing but honesty. Write down what causes what, find every
+          backdoor path from treatment to outcome, and adjust for a sufficient set of confounders
+          while leaving colliders and mediators untouched.
+        </div>
+        <div class="req">
+          <span class="data">Data: theory, then covariates</span>
+          <span class="cost">Entry: none</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=DAGs%20%26%20Causal%20Identification">DAGs &amp; Causal Identification → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="02">
+        <h3>Matching &amp; Weighting</h3>
+        <div class="what">
+          Estimate the propensity score, then match or weight so treated and control groups
+          look alike on observables (Rosenbaum &amp; Rubin, 1983; Hainmueller, 2012).
+          Diagnose with standardized mean differences and overlap plots — not with the
+          propensity model's fit statistics.
+        </div>
+        <div class="req">
+          <span class="data">Data: cross-section, rich covariates</span>
+          <span class="cost">Entry: low</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Propensity%20Score%20Matching">Propensity Score Matching → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="03">
+        <h3>Difference-in-Differences &amp; Event Studies</h3>
+        <div class="what">
+          The workhorse of policy evaluation. Double-robust modern estimators
+          (Callaway &amp; Sant'Anna, 2021; Goodman-Bacon diagnostics) handle staggered
+          adoption, where two-way fixed effects goes wrong. Always show pre-trends.
+        </div>
+        <div class="req">
+          <span class="data">Data: treated + comparison, 2+ periods</span>
+          <span class="cost">Entry: low–medium</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Difference-in-Differences">Difference-in-Differences → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="04">
+        <h3>Regression Discontinuity</h3>
+        <div class="what">
+          Estimate the local effect at a cutoff: continuity of potential outcomes implies the
+          outcome jump at the threshold is causal. Manipulation tests (McCrary density),
+          bandwidth sensitivity, and donut robustness are the credibility package.
+        </div>
+        <div class="req">
+          <span class="data">Data: running variable + cutoff</span>
+          <span class="cost">Entry: medium</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Regression%20Discontinuity">Regression Discontinuity → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="05">
+        <h3>Synthetic Control</h3>
+        <div class="what">
+          For one treated unit, assemble a synthetic twin from donor weights chosen to fit the
+          pre-period — then the post-period gap is the effect (Abadie, Diamond &amp; Hainmueller,
+          2010). Augmented SCM and placebo in-time tests carry the inference.
+        </div>
+        <div class="req">
+          <span class="data">Data: 1 treated unit, many donors, long pre-period</span>
+          <span class="cost">Entry: medium</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Synthetic%20Control%20Method">Synthetic Control Method → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="06">
+        <h3>Causal Machine Learning</h3>
+        <div class="what">
+          When effects differ across units, estimate heterogeneity directly: double/debiased
+          machine learning removes nuisance variation with flexible learners (Chernozhukov et al.,
+          2018); causal forests estimate conditional average treatment effects with honest
+          inference (Wager &amp; Athey, 2018).
+        </div>
+        <div class="req">
+          <span class="data">Data: large n, many covariates</span>
+          <span class="cost">Entry: high</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Causal%20Machine%20Learning">Causal Machine Learning → methodology map</a>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Laboratory</span>
+    <h2>Feel the Confounding</h2>
+    <div class="lead">
+      A living simulation. An outcome <b>Y</b> rises with a covariate <b>X</b> — and the
+      probability of treatment <b>T</b> also rises with X. Turn the confounding dial,
+      then watch the <b>naive estimate</b> chase the treatment group upward while the
+      <b>adjusted estimate</b> holds the line at the true effect.
+    </div>
+    <div class="play">
+      <div class="toolbar">
+        <label>Confounding <input type="range" id="conf" min="0" max="100" value="75"></label>
+        <label>Sample <input type="range" id="nslide" min="100" max="600" step="50" value="300"></label>
+        <label class="toggle"><input type="checkbox" id="adjust" checked> Adjust for X</label>
+        <button id="resample" type="button">Resample</button>
+      </div>
+      <svg id="lab" viewBox="0 0 640 390" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="readout">
+        <div class="stat true"><div class="k">True effect</div><div class="v">3.0</div></div>
+        <div class="stat naive"><div class="k">Naive estimate (Y ~ T)</div><div class="v" id="naiveVal">–</div></div>
+        <div class="stat adj"><div class="k">Adjusted (Y ~ T + X)</div><div class="v" id="adjVal">–</div></div>
+      </div>
+      <div class="footnote">
+        True model: Y = 2 + 1.8·X + 3·T + noise. Treatment probability rises with X as
+        confounding strengthens. The naive regression of Y on T alone absorbs X's effect into the
+        treatment coefficient; adjusting for X recovers the truth — <i>if X is measured</i>.
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Supplies</span>
+    <h2>Toolkit &amp; Canon</h2>
+    <div class="lead">What we install, and what we keep within arm's reach.</div>
+    <div class="duo">
+      <div class="panel">
+        <h3>Software</h3>
+        <ul>
+          <li><b>R:</b> <i>fixest</i> and <i>did</i> (Callaway–Sant'Anna) for DiD, <i>rdrobust</i> for discontinuities, <i>MatchIt</i>/<i>WeightIt</i> for balance, <i>Synth</i>/<i>gsynth</i>/<i>augsynth</i> for synthetic control, <i>DoubleML</i> and <i>grf</i> for causal ML.</li>
+          <li><b>Python:</b> <i>DoWhy</i> and <i>EconML</i> (causal pipelines), <i>linearmodels</i>, <i>CausalML</i>, statsmodels for the classics.</li>
+          <li><b>Stata:</b> <i>reghdfe</i>, <i>teffects</i>, <i>rdrobust</i>, <i>synth</i> — the policy-evaluation workbench.</li>
+          <li><b>Benchmark datasets:</b> the NSW/Lalonde (1986) job-training benchmark, Card &amp; Krueger's (1994) fast-food panel, Cattaneo's RD data archive.</li>
+        </ul>
+      </div>
+      <div class="panel books">
+        <h3>Canon</h3>
+        <ul>
+          <li><b>Angrist &amp; Pischke (2009)</b>, <i>Mostly Harmless Econometrics</i> — the field bible.</li>
+          <li><b>Angrist &amp; Pischke (2015)</b>, <i>Mastering 'Metrics</i> — the gentler on-ramp.</li>
+          <li><b>Cunningham (2021)</b>, <i>Causal Inference: The Mixtape</i> — free online, unusually humane.</li>
+          <li><b>Morgan &amp; Winship (2015)</b>, <i>Counterfactuals and Causal Inference</i> — the DAG perspective.</li>
+          <li><b>Imbens &amp; Rubin (2015)</b>, <i>Causal Inference</i> — potential outcomes, systematically.</li>
+          <li><b>Pearl (2009)</b>, <i>Causality</i> — the foundations; Chapter 1 suffices for most.</li>
+          <li><b>Rosenbaum (2020)</b>, <i>Design of Observational Studies</i> — sensitivity analysis as craft.</li>
+          <li><b>Callaway &amp; Sant'Anna (2021)</b> and <b>Abadie, Diamond &amp; Hainmueller (2010)</b> — the modern DiD and synthetic-control papers.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 ReGovNet Research Group · Tiny Atlas, an open academic commons</span>
+    <span><a href="../../index.html">Atlas Home</a> · <a href="../sna/index.html">← Field Guide No. 1: Networks</a> · <a href="../../index.html#feedback">Corrections</a></span>
+  </footer>
+
+</div>
+
+<script>
+/* ---- dotted paper texture ---- */
+(function(){
+  const d = document.getElementById("dots");
+  const s = 26, W = Math.ceil(innerWidth/s)+2, H = Math.ceil(innerHeight/s)+2;
+  let html = "";
+  for(let i=0;i<W;i++)for(let j=0;j<H;j++)
+    html += `<circle cx="${i*s}" cy="${j*s}" r="0.8" fill="#1a1712" opacity="0.045"/>`;
+  d.innerHTML = `<g>${html}</g>`;
+  d.setAttribute("width",innerWidth); d.setAttribute("height",innerHeight);
+})();
+
+/* ---- confounding laboratory ---- */
+(function(){
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById("lab");
+  const confEl = document.getElementById("conf");
+  const nEl = document.getElementById("nslide");
+  const adjEl = document.getElementById("adjust");
+  const PL = 46, PR = 18, PT = 14, PB = 40, W = 640, H = 390;
+
+  let seed = 7;
+  const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+
+  function simulate(){
+    const n = +nEl.value;
+    const a = (+confEl.value / 100) * 1.6;   /* selection strength */
+    const data = [];
+    for(let i=0;i<n;i++){
+      const X = rnd()*10;
+      const p = 1/(1+Math.exp(-a*(X-5)));
+      const T = rnd() < p ? 1 : 0;
+      const Y = 2 + 1.8*X + 3*T + (rnd()+rnd()+rnd()-1.5)*2;
+      data.push({X,T,Y});
+    }
+    return data;
+  }
+
+  /* closed-form OLS */
+  function ols1(d){ /* Y ~ T */
+    const mT = d.reduce((s,x)=>s+x.T,0)/d.length, mY = d.reduce((s,x)=>s+x.Y,0)/d.length;
+    let cTT=0, cTY=0;
+    d.forEach(x=>{ cTT+=(x.T-mT)**2; cTY+=(x.T-mT)*(x.Y-mY); });
+    return { bT: cTY/cTT, b0: mY - cTY/cTT*mT };
+  }
+  function ols2(d){ /* Y ~ T + X */
+    const n=d.length;
+    const mT=d.reduce((s,x)=>s+x.T,0)/n, mX=d.reduce((s,x)=>s+x.X,0)/n, mY=d.reduce((s,x)=>s+x.Y,0)/n;
+    let vT=0,vX=0,cTX=0,cTY=0,cXY=0;
+    d.forEach(x=>{
+      const dT=x.T-mT, dX=x.X-mX, dY=x.Y-mY;
+      vT+=dT*dT; vX+=dX*dX; cTX+=dT*dX; cTY+=dT*dY; cXY+=dX*dY;
+    });
+    const den = vT*vX - cTX*cTX;
+    const bT = (cTY*vX - cXY*cTX)/den;
+    const bX = (cXY*vT - cTY*cTX)/den;
+    return { bT, bX, b0: mY - bT*mT - bX*mX };
+  }
+
+  function render(){
+    const d = simulate();
+    const n1 = ols1(d), n2 = ols2(d);
+    document.getElementById("naiveVal").textContent = n1.bT.toFixed(2);
+    document.getElementById("adjVal").textContent = n2.bT.toFixed(2);
+
+    let yMin = Infinity, yMax = -Infinity;
+    d.forEach(x=>{ yMin=Math.min(yMin,x.Y); yMax=Math.max(yMax,x.Y); });
+    const pad = (yMax-yMin)*0.08 || 1; yMin-=pad; yMax+=pad;
+    const sx = x => PL + (x/10)*(W-PL-PR);
+    const sy = y => H-PB - ((y-yMin)/(yMax-yMin))*(H-PT-PB);
+
+    let out = "";
+    /* axes */
+    out += `<line class="axis" x1="${PL}" y1="${PT}" x2="${PL}" y2="${H-PB}"/>`;
+    out += `<line class="axis" x1="${PL}" y1="${H-PB}" x2="${W-PR}" y2="${H-PB}"/>`;
+    for(let gx=0; gx<=10; gx+=2)
+      out += `<text class="tick" x="${sx(gx)}" y="${H-PB+16}" text-anchor="middle">${gx}</text>`;
+    [yMin, (yMin+yMax)/2, yMax].forEach(v =>
+      out += `<text class="tick" x="${PL-8}" y="${sy(v)+3}" text-anchor="end">${v.toFixed(0)}</text>`);
+    out += `<text class="axislab" x="${(PL+W)/2}" y="${H-8}" text-anchor="middle">COVARIATE X</text>`;
+
+    /* fitted lines (across x range) */
+    const xA = 0.2, xB = 9.8;
+    out += `<line class="fit naive" x1="${sx(xA)}" y1="${sy(n1.b0)}" x2="${sx(xB)}" y2="${sy(n1.b0)}" opacity="0.85"/>`;
+    if(adjEl.checked){
+      const yA = n2.b0 + n2.bX*xA, yB = n2.b0 + n2.bX*xB + n2.bT;
+      const yA0 = n2.b0 + n2.bX*xA, yB0 = n2.b0 + n2.bX*xB;
+      out += `<line class="fit adj" x1="${sx(xA)}" y1="${sy(yA0)}" x2="${sx(xB)}" y2="${sy(yB0)}"/>`;
+      out += `<line class="fit adj" x1="${sx(xA)}" y1="${sy(yA+n2.bT)}" x2="${sx(xB)}" y2="${sy(yB)}"/>`;
+    }
+    /* points */
+    d.forEach(x => {
+      out += `<circle class="pt ${x.T?'treat':'ctrl'}" cx="${sx(x.X).toFixed(1)}" cy="${sy(x.Y).toFixed(1)}" r="4.2"/>`;
+    });
+    svg.innerHTML = out;
+  }
+
+  [confEl, nEl, adjEl].forEach(el => el.addEventListener("input", render));
+  document.getElementById("resample").addEventListener("click", () => {
+    seed = (Date.now() % 2147483647) >>> 0 || 7; render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>
