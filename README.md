@@ -29,6 +29,7 @@ never go stale.
 | `pa/build_pa.py` | Generator: validates data, injects both maps' data, emits method-name table for cross-links | No |
 | `pa/template_pa.html` | Map page template (design + panel + linkifier) | Only for design changes |
 | `logo.png` | Research group logo, shared by all pages | Replace the file to update |
+| `assets/` | Tiny Atlas brand assets: `favicon.svg` + PNG icons, `og-cover.png` share card, `gen_brand.py` generator | Regenerate with `python assets/gen_brand.py` |
 
 Generated files `methods/index.html` and `pa/index.html` are **never** edited by
 hand — they are rebuilt from the data files on every change.
