@@ -10,7 +10,8 @@ What it does:
   1. Reads TREE (theory hierarchy) and PROFILES (theory cards)
      from data_pa.py
   2. Validates: every leaf theory must have a profile, all required
-     fields must be filled (use / explain / founders / classics / frontier)
+     fields must be filled (use / explain / concepts / founders /
+     classics / frameworks / apply)
   3. Injects the data into template_pa.html and writes index.html
   4. index.html + logo.png is the complete site, ready for GitHub Pages
 
@@ -49,7 +50,7 @@ def validate():
             errors.append(f"missing profile: {name}")
             continue
         p = PROFILES[name]
-        for field in ("use", "explain", "founders", "classics", "frontier"):
+        for field in ("use", "explain", "concepts", "founders", "classics", "frameworks", "apply"):
             if not p.get(field):
                 errors.append(f"profile field missing [{name}] -> {field}")
 
