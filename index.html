@@ -129,6 +129,33 @@
   .map-card.m-guide3 .stripe{background:linear-gradient(90deg,var(--quant),var(--mixed) 55%,var(--gold))}
   .map-card.m-guide4 .stripe{background:linear-gradient(90deg,var(--qual),var(--quant) 55%,var(--gold))}
   .maps.trio{grid-template-columns:repeat(2,1fr)}
+  /* expedition feature banner */
+  .expedition{
+    display:grid;grid-template-columns:1.05fr .95fr;gap:26px;align-items:center;
+    margin-bottom:18px;padding:28px 30px 24px;
+    background:
+      radial-gradient(120% 160% at 100% 0%, rgba(184,137,46,.10), transparent 55%),
+      radial-gradient(120% 160% at 0% 100%, rgba(14,125,102,.08), transparent 55%),
+      var(--paper);
+  }
+  .expedition .cnt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+  .expedition h2{
+    font-family:Georgia,"Times New Roman",serif;font-size:26px;font-weight:400;
+    letter-spacing:-.01em;line-height:1.2;margin-bottom:10px;
+  }
+  .expedition h2 em{font-style:normal;color:var(--gold)}
+  .expedition p{font-size:13.5px;line-height:1.6;color:var(--muted);max-width:460px;margin-bottom:16px}
+  .expedition .go{
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+    color:var(--ink);display:inline-flex;align-items:center;gap:6px;
+  }
+  .expedition .go::after{content:"→";transition:transform .2s ease}
+  .expedition:hover .go::after{transform:translateX(4px)}
+  .expedition .art{display:block;width:100%;height:auto}
+  .expedition .art .trail{fill:none;stroke:var(--ink);stroke-opacity:.5;stroke-width:2;stroke-dasharray:1 7;stroke-linecap:round}
+  .expedition .art .ring{fill:none;stroke:var(--line);stroke-width:.9}
+  .expedition .art .wp{stroke:var(--paper);stroke-width:2.5}
+  .expedition .art .wplab{font-family:Georgia,serif;font-size:9.5px;fill:var(--muted);letter-spacing:.04em}
   .map-card::before,.map-card::after{content:"";position:absolute;width:13px;height:13px;pointer-events:none;opacity:.6}
   .map-card::before{top:9px;left:9px;border-top:1.5px solid var(--gold);border-left:1.5px solid var(--gold)}
   .map-card::after{bottom:9px;right:9px;border-bottom:1.5px solid var(--gold);border-right:1.5px solid var(--gold)}
@@ -210,6 +237,8 @@
     #logo{height:32px}
     .maps{grid-template-columns:1fr}
     .maps.trio{grid-template-columns:1fr}
+    .expedition{grid-template-columns:1fr;padding:24px 22px 22px}
+    .expedition .art{max-width:340px}
     .fb-grid{grid-template-columns:1fr}
     .compass{display:none}
     #trailbg{width:300px;right:-120px;top:60px}
@@ -293,6 +322,31 @@
 
   <section class="block">
     <a class="block-label lb-guides" href="guides/">Field Guides<i></i></a>
+    <a class="map-card expedition" href="guides/">
+      <span class="stripe" style="background:linear-gradient(90deg,var(--gold),var(--mixed) 30%,var(--quant) 60%,var(--qual))"></span>
+      <div>
+        <div class="cnt">Field Guides · Overview</div>
+        <h2>Start with <em>The Expedition</em></h2>
+        <p>All four guides' model paths drawn as one interactive trail map — see how
+           networks, causes, cases and policy networks cross-reference each other,
+           then pick your trail.</p>
+        <div class="go">Explore the expedition map</div>
+      </div>
+      <svg class="art" viewBox="0 0 320 150" aria-hidden="true">
+        <circle class="ring" cx="255" cy="45" r="38"/>
+        <circle class="ring" cx="255" cy="45" r="27"/>
+        <circle class="ring" cx="60" cy="112" r="24"/>
+        <path class="trail" d="M14 124 C 62 58, 108 150, 158 84 S 246 34, 306 58"/>
+        <circle class="wp" cx="30" cy="106" r="7" fill="#b8892e"/>
+        <circle class="wp" cx="113" cy="99" r="7" fill="#c8501f"/>
+        <circle class="wp" cx="196" cy="66" r="7" fill="#3a4fd0"/>
+        <circle class="wp" cx="284" cy="55" r="7" fill="#0e7d66"/>
+        <text class="wplab" x="30" y="88" text-anchor="middle">Networks</text>
+        <text class="wplab" x="113" y="81" text-anchor="middle">Causes</text>
+        <text class="wplab" x="196" y="48" text-anchor="middle">Cases</text>
+        <text class="wplab" x="284" y="37" text-anchor="middle">Policy net.</text>
+      </svg>
+    </a>
     <div class="maps trio" style="margin-bottom:0">
       <a class="map-card m-guide" href="guides/sna/index.html">
         <span class="stripe"></span>
