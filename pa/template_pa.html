@@ -705,6 +705,37 @@ function hideMethodPanel(){
 document.getElementById("panelClose").addEventListener("click", hideMethodPanel);
 document.getElementById("map").addEventListener("click", hideMethodPanel);
 document.addEventListener("keydown", e => { if(e.key === "Escape") hideMethodPanel(); });
+
+/* ---- deep link: ?t=<theory or branch name> opens that canon card ---- */
+(function(){
+  const q = new URLSearchParams(location.search).get("t");
+  if(!q) return;
+  const findByName = (n, name) => {
+    if(n.name.replace(/\s*★\s*$/,"") === name) return n;
+    for(const c of n.children){ const r = findByName(c, name); if(r) return r; }
+    return null;
+  };
+  const target = findByName(root, q);
+  if(!target) return;
+  let cur = target.parent;
+  while(cur){ cur.collapsed = false; cur = cur.parent; }
+  root.children.forEach(t => t.collapsed = false);
+  refresh();
+  setTimeout(() => {
+    if(target.children.length){ target.collapsed = false; refresh(); }
+    const k = Math.max(0.8, Math.min(1.15, view.k));
+    view.k = k;
+    view.x = innerWidth * 0.55 - (target.x + target.w * 0.5) * k;
+    view.y = innerHeight * 0.5 - target.y * k;
+    applyView(true);
+    if(target.children.length){
+      const g = nodeEls.get(target.id);
+      if(g){ g.classList.add("selected"); selectedNode = g; }
+    } else {
+      showMethodPanel(target);
+    }
+  }, 1500);
+})();
 </script>
 </body>
 </html>

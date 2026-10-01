@@ -49,8 +49,12 @@ Verified after regeneration (`methods/index.html`):
 
 ## Maintenance notes
 
-- `methods/index.html` is generated — edit `methods/template.html` + `data_methods.py`,
-  then run `python3 methods/build_site.py` (validation: 72 methods / 72 profiles).
+- `methods/index.html` and `pa/index.html` are generated — edit the matching
+  `template*.html` + `data_*.py`, then run `python3 methods/build_site.py` or
+  `python3 pa/build_pa.py` (validation: 72 methods / 72 profiles; 36 theories / 36 profiles).
 - Deep links strip a trailing `★` before matching, so `?m=Centrality Measures` resolves
-  to the node `Centrality Measures ★`.
-- The PA map has no deep-link mechanism; cross-links to it go to the map root.
+  to the node `Centrality Measures ★`. The methodology map takes `?m=<method>`; the PA
+  map takes `?t=<theory or branch>`. Category/branch targets expand and highlight;
+  leaf targets open their card.
+- Field Guides cross-link both maps: method references deep-link into the methodology
+  map, discipline references (e.g. Governance & Network Theory) deep-link into the PA map.

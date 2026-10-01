@@ -9,7 +9,7 @@ never go stale.
 |---|---|---|
 | **Home** | Group introduction, map entries, community feedback box | https://shuwenzsw.github.io/Methodology-Wizard/ |
 | **Methodology Map** | 3 paradigms · 16 categories · 72 methods, each with an adoption card (when to use, data, assumptions, skill, priority) | https://shuwenzsw.github.io/Methodology-Wizard/methods/ |
-| **Public Administration Map** | 3 schools · 9 branches · 36 theories, each with a canon card (core proposition, key concepts, founders, classic readings, frameworks, research-design guide) | https://shuwenzsw.github.io/Methodology-Wizard/pa/ |
+| **Public Administration Map** | 3 schools · 9 branches · 36 theories, each with a canon card (core proposition, key concepts, founders, classic readings, frameworks, research-design guide) — supports `?t=` deep links | https://shuwenzsw.github.io/Methodology-Wizard/pa/ |
 | **Team** | The ReGovNet Research Group — regional governance, governance networks, interlocal management; methodological strengths in causal inference and social network analysis; led by Shuwen Zhang | https://shuwenzsw.github.io/Methodology-Wizard/team/ |
 | **Field Guides overview** | "The Expedition" — the three guides' model paths drawn as one interactive trail map, with cross-trail arcs and guide cards | https://shuwenzsw.github.io/Methodology-Wizard/guides/ |
 | **Field Guide No. 1: Networks** | Social Network Analysis as a guided path — foundations, centrality measures, models (QAP → blockmodels → ERGM → latent space → SAOM), an interactive network playground, software, datasets, and the canon | https://shuwenzsw.github.io/Methodology-Wizard/guides/sna/ |
