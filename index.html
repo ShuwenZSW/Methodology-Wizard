@@ -124,6 +124,8 @@
   .map-card.m-team .stripe{background:linear-gradient(90deg,var(--qual),var(--quant) 55%,var(--mixed))}
   .map-card.m-guide .stripe{background:linear-gradient(90deg,var(--gold),var(--qual) 55%,var(--quant))}
   .map-card.m-guide2 .stripe{background:linear-gradient(90deg,var(--mixed),var(--gold) 55%,var(--qual))}
+  .map-card.m-guide3 .stripe{background:linear-gradient(90deg,var(--quant),var(--mixed) 55%,var(--gold))}
+  .maps.trio{grid-template-columns:repeat(3,1fr)}
   .map-card::before,.map-card::after{content:"";position:absolute;width:13px;height:13px;pointer-events:none;opacity:.6}
   .map-card::before{top:9px;left:9px;border-top:1.5px solid var(--gold);border-left:1.5px solid var(--gold)}
   .map-card::after{bottom:9px;right:9px;border-bottom:1.5px solid var(--gold);border-right:1.5px solid var(--gold)}
@@ -204,6 +206,7 @@
     h1.hero-title{font-size:42px}
     #logo{height:32px}
     .maps{grid-template-columns:1fr}
+    .maps.trio{grid-template-columns:1fr}
     .fb-grid{grid-template-columns:1fr}
     .compass{display:none}
     #trailbg{width:300px;right:-120px;top:60px}
@@ -287,21 +290,29 @@
 
   <section class="block">
     <div class="block-label lb-guides">Field Guides<i></i></div>
-    <div class="maps" style="margin-bottom:0">
+    <div class="maps trio" style="margin-bottom:0">
       <a class="map-card m-guide" href="guides/sna/index.html">
         <span class="stripe"></span>
         <h2>Social Network Analysis</h2>
-        <div class="cnt">Field Guide No. 1 · A Field Guide to Networks</div>
-        <p>From centrality to ERGM — concepts, measures, and the model path, with an
+        <div class="cnt">No. 1 · Networks</div>
+        <p>From centrality to ERGM — with an
            interactive network playground.</p>
         <div class="go">Read the guide</div>
       </a>
       <a class="map-card m-guide2" href="guides/causal-inference/index.html">
         <span class="stripe"></span>
         <h2>Causal Inference</h2>
-        <div class="cnt">Field Guide No. 2 · A Field Guide to Causes</div>
-        <p>From potential outcomes to DAGs, from natural experiments to causal machine
-           learning — with an interactive confounding laboratory.</p>
+        <div class="cnt">No. 2 · Causes</div>
+        <p>From potential outcomes to causal machine
+           learning — with a confounding laboratory.</p>
+        <div class="go">Read the guide</div>
+      </a>
+      <a class="map-card m-guide3" href="guides/cases/index.html">
+        <span class="stripe"></span>
+        <h2>Case Study Research</h2>
+        <div class="cnt">No. 3 · Cases</div>
+        <p>From case selection to process tracing —
+           with an interactive Evidence Lab.</p>
         <div class="go">Read the guide</div>
       </a>
     </div>

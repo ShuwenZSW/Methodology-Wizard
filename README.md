@@ -13,6 +13,7 @@ never go stale.
 | **Team** | The ReGovNet Research Group — regional governance, governance networks, interlocal management; methodological strengths in causal inference and social network analysis; led by Shuwen Zhang | https://shuwenzsw.github.io/Methodology-Wizard/team/ |
 | **Field Guide No. 1: Networks** | Social Network Analysis as a guided path — foundations, centrality measures, models (QAP → blockmodels → ERGM → latent space → SAOM), an interactive network playground, software, datasets, and the canon | https://shuwenzsw.github.io/Methodology-Wizard/guides/sna/ |
 | **Field Guide No. 2: Causes** | Causal Inference as a guided path — potential outcomes and DAGs, six identification designs, the model path (backdoor → matching → DiD → RD → synthetic control → causal ML), an interactive confounding laboratory, software, datasets, and the canon | https://shuwenzsw.github.io/Methodology-Wizard/guides/causal-inference/ |
+| **Field Guide No. 3: Cases** | Case study research as a guided path — case bounding and selection, six case designs, the model path (bounding → selection → process tracing → comparison → fsQCA → nested analysis), an interactive Evidence Lab on Van Evera's typology, software, datasets, and the canon | https://shuwenzsw.github.io/Methodology-Wizard/guides/cases/ |
 
 **Maintainer:** Shuwen Zhang, Ph.D. (shuwenzhang@um.edu.mo) · ReGovNet Research Group
 
@@ -26,6 +27,7 @@ never go stale.
 | `team/index.html` | Team page (research areas, methods, principal) | Yes — standalone static page |
 | `guides/sna/index.html` | Field Guide No. 1 — Social Network Analysis (standalone static page with inline JS playground) | Yes — standalone static page |
 | `guides/causal-inference/index.html` | Field Guide No. 2 — Causal Inference (standalone static page with inline JS laboratory) | Yes — standalone static page |
+| `guides/cases/index.html` | Field Guide No. 3 — Case Study Research (standalone static page with inline JS Evidence Lab) | Yes — standalone static page |
 | `methods/` | Methodology map site | |
 | `methods/data_methods.py` | All content: `TREE` (method hierarchy) + `PROFILES` (method cards) | Yes — content lives here |
 | `methods/build_site.py` | Generator: validates data, injects into template | No |

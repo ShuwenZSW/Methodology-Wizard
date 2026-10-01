@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Field Guide to Cases · Tiny Atlas · ReGovNet Research Group</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<meta name="description" content="Field Guide No. 3 — Case Study Research & Process Tracing: foundations from case selection to evidence typology, six designs, the model path from bounding the case to nested analysis, an interactive Evidence Lab, software, datasets, and the canon.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A Field Guide to Cases · Tiny Atlas">
+<meta property="og:description" content="Case study research, guided: case selection, Mill's methods, process tracing, fsQCA, nested analysis — with an interactive Evidence Lab built on Van Evera's evidence typology. Field Guide No. 3 by the ReGovNet Research Group.">
+<meta property="og:image" content="https://shuwenzsw.github.io/Methodology-Wizard/assets/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    --bg:#f6f1e7;
+    --ink:#1a1712;
+    --muted:#6f6a5e;
+    --faint:#a89f8d;
+    --paper:#fffdf7;
+    --qual:#0e7d66;
+    --quant:#3a4fd0;
+    --mixed:#c8501f;
+    --line:#ddd3bf;
+    --gold:#b8892e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(1100px 700px at 8% -10%, rgba(62,79,208,.08), transparent 62%),
+      radial-gradient(900px 620px at 102% 4%, rgba(200,80,31,.07), transparent 60%),
+      radial-gradient(820px 560px at 50% 112%, rgba(14,125,102,.07), transparent 62%);
+  }
+  ::selection{background:rgba(184,137,46,.25)}
+
+  #dots{position:fixed;inset:0;pointer-events:none;z-index:0}
+  /* ---- art layer ---- */
+  #grain{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:2;opacity:.05;mix-blend-mode:multiply}
+  header{position:relative}
+  .compass{width:78px;position:absolute;right:0;top:88px}
+  .compass .ring1{fill:none;stroke:var(--line);stroke-width:1}
+  .compass .ring2{fill:none;stroke:var(--line);stroke-width:.8;stroke-dasharray:1.5 4}
+  .compass .star{fill:var(--gold);opacity:.85;transform-origin:50px 50px;animation:rose 90s linear infinite}
+  .compass text{font-family:Georgia,serif;font-size:11px;fill:var(--muted)}
+  @keyframes rose{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){.compass .star{animation:none}}
+  .tagline::first-letter{
+    font-family:Georgia,"Times New Roman",serif;font-size:2.5em;float:left;
+    line-height:.82;padding:3px 9px 0 0;color:var(--gold);
+  }
+  .concept,.panel{position:relative}
+  .concept::before,.concept::after,.measure::before,.measure::after,.panel::before,.panel::after{
+    content:"";position:absolute;width:12px;height:12px;pointer-events:none;opacity:.55;
+  }
+  .concept::before,.measure::before,.panel::before{top:8px;left:8px;border-top:1.5px solid var(--gold);border-left:1.5px solid var(--gold)}
+  .concept::after,.measure::after,.panel::after{bottom:8px;right:8px;border-bottom:1.5px solid var(--gold);border-right:1.5px solid var(--gold)}
+  .coords{font-size:10px;letter-spacing:.16em;color:var(--faint);text-transform:uppercase}
+
+  .wrap{
+    position:relative;z-index:1;max-width:900px;margin:0 auto;
+    padding:72px 32px 90px;
+    animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) .1s backwards;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---- header ---- */
+  .kicker{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .kicker::before{content:"";width:34px;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+  .home-btn{
+    display:inline-flex;align-items:center;gap:7px;margin-bottom:22px;
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+    padding:9px 18px;border-radius:999px;text-decoration:none;
+    border:1px solid var(--ink);background:var(--ink);color:var(--bg);
+    transition:all .18s ease;
+  }
+  .home-btn:hover{background:var(--gold);border-color:var(--gold);transform:translateY(-1px);
+    box-shadow:0 10px 22px -12px rgba(184,137,46,.55)}
+  h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:46px;font-weight:400;letter-spacing:-.02em;line-height:1.12;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(120deg,var(--qual),var(--quant) 55%,var(--mixed) 85%,var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1::after{
+    content:"";display:block;width:120px;height:3px;margin-top:18px;border-radius:2px;
+    background:linear-gradient(90deg,var(--gold),var(--mixed) 55%,var(--quant));
+  }
+  .tagline{
+    margin-top:16px;font-size:15px;color:var(--muted);line-height:1.6;max-width:680px;
+  }
+  .tagline b{color:var(--ink);font-weight:600}
+
+  /* ---- sections ---- */
+  section{margin-bottom:52px}
+  section h2{
+    font-family:Georgia,"Times New Roman",serif;font-size:22px;font-weight:400;
+    margin-bottom:6px;
+  }
+  .lead{font-size:13.5px;line-height:1.65;color:var(--muted);max-width:680px;margin-bottom:22px}
+  .lead b{color:var(--ink);font-weight:600}
+  .num{
+    display:inline-block;font-size:10px;letter-spacing:.14em;color:var(--gold);
+    text-transform:uppercase;margin-bottom:6px;font-weight:600;
+  }
+
+  /* ---- concept grid ---- */
+  .concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .concept{
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px 17px;
+    transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .concept:hover{transform:translateY(-3px);border-color:var(--ink);
+    box-shadow:0 14px 34px -20px rgba(26,23,18,.3)}
+  .concept h3{font-family:Georgia,"Times New Roman",serif;font-size:15px;font-weight:400;margin-bottom:6px}
+  .concept p{font-size:12px;line-height:1.55;color:var(--muted)}
+  .concept p i{color:var(--ink);font-style:italic}
+
+  /* ---- design cards ---- */
+  .measures{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .measure{
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;
+    padding:20px 22px;position:relative;overflow:hidden;
+    transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .measure:hover{transform:translateY(-4px);border-color:var(--ink);
+    box-shadow:0 16px 40px -20px rgba(26,23,18,.32)}
+  .measure .stripe{position:absolute;top:0;left:0;right:0;height:4px}
+  .measure.s1 .stripe{background:linear-gradient(90deg,var(--qual),var(--quant))}
+  .measure.s2 .stripe{background:linear-gradient(90deg,var(--quant),var(--mixed))}
+  .measure.s3 .stripe{background:linear-gradient(90deg,var(--mixed),var(--gold))}
+  .measure.s4 .stripe{background:linear-gradient(90deg,var(--gold),var(--qual))}
+  .measure.s5 .stripe{background:linear-gradient(90deg,var(--qual),var(--gold))}
+  .measure.s6 .stripe{background:linear-gradient(90deg,var(--mixed),var(--quant))}
+  .measure h3{font-family:Georgia,"Times New Roman",serif;font-size:17px;font-weight:400;margin-bottom:4px}
+  .measure .src{font-size:10.5px;color:var(--faint);letter-spacing:.06em;margin-bottom:10px}
+  .measure .what{font-size:12.5px;line-height:1.55;color:var(--muted);margin-bottom:10px}
+  .measure .when{
+    font-size:12px;line-height:1.5;color:var(--ink);
+    background:rgba(14,125,102,.07);border-left:3px solid var(--qual);
+    padding:8px 12px;border-radius:0 6px 6px 0;
+  }
+  .when b{color:var(--qual);font-weight:600;font-size:10px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:2px}
+
+  /* ---- model path ---- */
+  .path{position:relative;margin-left:10px;padding-left:34px;border-left:2px dashed var(--line)}
+  .model{
+    position:relative;background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    padding:22px 24px;margin-bottom:18px;
+    box-shadow:0 18px 44px -28px rgba(26,23,18,.3);
+    transition:transform .25s cubic-bezier(.16,1,.3,1), border-color .25s ease;
+  }
+  .model:hover{transform:translateY(-3px);border-color:var(--ink)}
+  .model::before{
+    content:attr(data-step);position:absolute;left:-51px;top:18px;
+    width:32px;height:32px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;color:var(--gold);
+  }
+  .model h3{font-family:Georgia,"Times New Roman",serif;font-size:18px;font-weight:400;margin-bottom:6px}
+  .model .what{font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:12px}
+  .model .req{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .req span{
+    font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    border:1px solid var(--line);border-radius:999px;padding:4px 11px;color:var(--muted);
+  }
+  .req span.data{border-color:var(--quant);color:var(--quant)}
+  .req span.cost{border-color:var(--gold);color:var(--gold)}
+  .model .maplink{font-size:12px}
+  .model .maplink a{color:var(--quant);text-decoration:none;border-bottom:1px dashed var(--quant)}
+  .model .maplink a:hover{color:var(--ink);border-color:var(--ink)}
+
+  /* ---- evidence lab ---- */
+  .play{
+    background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    box-shadow:0 24px 56px -30px rgba(26,23,18,.28);
+    padding:22px 24px 20px;
+  }
+  .play .hyp{
+    font-family:Georgia,serif;font-size:16.5px;line-height:1.5;margin-bottom:6px;
+  }
+  .play .hyp b{color:var(--mixed)}
+  .play .scene{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:16px}
+  .evi{
+    border:1px solid var(--line);border-left:3px solid var(--quant);border-radius:0 8px 8px 0;
+    background:var(--bg);padding:14px 18px;margin-bottom:16px;
+    font-size:13.5px;line-height:1.6;color:var(--ink);
+    font-style:italic;min-height:64px;
+  }
+  .types{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+  .types button{
+    font-family:inherit;font-size:12px;letter-spacing:.04em;text-align:left;
+    padding:10px 14px;border-radius:8px;cursor:pointer;
+    border:1px solid var(--line);background:var(--paper);color:var(--ink);
+    transition:all .15s ease;line-height:1.4;
+  }
+  .types button small{display:block;color:var(--faint);font-size:10.5px;margin-top:2px}
+  .types button:hover:not(:disabled){border-color:var(--ink);transform:translateY(-1px)}
+  .types button:disabled{cursor:default;opacity:.55}
+  .types button.correct{border-color:var(--qual);background:rgba(14,125,102,.08);opacity:1}
+  .types button.wrong{border-color:var(--mixed);background:rgba(200,80,31,.07);opacity:1}
+  .verdict{
+    display:none;font-size:12.5px;line-height:1.6;border-radius:8px;padding:12px 16px;margin-bottom:14px;
+  }
+  .verdict.show{display:block}
+  .verdict.good{background:rgba(14,125,102,.08);border:1px solid rgba(14,125,102,.4)}
+  .verdict.bad{background:rgba(200,80,31,.07);border:1px solid rgba(200,80,31,.4)}
+  .verdict b{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+  .verdict.good b{color:var(--qual)}
+  .verdict.bad b{color:var(--mixed)}
+  .labbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .labbar button{
+    font-family:inherit;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+    padding:9px 18px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--ink);background:var(--ink);color:var(--bg);transition:all .18s ease;
+  }
+  .labbar button:hover{background:var(--gold);border-color:var(--gold)}
+  .labbar .prog{font-size:11px;color:var(--faint);letter-spacing:.06em}
+  .labbar .score{margin-left:auto;font-size:12px;color:var(--muted)}
+  .labbar .score b{color:var(--gold);font-size:15px;font-family:Georgia,serif}
+  .play .footnote{font-size:11px;color:var(--faint);margin-top:14px;line-height:1.5}
+
+  /* ---- toolkit & canon ---- */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:22px 24px}
+  .panel h3{
+    font-family:Georgia,"Times New Roman",serif;font-size:17px;font-weight:400;margin-bottom:14px;
+    padding-bottom:10px;border-bottom:1px dashed var(--line);
+  }
+  .panel ul{list-style:none}
+  .panel li{font-size:12.5px;line-height:1.55;color:var(--muted);margin-bottom:9px;padding-left:16px;position:relative}
+  .panel li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+  .panel.books li::before{background:var(--mixed)}
+  .panel li b{color:var(--ink);font-weight:600}
+
+  footer{
+    margin-top:64px;padding-top:18px;border-top:1px dashed var(--line);
+    font-size:11px;color:var(--faint);letter-spacing:.04em;
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  }
+  footer a{color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line)}
+  footer a:hover{color:var(--ink)}
+
+  @media (max-width:760px){
+    .wrap{padding:48px 20px 60px}
+    h1{font-size:32px}
+    .concepts{grid-template-columns:1fr}
+    .measures{grid-template-columns:1fr}
+    .duo{grid-template-columns:1fr}
+    .types{grid-template-columns:1fr}
+    .path{margin-left:4px;padding-left:26px}
+    .model::before{left:-44px;width:26px;height:26px;font-size:10.5px}
+    .compass{display:none}
+  }
+</style>
+</head>
+<body>
+
+<svg id="dots"></svg>
+
+<svg id="grain" aria-hidden="true"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#gr)"/></svg>
+
+<div class="wrap">
+
+  <header>
+    <a class="home-btn" href="../../index.html">← Atlas Home</a>
+    <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
+      <circle class="ring1" cx="50" cy="50" r="47"/>
+      <circle class="ring2" cx="50" cy="50" r="40"/>
+      <path class="star" d="M50 10 L59.2 40.8 L72.6 27.4 L59 50 L72.6 72.6 L59.2 59.2 L50 90 L40.8 59.2 L27.4 72.6 L41 50 L27.4 27.4 L40.8 40.8 Z"/>
+      <circle cx="50" cy="50" r="3.2" fill="#1a1712"/>
+      <text x="50" y="22.5" text-anchor="middle">N</text>
+    </svg>
+    <div class="kicker">Tiny Atlas · Field Guide No. 3</div>
+    <h1>A Field Guide<br>to <em>Cases</em></h1>
+    <div class="tagline">
+      Case study research and process tracing, the way the ReGovNet group practices it:
+      <b>how a single case can carry causal weight</b> — bounding the case, choosing it
+      deliberately, and reading evidence like a detective.
+    </div>
+  </header>
+
+  <section>
+    <span class="num">Orientation</span>
+    <h2>Foundation</h2>
+    <div class="lead">
+      Nine ideas everything else in this guide is built from. Small-n research fails
+      rarely from statistics — it fails from sloppy case choices and misread evidence.
+    </div>
+    <div class="concepts">
+      <div class="concept"><h3>The Case as Unit</h3><p>Bounding the case is the first analytic act (Ragin, 1992): what is the "whole" you claim to study — a city, a reform episode, a network — and where does it end?</p></div>
+      <div class="concept"><h3>Case Selection</h3><p>Purposive, not random: typical, diverse, extreme, deviant, influential, or most-similar cases each buy a different kind of inference (Seawright &amp; Gerring, 2008). Selecting on the outcome alone invites bias (Geddes, 1990).</p></div>
+      <div class="concept"><h3>Mill's Methods</h3><p>Most-similar systems (difference-finding) and most-different systems (common-finding) comparisons — the classical logic underneath all comparative design.</p></div>
+      <div class="concept"><h3>CPOs vs DSOs</h3><p><i>Causal-process observations</i> shed light on mechanisms inside one case; <i>dataset observations</i> covary across many (Collier, Brady &amp; Seawright, 2010). Research designs trade in both currencies.</p></div>
+      <div class="concept"><h3>Mechanisms</h3><p>Explanation means opening the black box: the entities and activities that link cause to outcome (Hedström &amp; Ylikoski, 2010). Cases are where mechanisms are visible.</p></div>
+      <div class="concept"><h3>Process Tracing</h3><p>Reconstruct the sequence of events within a case to test whether the hypothesized mechanism actually left its fingerprints (George &amp; Bennett, 2005; Beach &amp; Pedersen, 2013).</p></div>
+      <div class="concept"><h3>Evidence Typology</h3><p>Van Evera's (1997) four types — <i>straw-in-the-wind, hoop, smoking gun, doubly decisive</i> — grade evidence by how decisively it discriminates between hypotheses. The basis of the Evidence Lab below.</p></div>
+      <div class="concept"><h3>Necessity &amp; Sufficiency</h3><p>Set-theoretic logic: a condition may be necessary (outcome can't occur without it), sufficient (its presence always triggers it), or part of a recipe — the grammar of QCA (Ragin, 1987).</p></div>
+      <div class="concept"><h3>Equifinality &amp; Scope</h3><p>Different causal recipes can reach the same outcome, and mechanisms travel only within scope conditions. Claim both the paths and the boundaries of your explanation.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Design Layer</span>
+    <h2>Case Designs</h2>
+    <div class="lead">
+      Six ways to organize one or a few cases so they can answer a big question.
+      Each buys a different inference at a different price.
+    </div>
+    <div class="measures">
+      <div class="measure s1">
+        <span class="stripe"></span>
+        <h3>The Critical Case</h3>
+        <div class="src">Eckstein (1975) · Flyvbjerg (2006)</div>
+        <div class="what">Choose a case where theory makes its most demanding prediction — if the theory survives here, it earns confidence everywhere; if it fails here, it fails hard.</div>
+        <div class="when"><b>Use when</b> a theory is mature enough to risk, and one decisive arena exists.</div>
+      </div>
+      <div class="measure s2">
+        <span class="stripe"></span>
+        <h3>Comparative Cases (Mill)</h3>
+        <div class="src">Mill (1843) · Przeworski &amp; Teune (1970)</div>
+        <div class="what">Most-similar: match on everything except the suspect variable. Most-different: find wildly different cases with one common outcome — what do they share?</div>
+        <div class="when"><b>Use when</b> 2–8 cases exist and background knowledge supports controlled comparison.</div>
+      </div>
+      <div class="measure s3">
+        <span class="stripe"></span>
+        <h3>Process-Tracing Case</h3>
+        <div class="src">George &amp; Bennett (2005) · Bennett &amp; Checkel (2015)</div>
+        <div class="what">Stay inside one case and test whether the causal chain left the observable implications only that mechanism could produce — predictions competitors cannot match.</div>
+        <div class="when"><b>Use when</b> one case matters and rich within-case material (documents, interviews, timelines) exists.</div>
+      </div>
+      <div class="measure s4">
+        <span class="stripe"></span>
+        <h3>Structured-Focused Comparison</h3>
+        <div class="src">George (1979)</div>
+        <div class="what">Ask the same questions of every case, defined by a shared framework, so comparison becomes disciplined rather than impressionistic.</div>
+        <div class="when"><b>Use when</b> comparing several cases and worried about drifting questions.</div>
+      </div>
+      <div class="measure s5">
+        <span class="stripe"></span>
+        <h3>fsQCA — Set-Theoretic Comparison</h3>
+        <div class="src">Ragin (1987, 2008) · Schneider &amp; Wagemann (2012)</div>
+        <div class="what">Treat conditions and outcomes as sets; find the recipes (sufficient combinations) and core conditions (necessity) that produce an outcome, with consistency and coverage as the quality checks.</div>
+        <div class="when"><b>Use when</b> 10–50 cases, medium-n, and you suspect multiple conjunctural causation.</div>
+      </div>
+      <div class="measure s6">
+        <span class="stripe"></span>
+        <h3>Nested &amp; Multi-Method</h3>
+        <div class="src">Lieberman (2005) · Tarrow (2010)</div>
+        <div class="what">Let a large-n analysis select and motivate cases — model-testing or model-building nested designs — then dig inside the cases with process tracing; each layer disciplines the other.</div>
+        <div class="when"><b>Use when</b> both a quantitative pattern and case-level material are available.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Inferential Layer</span>
+    <h2>The Model Path</h2>
+    <div class="lead">
+      Six steps from a vague interest to a defensible case-based claim.
+      Identification logic first — just like Guide No. 2, in its small-n dialect.
+    </div>
+
+    <div class="path">
+      <div class="model" data-step="01">
+        <h3>Bound the Case &amp; the Question</h3>
+        <div class="what">
+          Define the case, the outcome, and the rival explanations before touching data.
+          Write the scope conditions and the observable implications of each hypothesis —
+          this is the case-research analogue of the DAG.
+        </div>
+        <div class="req">
+          <span class="data">Data: theory and curiosity</span>
+          <span class="cost">Entry: none</span>
+        </div>
+      </div>
+
+      <div class="model" data-step="02">
+        <h3>Select Cases Deliberately</h3>
+        <div class="what">
+          Choose by the inferential job: typical, diverse, extreme, deviant, influential,
+          or most-similar. Report the selection rule and its risks — random selection is
+          rarely the right tool at n = 4.
+        </div>
+        <div class="req">
+          <span class="data">Data: universe of candidate cases</span>
+          <span class="cost">Entry: low</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Case-Oriented%20Comparison">Case-Oriented Comparison → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="03">
+        <h3>Process Tracing Within the Case</h3>
+        <div class="what">
+          Test the mechanism's fingerprints: sequence analysis, predicting the least-likely
+          observations, and explicit Bayesian updating over pieces of evidence
+          (Bennett, 2010; Fairfield &amp; Charman, 2017). Chain evidence, don't stack anecdotes.
+        </div>
+        <div class="req">
+          <span class="data">Data: documents, interviews, timelines</span>
+          <span class="cost">Entry: medium</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Process%20Tracing">Process Tracing → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="04">
+        <h3>Compare Across Cases</h3>
+        <div class="what">
+          Structured-focused questions, Mill's methods, or comparative historical analysis:
+          hold context constant, vary the suspect, and watch the outcome — then confront the
+          explanation with the least convenient case.
+        </div>
+        <div class="req">
+          <span class="data">Data: 2–10 comparable cases</span>
+          <span class="cost">Entry: medium</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Comparative%20Historical%20Analysis">Comparative Historical Analysis → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="05">
+        <h3>fsQCA — Recipes at Medium-n</h3>
+        <div class="what">
+          Calibrate conditions into fuzzy sets, build the truth table, minimize to sufficient
+          recipes, and report necessity/consistency/coverage. QCA is comparison formalized —
+          and it preaches equifinality by construction.
+        </div>
+        <div class="req">
+          <span class="data">Data: ~10–50 cases, calibrated conditions</span>
+          <span class="cost">Entry: medium–high</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=QCA%20(csQCA%20%2F%20fsQCA)">QCA (csQCA / fsQCA) → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="06">
+        <h3>Nested Analysis — Marry the Large and the Small</h3>
+        <div class="what">
+          Close the loop with Guide No. 2: use regression to locate anomalies, cases to
+          explain them (Lieberman, 2005); or build theory in cases, then test it at scale.
+          The triangulation is the point.
+        </div>
+        <div class="req">
+          <span class="data">Data: large-n plus within-case material</span>
+          <span class="cost">Entry: high</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=QCA%20%2B%20Regression%20Triangulation">QCA + Regression Triangulation → methodology map</a>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Laboratory</span>
+    <h2>The Evidence Lab</h2>
+    <div class="lead">
+      Process tracing is reading evidence against hypotheses. A hypothesis faces two rivals;
+      each piece of evidence discriminates with a different force.
+      Classify all twelve pieces — <b>straw-in-the-wind</b>, <b>hoop</b>, <b>smoking gun</b>,
+      or <b>doubly decisive</b> — and see how verdicts are built.
+    </div>
+    <div class="play" id="lab">
+      <div class="hyp" id="labHyp"></div>
+      <div class="scene" id="labScene"></div>
+      <div class="evi" id="labEvi"></div>
+      <div class="types">
+        <button data-t="straw">Straw-in-the-wind<small>Consistent, but rivals predict it too</small></button>
+        <button data-t="hoop">Hoop<small>Hypothesis must jump it — but rivals may too</small></button>
+        <button data-t="smoking">Smoking gun<small>Rivals predict it; this hypothesis uniquely does</small></button>
+        <button data-t="decisive">Doubly decisive<small>Only this hypothesis predicts it; rivals are ruled out</small></button>
+      </div>
+      <div class="verdict" id="labVerdict"></div>
+      <div class="labbar">
+        <button id="labNext" type="button" style="display:none">Next evidence</button>
+        <span class="prog" id="labProg"></span>
+        <span class="score">Score <b id="labScore">0</b> / <span id="labTotal">12</span></span>
+      </div>
+      <div class="footnote">
+        Typology after Van Evera (1997). In real process tracing you would also weigh
+        likelihood ratios and update explicitly (Bennett, 2010; Fairfield &amp; Charman, 2017).
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Supplies</span>
+    <h2>Toolkit &amp; Canon</h2>
+    <div class="lead">What we install, and what we keep within arm's reach.</div>
+    <div class="duo">
+      <div class="panel">
+        <h3>Software</h3>
+        <ul>
+          <li><b>QCA:</b> R packages <i>SetMethods</i>, <i>QCApro</i>, <i>frscore</i>; the original <i>fsQCA</i> software; <i>QCAGUI</i> for a point-and-click start.</li>
+          <li><b>Qualitative coding:</b> NVivo, ATLAS.ti, MAXQDA — or the open-source <i>QualCoder</i>; <i>LLM-assisted coding</i> is emerging fast (see the methodology map).</li>
+          <li><b>Within-case analysis:</b> R/Python for sequence and timeline work; archival databases for historical cases.</li>
+          <li><b>Benchmark materials:</b> Schneider &amp; Wagemann's replication data for <i>Set-Theoretic Methods</i>; the classic fsQCA democracy studies (Ragin &amp; Pennings).</li>
+        </ul>
+      </div>
+      <div class="panel books">
+        <h3>Canon</h3>
+        <ul>
+          <li><b>Yin (2018)</b>, <i>Case Study Research and Applications</i> — the design handbook.</li>
+          <li><b>George &amp; Bennett (2005)</b>, <i>Case Studies and Theory Development</i> — the foundational text.</li>
+          <li><b>Beach &amp; Pedersen (2019)</b>, <i>Process-Tracing Methods</i> — the modern manual.</li>
+          <li><b>Van Evera (1997)</b>, <i>Guide to Methods for Students of Political Science</i> — where the evidence typology lives.</li>
+          <li><b>Bennett &amp; Checkel (2015)</b>, <i>Process Tracing: From Metaphor to Analytic Tool</i>.</li>
+          <li><b>Ragin (1987, 2008)</b>, <i>The Comparative Method</i> and <i>Redesigning Social Inquiry</i> — set-theoretic foundations.</li>
+          <li><b>Schneider &amp; Wagemann (2012)</b>, <i>Set-Theoretic Methods for the Social Sciences</i> — the QCA standard.</li>
+          <li><b>Fairfield &amp; Charman (2017)</b> — explicit Bayesian process tracing, <i>AJPS</i>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 ReGovNet Research Group · Tiny Atlas, an open academic commons</span>
+    <span><a href="../../index.html">Atlas Home</a> · <a href="../causal-inference/index.html">← Field Guide No. 2: Causes</a> · <span class="coords">22.1987° N · 113.5439° E</span> · <a href="../../index.html#feedback">Corrections</a></span>
+  </footer>
+
+</div>
+
+<script>
+/* ---- dotted paper texture ---- */
+(function(){
+  const d = document.getElementById("dots");
+  const s = 26, W = Math.ceil(innerWidth/s)+2, H = Math.ceil(innerHeight/s)+2;
+  let html = "";
+  for(let i=0;i<W;i++)for(let j=0;j<H;j++)
+    html += `<circle cx="${i*s}" cy="${j*s}" r="0.8" fill="#1a1712" opacity="0.045"/>`;
+  d.innerHTML = `<g>${html}</g>`;
+  d.setAttribute("width",innerWidth); d.setAttribute("height",innerHeight);
+})();
+
+/* ---- evidence lab ---- */
+(function(){
+  const SCEN = [
+    { hyp:"A regional transit agency adopted the fare-integration reform <b>because of mayoral electoral pressure</b> — not because of fiscal capacity.",
+      rivals:"Rival A: adoption was driven by fiscal surplus. Rival B: adoption was driven by federal grant availability.",
+      items:[
+        { t:"straw",  q:"The mayor publicly championed the reform in her campaign speeches.",
+          why:"Consistent with the hypothesis, but ambitious mayors praise many things — Rivals A and B say nothing against it." },
+        { t:"hoop",   q:"Internal minutes show the mayor's office scheduled adoption votes before the election.",
+          why:"Electoral-pressure theory must clear this hoop — the timing is required. But rivals could also survive it (budgets also pass on schedules), so it discriminates only partially." },
+        { t:"smoking",q:"A leaked memo shows the budget director opposed the reform as fiscally unsound, yet the mayor's office overruled him citing 'campaign commitment'.",
+          why:"Directly observed mechanism: political override of fiscal logic. Rival A (fiscal surplus) predicts the opposite and is wounded; Rival B is silent. Unique to the electoral story — a smoking gun." },
+        { t:"decisive",q:"The federal grant arrived nine months AFTER adoption, and the city ran a deficit that same year.",
+          why:"Rival B requires the grant to predate or enable adoption; Rival A requires surplus. Both are ruled out. Only electoral pressure survives — doubly decisive." },
+      ]},
+    { hyp:"A rural county's e-government platform <b>failed because department heads quietly sabotaged data sharing</b> — not because of vendor defects.",
+      rivals:"Rival A: the vendor's software was defective. Rival B: the county simply lacked the budget to sustain it.",
+      items:[
+        { t:"straw",  q:"Department heads gave the platform lukewarm mentions in their annual reports.",
+          why:"Compatible with sabotage, but also with indifference under any theory. Weak support, no exclusion." },
+        { t:"hoop",   q:"Interviews show department heads understood exactly how the data-sharing protocol worked.",
+          why:"Sabotage requires understanding; had they misunderstood, the theory would be dead. A hoop cleared — but Rival A and B also clear it." },
+        { t:"smoking",q:"Emails show three department heads agreed in writing to 'delay uploads until the vendor fix we requested' — a fix the vendor logs show was never requested.",
+          why:"Documents reveal deliberate non-compliance with a fabricated pretext — the fingerprint of sabotage. Neither vendor defect nor tight budgets predicts fabricated excuses." },
+        { t:"decisive",q:"An independent audit found the software defect-free, and the county underspent its IT budget by 40% in both years.",
+          why:"Rival A is ruled out by the audit; Rival B by the underspending. Only sabotage survives — doubly decisive." },
+      ]},
+    { hyp:"The merger of two city departments <b>improved response times because co-location forced informal coordination</b> — not because of added staff.",
+      rivals:"Rival A: response times fell because the merger came with 30 new hires. Rival B: times fell everywhere in the region that year (secular trend).",
+      items:[
+        { t:"straw",  q:"Staff in both departments reported more hallway conversations after the merger.",
+          why:"Consistent with co-location effects, but subjective reports fit many stories. Slight support only." },
+        { t:"hoop",   q:"Response-time logs were intact and comparable before and after the merger.",
+          why:"Any claim about response times requires credible measurement — a hoop every theory here must clear, and none fails it." },
+        { t:"smoking",q:"Response times improved only in the 14 teams physically moved into shared buildings; teams kept in separate sites showed no change — though headcount rose for both groups.",
+          why:"Improvement tracks co-location, not headcount (both groups gained staff). Rival A is contradicted; Rival B (region-wide trend) predicts improvement everywhere. Strong, near-unique signature — a smoking gun." },
+        { t:"decisive",q:"Neighboring cities without mergers showed flat response times, and hiring freezes meant the new positions were never filled.",
+          why:"Rival B killed by regional flatness; Rival A killed by unfilled positions. Co-location is the last explanation standing — doubly decisive." },
+      ]},
+  ];
+
+  const hypEl = document.getElementById("labHyp"),
+        sceneEl = document.getElementById("labScene"),
+        eviEl = document.getElementById("labEvi"),
+        verEl = document.getElementById("labVerdict"),
+        nextBtn = document.getElementById("labNext"),
+        progEl = document.getElementById("labProg"),
+        scoreEl = document.getElementById("labScore"),
+        totalEl = document.getElementById("labTotal"),
+        btns = Array.from(document.querySelectorAll(".types button"));
+
+  const all = SCEN.flatMap((s,si) => s.items.map(it => ({...it, scene:s, si})));
+  totalEl.textContent = all.length;
+  let idx = 0, score = 0, answered = false;
+
+  function load(){
+    answered = false;
+    const it = all[idx];
+    hypEl.innerHTML = "H" + (it.si+1) + " · " + it.scene.hyp;
+    sceneEl.textContent = "Case " + (it.si+1) + " of 3 — " + it.scene.rivals;
+    eviEl.textContent = "“" + it.q + "”";
+    verEl.className = "verdict"; verEl.innerHTML = "";
+    nextBtn.style.display = "none";
+    progEl.textContent = "Evidence " + (idx+1) + " / " + all.length;
+    btns.forEach(b => { b.disabled = false; b.classList.remove("correct","wrong"); });
+  }
+
+  btns.forEach(b => b.addEventListener("click", () => {
+    if(answered) return;
+    answered = true;
+    const it = all[idx], pick = b.dataset.t, right = pick === it.t;
+    if(right) score++;
+    scoreEl.textContent = score;
+    btns.forEach(x => {
+      x.disabled = true;
+      if(x.dataset.t === it.t) x.classList.add("correct");
+      else if(x === b) x.classList.add("wrong");
+    });
+    const names = {straw:"Straw-in-the-wind", hoop:"Hoop", smoking:"Smoking gun", decisive:"Doubly decisive"};
+    verEl.className = "verdict show " + (right ? "good" : "bad");
+    verEl.innerHTML = `<b>${right ? "Correct" : "Not quite — the answer is " + names[it.t]}</b>${it.why}`;
+    nextBtn.style.display = "";
+    nextBtn.textContent = idx === all.length-1 ? "See final verdict" : "Next evidence";
+  }));
+
+  nextBtn.addEventListener("click", () => {
+    if(idx < all.length-1){ idx++; load(); }
+    else {
+      progEl.textContent = "Complete";
+      eviEl.textContent = "Every verdict was built from evidence that discriminated between hypotheses — not from evidence that merely felt supportive.";
+      sceneEl.textContent = "";
+      btns.forEach(b => b.disabled = true);
+      nextBtn.style.display = "none";
+      verEl.className = "verdict show good";
+      const pct = Math.round(100*score/all.length);
+      const grade = pct>=90 ? "a senior detective" : pct>=70 ? "a solid investigator" : pct>=50 ? "getting the hang of it" : "ready to re-read Van Evera, chapter 2";
+      verEl.innerHTML = `<b>Final score: ${score} / ${all.length}</b>You classified evidence like ${grade}. The lesson: in process tracing, a hoop you failed to define beforehand is an anecdote, and a smoking gun you never looked for is a rival's alibi.`;
+    }
+  });
+
+  load();
+})();
+</script>
+</body>
+</html>
