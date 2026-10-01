@@ -121,6 +121,8 @@
   .lb-maps{color:var(--qual)}
   .lb-guides{color:var(--gold)}
   .lb-team{color:var(--mixed)}
+  a.block-label{text-decoration:none;cursor:pointer}
+  a.block-label:hover{opacity:.7}
   .map-card.m-team .stripe{background:linear-gradient(90deg,var(--qual),var(--quant) 55%,var(--mixed))}
   .map-card.m-guide .stripe{background:linear-gradient(90deg,var(--gold),var(--qual) 55%,var(--quant))}
   .map-card.m-guide2 .stripe{background:linear-gradient(90deg,var(--mixed),var(--gold) 55%,var(--qual))}
@@ -289,7 +291,7 @@
   </section>
 
   <section class="block">
-    <div class="block-label lb-guides">Field Guides<i></i></div>
+    <a class="block-label lb-guides" href="guides/">Field Guides<i></i></a>
     <div class="maps trio" style="margin-bottom:0">
       <a class="map-card m-guide" href="guides/sna/index.html">
         <span class="stripe"></span>
