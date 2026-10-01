@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<meta name="description" content="Field Guide No. 5 — Artificial Intelligence meets Social Network Analysis: representation learning, graph neural networks, link prediction, synthetic networks, and the ethics of network AI. With an interactive Prediction Lab.">
+<meta name="description" content="Field Guide No. 5 — Artificial Intelligence meets Social Network Analysis: representation learning and GNNs, link prediction, synthetic networks, the AI-augmented research workflow, and the ethics of network AI. With an interactive Prediction Lab.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="A Field Guide to Network Intelligence · Tiny Atlas">
 <meta property="og:description" content="Where machine learning meets network analysis: embeddings, GNNs, link prediction, and the discipline to use them honestly. Field Guide No. 5 by the ReGovNet Research Group.">
@@ -461,6 +461,36 @@
           <span class="cost">Entry: frontier</span>
         </div>
         <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Causal%20Machine%20Learning">Causal Machine Learning → methodology map</a>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">The Workbench</span>
+    <h2>AI at the Workbench</h2>
+    <div class="lead">
+      The sections above put machine learning <b>on the network</b>. This one puts it
+      <b>in your workflow</b> — how AI assistants actually change the daily practice of
+      SNA research, stage by stage, with the failure mode named next to each gift.
+    </div>
+    <div class="concepts">
+      <div class="concept"><h3>From Text to Edge List</h3><p>Minutes, hearings, archives → candidate edges: LLMs extract actors and relations at document scale. But every extraction is a <i>coding decision</i> — audit a sample the way you would a human coder's work.</p></div>
+      <div class="concept"><h3>Name Deduplication</h3><p>"City of Springfield / Springfield / SPRGFLD" → one node. Entity resolution across rosters and databases, in seconds. Verify merges by hand: <i>merging two real actors is worse than duplicating one</i>.</p></div>
+      <div class="concept"><h3>Code That Runs</h3><p>Write, debug, and translate network code — statnet ↔ igraph ↔ networkx ↔ PyTorch Geometric. An infinitely patient pair programmer. House rule: <i>execute everything it writes; never ship a line you haven't run</i>.</p></div>
+      <div class="concept"><h3>The Adversarial Reviewer</h3><p>Paste your research design (anonymized!) and ask the model to attack it: boundary problems, endogeneity, SUTVA violations. It is a sparring partner that never gets tired of finding your confounds — see <i>Guide No. 2</i>.</p></div>
+      <div class="concept"><h3>Canon Navigation</h3><p>Map a debate's citation graph, summarize what the ERGM and SAOM literatures disagree about, find the bridge paper between two traditions. Caveat: LLMs <i>fabricate references with total confidence</i> — verify every citation at the source.</p></div>
+      <div class="concept"><h3>Teaching &amp; Translation</h3><p>Generate practice networks, explain centrality to a mayor or ERGM to a methods class, then let students <i>interrogate the model</i> — watching it fail teaches epistemic humility faster than any lecture.</p></div>
+    </div>
+    <div class="play" style="margin-top:16px;padding:16px 20px 12px">
+      <div class="toolbar" style="margin-bottom:8px">
+        <label>House rules</label>
+        <span class="hint" style="display:block;max-width:none;text-align:left">When AI touches a social network, the network touches real people.</span>
+      </div>
+      <div class="mets" style="margin:0">
+        <div class="met"><div class="k">01 · Anonymize first</div><div style="font-size:11.5px;line-height:1.5;color:var(--muted)">A respondent network is personal data about <b>third parties</b> — people who never consented to a cloud API.</div></div>
+        <div class="met"><div class="k">02 · Run every line</div><div style="font-size:11.5px;line-height:1.5;color:var(--muted)">Generated code is a draft, not a result. If it isn't executed and read, it doesn't exist.</div></div>
+        <div class="met"><div class="k">03 · Verify every citation</div><div style="font-size:11.5px;line-height:1.5;color:var(--muted)">Hallucinated references are fluent and confident. Check each one against the original.</div></div>
+        <div class="met"><div class="k">04 · Confidence is decoration</div><div style="font-size:11.5px;line-height:1.5;color:var(--muted)">The model's tone carries no evidence. Weight claims by verification, not eloquence.</div></div>
       </div>
     </div>
   </section>
