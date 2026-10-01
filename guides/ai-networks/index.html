@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Field Guide to Network Intelligence · Tiny Atlas · ReGovNet Research Group</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<meta name="description" content="Field Guide No. 5 — Artificial Intelligence meets Social Network Analysis: representation learning, graph neural networks, link prediction, synthetic networks, and the ethics of network AI. With an interactive Prediction Lab.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A Field Guide to Network Intelligence · Tiny Atlas">
+<meta property="og:description" content="Where machine learning meets network analysis: embeddings, GNNs, link prediction, and the discipline to use them honestly. Field Guide No. 5 by the ReGovNet Research Group.">
+<meta property="og:image" content="https://shuwenzsw.github.io/Methodology-Wizard/assets/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    --bg:#f6f1e7;
+    --ink:#1a1712;
+    --muted:#6f6a5e;
+    --faint:#a89f8d;
+    --paper:#fffdf7;
+    --qual:#0e7d66;
+    --quant:#3a4fd0;
+    --mixed:#c8501f;
+    --line:#ddd3bf;
+    --gold:#b8892e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(1100px 700px at 8% -10%, rgba(62,79,208,.08), transparent 62%),
+      radial-gradient(900px 620px at 102% 4%, rgba(184,137,46,.08), transparent 60%),
+      radial-gradient(820px 560px at 50% 112%, rgba(200,80,31,.06), transparent 62%);
+  }
+  ::selection{background:rgba(184,137,46,.25)}
+
+  #dots{position:fixed;inset:0;pointer-events:none;z-index:0}
+  #grain{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:2;opacity:.05;mix-blend-mode:multiply}
+  header{position:relative}
+  .compass{width:78px;position:absolute;right:0;top:88px}
+  .compass .ring1{fill:none;stroke:var(--line);stroke-width:1}
+  .compass .ring2{fill:none;stroke:var(--line);stroke-width:.8;stroke-dasharray:1.5 4}
+  .compass .star{fill:var(--gold);opacity:.85;transform-origin:50px 50px;animation:rose 90s linear infinite}
+  .compass text{font-family:Georgia,serif;font-size:11px;fill:var(--muted)}
+  @keyframes rose{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){.compass .star{animation:none}}
+  .tagline::first-letter{
+    font-family:Georgia,"Times New Roman",serif;font-size:2.5em;float:left;
+    line-height:.82;padding:3px 9px 0 0;color:var(--gold);
+  }
+  .concept,.panel{position:relative}
+  .concept::before,.concept::after,.measure::before,.measure::after,.panel::before,.panel::after{
+    content:"";position:absolute;width:12px;height:12px;pointer-events:none;opacity:.55;
+  }
+  .concept::before,.measure::before,.panel::before{top:8px;left:8px;border-top:1.5px solid var(--gold);border-left:1.5px solid var(--gold)}
+  .concept::after,.measure::after,.panel::after{bottom:8px;right:8px;border-bottom:1.5px solid var(--gold);border-right:1.5px solid var(--gold)}
+  .coords{font-size:10px;letter-spacing:.16em;color:var(--faint);text-transform:uppercase}
+
+  .wrap{
+    position:relative;z-index:1;max-width:900px;margin:0 auto;
+    padding:72px 32px 90px;
+    animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) .1s backwards;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+  .kicker{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .kicker::before{content:"";width:34px;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+  .home-btn{
+    display:inline-flex;align-items:center;gap:7px;margin-bottom:22px;
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+    padding:9px 18px;border-radius:999px;text-decoration:none;
+    border:1px solid var(--ink);background:var(--ink);color:var(--bg);
+    transition:all .18s ease;
+  }
+  .home-btn:hover{background:var(--gold);border-color:var(--gold);transform:translateY(-1px);
+    box-shadow:0 10px 22px -12px rgba(184,137,46,.55)}
+  h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:46px;font-weight:400;letter-spacing:-.02em;line-height:1.12;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(120deg,var(--quant),var(--mixed) 55%,var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1::after{
+    content:"";display:block;width:120px;height:3px;margin-top:18px;border-radius:2px;
+    background:linear-gradient(90deg,var(--gold),var(--quant) 55%,var(--mixed));
+  }
+  .tagline{
+    margin-top:16px;font-size:15px;color:var(--muted);line-height:1.6;max-width:680px;
+  }
+  .tagline b{color:var(--ink);font-weight:600}
+
+  section{margin-bottom:52px}
+  section h2{
+    font-family:Georgia,"Times New Roman",serif;font-size:22px;font-weight:400;
+    margin-bottom:6px;
+  }
+  .lead{font-size:13.5px;line-height:1.65;color:var(--muted);max-width:680px;margin-bottom:22px}
+  .lead b{color:var(--ink);font-weight:600}
+  .num{
+    display:inline-block;font-size:10px;letter-spacing:.14em;color:var(--gold);
+    text-transform:uppercase;margin-bottom:6px;font-weight:600;
+  }
+
+  .concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .concept{
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px 17px;
+    transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .concept:hover{transform:translateY(-3px);border-color:var(--ink);
+    box-shadow:0 14px 34px -20px rgba(26,23,18,.3)}
+  .concept h3{font-family:Georgia,"Times New Roman",serif;font-size:15px;font-weight:400;margin-bottom:6px}
+  .concept p{font-size:12px;line-height:1.55;color:var(--muted)}
+  .concept p i{color:var(--ink);font-style:italic}
+
+  .measures{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .measure{
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;
+    padding:20px 22px;position:relative;overflow:hidden;
+    transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .measure:hover{transform:translateY(-4px);border-color:var(--ink);
+    box-shadow:0 16px 40px -20px rgba(26,23,18,.32)}
+  .measure .stripe{position:absolute;top:0;left:0;right:0;height:4px}
+  .measure.s1 .stripe{background:linear-gradient(90deg,var(--quant),var(--gold))}
+  .measure.s2 .stripe{background:linear-gradient(90deg,var(--qual),var(--quant))}
+  .measure.s3 .stripe{background:linear-gradient(90deg,var(--gold),var(--mixed))}
+  .measure.s4 .stripe{background:linear-gradient(90deg,var(--mixed),var(--quant))}
+  .measure.s5 .stripe{background:linear-gradient(90deg,var(--qual),var(--gold))}
+  .measure.s6 .stripe{background:linear-gradient(90deg,var(--quant),var(--mixed))}
+  .measure h3{font-family:Georgia,"Times New Roman",serif;font-size:17px;font-weight:400;margin-bottom:4px}
+  .measure .src{font-size:10.5px;color:var(--faint);letter-spacing:.06em;margin-bottom:10px}
+  .measure .what{font-size:12.5px;line-height:1.55;color:var(--muted);margin-bottom:10px}
+  .measure .when{
+    font-size:12px;line-height:1.5;color:var(--ink);
+    background:rgba(14,125,102,.07);border-left:3px solid var(--qual);
+    padding:8px 12px;border-radius:0 6px 6px 0;
+  }
+  .when b{color:var(--qual);font-weight:600;font-size:10px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:2px}
+
+  .path{position:relative;margin-left:10px;padding-left:34px;border-left:2px dashed var(--line)}
+  .model{
+    position:relative;background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    padding:22px 24px;margin-bottom:18px;
+    box-shadow:0 18px 44px -28px rgba(26,23,18,.3);
+    transition:transform .25s cubic-bezier(.16,1,.3,1), border-color .25s ease;
+  }
+  .model:hover{transform:translateY(-3px);border-color:var(--ink)}
+  .model::before{
+    content:attr(data-step);position:absolute;left:-51px;top:18px;
+    width:32px;height:32px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;color:var(--gold);
+  }
+  .model h3{font-family:Georgia,"Times New Roman",serif;font-size:18px;font-weight:400;margin-bottom:6px}
+  .model .what{font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:12px}
+  .model .req{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .req span{
+    font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    border:1px solid var(--line);border-radius:999px;padding:4px 11px;color:var(--muted);
+  }
+  .req span.data{border-color:var(--quant);color:var(--quant)}
+  .req span.cost{border-color:var(--gold);color:var(--gold)}
+  .model .maplink{font-size:12px}
+  .model .maplink a{color:var(--quant);text-decoration:none;border-bottom:1px dashed var(--quant)}
+  .model .maplink a:hover{color:var(--ink);border-color:var(--ink)}
+
+  /* ---- prediction lab ---- */
+  .play{
+    background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    box-shadow:0 24px 56px -30px rgba(26,23,18,.28);
+    padding:20px 22px 16px;
+  }
+  .play .toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+  .play label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
+    display:flex;align-items:center;gap:8px}
+  .play .hint{font-size:11px;color:var(--faint);margin-left:auto;max-width:300px;text-align:right}
+  .play button{
+    font-family:inherit;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+    padding:8px 16px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--ink);background:var(--ink);color:var(--bg);transition:all .18s ease;
+  }
+  .play button:hover{background:var(--gold);border-color:var(--gold)}
+  .play button.ghost{background:var(--paper);color:var(--ink)}
+  .play button.ghost:hover{border-color:var(--gold);color:var(--gold);background:var(--paper)}
+  .play .metrics-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+  .play .pill{
+    font-size:10.5px;letter-spacing:.06em;border:1px solid var(--line);border-radius:999px;
+    padding:5px 13px;color:var(--muted);background:var(--bg);cursor:pointer;font-family:inherit;
+    text-transform:uppercase;font-weight:600;transition:all .15s ease;
+  }
+  .play .pill.active{border-color:var(--quant);color:var(--quant);background:rgba(62,79,208,.07)}
+  .play .pill:hover{border-color:var(--ink);color:var(--ink)}
+  #net{width:100%;height:340px;display:block}
+  #net .edge{stroke:var(--line);stroke-width:1.4;opacity:.85}
+  #net .future{stroke:var(--gold);stroke-width:2.4;opacity:.95;stroke-dasharray:5 4}
+  #net .node{fill:var(--quant);stroke:var(--paper);stroke-width:1.5}
+  #net .node.hub{fill:var(--mixed)}
+  .mets{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+  .met{
+    flex:1;min-width:100px;border:1px solid var(--line);border-radius:8px;
+    padding:8px 12px;background:var(--bg);
+  }
+  .met .k{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:2px}
+  .met .v{font-family:Georgia,serif;font-size:17px}
+  .cands{border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:8px 0 4px}
+  .cands .row{
+    display:flex;align-items:center;gap:10px;padding:7px 12px;font-size:12px;
+    border-bottom:1px dashed var(--line);
+  }
+  .cands .row:last-child{border-bottom:none}
+  .cands .row.head{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);background:var(--bg)}
+  .cands .pair{font-family:Georgia,serif;min-width:74px}
+  .cands .bar{flex:1;height:8px;border-radius:999px;background:var(--bg);overflow:hidden;border:1px solid var(--line)}
+  .cands .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--quant),var(--mixed));border-radius:999px}
+  .cands .score{font-family:Georgia,serif;min-width:64px;text-align:right;color:var(--muted)}
+  .cands .row.hit{background:rgba(184,137,46,.10)}
+  .cands .row.hit .pair::after{content:" ✦ future tie";font-size:9.5px;color:var(--gold);letter-spacing:.04em}
+  .cands .row.miss .pair{opacity:.45}
+  .verdictline{font-size:12.5px;line-height:1.55;color:var(--ink);margin-top:10px;
+    border-left:3px solid var(--gold);padding:8px 12px;background:rgba(184,137,46,.06);border-radius:0 6px 6px 0}
+  .play .footnote{font-size:11px;color:var(--faint);margin-top:12px;line-height:1.5}
+
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:22px 24px}
+  .panel h3{
+    font-family:Georgia,"Times New Roman",serif;font-size:17px;font-weight:400;margin-bottom:14px;
+    padding-bottom:10px;border-bottom:1px dashed var(--line);
+  }
+  .panel ul{list-style:none}
+  .panel li{font-size:12.5px;line-height:1.55;color:var(--muted);margin-bottom:9px;padding-left:16px;position:relative}
+  .panel li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--quant)}
+  .panel.books li::before{background:var(--gold)}
+  .panel li b{color:var(--ink);font-weight:600}
+
+  footer{
+    margin-top:64px;padding-top:18px;border-top:1px dashed var(--line);
+    font-size:11px;color:var(--faint);letter-spacing:.04em;
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  }
+  footer a{color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line)}
+  footer a:hover{color:var(--ink)}
+
+  @media (max-width:760px){
+    .wrap{padding:48px 20px 60px}
+    h1{font-size:32px}
+    .concepts{grid-template-columns:1fr}
+    .measures{grid-template-columns:1fr}
+    .duo{grid-template-columns:1fr}
+    .path{margin-left:4px;padding-left:26px}
+    .model::before{left:-44px;width:26px;height:26px;font-size:10.5px}
+    .compass{display:none}
+    .play .hint{display:none}
+  }
+</style>
+</head>
+<body>
+
+<svg id="dots"></svg>
+
+<svg id="grain" aria-hidden="true"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#gr)"/></svg>
+
+<div class="wrap">
+
+  <header>
+    <a class="home-btn" href="../../index.html">← Atlas Home</a>
+    <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
+      <circle class="ring1" cx="50" cy="50" r="47"/>
+      <circle class="ring2" cx="50" cy="50" r="40"/>
+      <path class="star" d="M50 10 L59.2 40.8 L72.6 27.4 L59 50 L72.6 72.6 L59.2 59.2 L50 90 L40.8 59.2 L27.4 72.6 L41 50 L27.4 27.4 L40.8 40.8 Z"/>
+      <circle cx="50" cy="50" r="3.2" fill="#1a1712"/>
+      <text x="50" y="22.5" text-anchor="middle">N</text>
+    </svg>
+    <div class="kicker">Tiny Atlas · Field Guide No. 5 · Artificial Intelligence × Social Network Analysis</div>
+    <h1>A Field Guide<br>to <em>Network Intelligence</em></h1>
+    <div class="tagline">
+      <b>Guide No. 1's networks</b>, now with machine learning inside: predict the tie that
+      forms next, embed a whole graph into geometry, let neural networks read structure —
+      and keep the skepticism that <b>Wasserman &amp; Faust</b> drilled into the field.
+    </div>
+  </header>
+
+  <section>
+    <span class="num">Orientation</span>
+    <h2>Foundation</h2>
+    <div class="lead">
+      Nine ideas that separate "AI on networks" from alchemy — what the machine actually
+      sees when it looks at an adjacency matrix, and what it systematically misses.
+    </div>
+    <div class="concepts">
+      <div class="concept"><h3>Computational Social Science</h3><p>Society leaves digital traces; computation reads them at scale (Lazer et&nbsp;al., 2009). Networks are the <i>native data structure</i> of social life — CSS made them observable by the million.</p></div>
+      <div class="concept"><h3>ML for Networkers</h3><p>Supervised vs unsupervised, training/test splits, overfitting. A link predictor is just a <i>classifier on dyads</i> — Guide No. 2's discipline applies node by node, pair by pair.</p></div>
+      <div class="concept"><h3>Graph Representation Learning</h3><p>Map every node to a vector so that <i>structural similarity becomes geometric proximity</i> — DeepWalk and node2vec (random-walk embeddings) made networks consumable by any ML model.</p></div>
+      <div class="concept"><h3>Graph Neural Networks</h3><p>Message passing: each node aggregates its neighbors' features, layer by layer — GCN, GraphSAGE, GAT. The network is no longer the input's shape; <i>it is the computation</i>.</p></div>
+      <div class="concept"><h3>Link Prediction</h3><p>Score every unobserved dyad by topology — common neighbors, Adamic–Adar, preferential attachment, Katz — and rank (Liben-Nowell &amp; Kleinberg, 2007). The oldest task in network AI; the lab below.</p></div>
+      <div class="concept"><h3>ML Community Detection</h3><p>From modularity maximization (Louvain) to deep clustering: communities as <i>latent variables</i> the model infers, not just cuts in a diagram. Detection becomes estimation.</p></div>
+      <div class="concept"><h3>Networks from Text</h3><p>Entity and relation extraction turn documents, hearings, and archives into <i>edges before analysis begins</i>. NLP builds the graph; SNA interrogates it. Garbage extraction, garbage graph.</p></div>
+      <div class="concept"><h3>Synthetic Networks &amp; Simulation</h3><p>ER and preferential-attachment generators, graph GANs, agent-based models: fabricate networks with known ground truth to <i>test methods before trusting them</i> on real data.</p></div>
+      <div class="concept"><h3>Ethics of Network AI</h3><p>Relational data outs people twice — you, and everyone you connect to. Homophily makes predictions <i>self-fulfilling</i>: predict collaboration, target invites, manufacture the tie you predicted.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Research Programs</span>
+    <h2>Six Traditions</h2>
+    <div class="lead">
+      From statistical physics to graph neural networks — the lineages that built
+      network intelligence, and the measurement theorists who keep it honest.
+    </div>
+    <div class="measures">
+      <div class="measure s1">
+        <span class="stripe"></span>
+        <h3>The Network Scientists</h3>
+        <div class="src">Watts (1998) · Barabási &amp; Albert (1999) · Barabási (2016)</div>
+        <div class="what">Small worlds and scale-free growth: generative models where <i>structure itself</i> — degree distributions, hubs, clustering — is the phenomenon. Physics brought networks to the masses.</div>
+        <div class="when"><b>Use when</b> asking how global structure arises from local rules.</div>
+      </div>
+      <div class="measure s2">
+        <span class="stripe"></span>
+        <h3>The Predictors</h3>
+        <div class="src">Liben-Nowell &amp; Kleinberg (2007) · Lichtenwalter et&nbsp;al. (2010)</div>
+        <div class="what">Link prediction as a disciplined task: topology-based scores, temporal train/test splits, and honest metrics. Turned "who will collaborate next?" into <i>falsifiable ranking</i>.</div>
+        <div class="when"><b>Use when</b> the claim is about the future of a network.</div>
+      </div>
+      <div class="measure s3">
+        <span class="stripe"></span>
+        <h3>The Embedders</h3>
+        <div class="src">Perozzi et&nbsp;al. (2014, DeepWalk) · Grover &amp; Leskovec (2016, node2vec)</div>
+        <div class="what">Random walks as sentences, nodes as words: embeddings that preserve neighborhoods, roles, or equivalences depending on walk bias. The graph becomes a feature matrix; <i>every downstream model gets to use it</i>.</div>
+        <div class="when"><b>Use when</b> you need numeric node features for ML.</div>
+      </div>
+      <div class="measure s4">
+        <span class="stripe"></span>
+        <h3>The Neural School</h3>
+        <div class="src">Kipf &amp; Welling (2017) · Hamilton et&nbsp;al. (2017) · Veličković et&nbsp;al. (2018)</div>
+        <div class="what">Graph convolution, inductive sampling, attention over neighbors — GNNs learn <i>both features and structure</i>, and generalize to nodes the model has never seen. State of the art on prediction, classification, and detection.</div>
+        <div class="when"><b>Use when</b> node attributes and structure jointly carry signal.</div>
+      </div>
+      <div class="measure s5">
+        <span class="stripe"></span>
+        <h3>The Computational Social Scientists</h3>
+        <div class="src">Lazer et&nbsp;al. (2009, 2020) · Edelmann et&nbsp;al. (2020)</div>
+        <div class="what">Society-scale digital data plus social theory — and a manifesto's worth of warnings about <i>data drift, platform black boxes, and theory-free empiricism</i>. The field that named the obstacles.</div>
+        <div class="when"><b>Use when</b> claims are about human behavior at platform scale.</div>
+      </div>
+      <div class="measure s6">
+        <span class="stripe"></span>
+        <h3>The Skeptics</h3>
+        <div class="src">Wasserman &amp; Faust (1994) · Borgatti, Everett &amp; Johnson (2013)</div>
+        <div class="what">A predicted tie is not a real tie: measurement error, boundary specification, and the difference between <i>structure and its shadow</i>. The classical canon is the immune system network AI needs.</div>
+        <div class="when"><b>Use when</b> model output is about to meet social theory.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Inferential Layer</span>
+    <h2>The Model Path</h2>
+    <div class="lead">
+      Six steps from raw traces to defensible network AI. The cross-trail links point
+      into <b>No. 1 (Networks)</b> and the methodology map — prediction without the
+      classical canon is just curve-fitting on dyads.
+    </div>
+
+    <div class="path">
+      <div class="model" data-step="01">
+        <h3>Harvest Relational Data</h3>
+        <div class="what">
+          Digital traces, meeting minutes, citations, APIs, and text: extract entities
+          and relations with NLP, deduplicate, and only then draw the graph. Boundary
+          specification (Guide No. 1) decides what the model is allowed to know.
+        </div>
+        <div class="req">
+          <span class="data">Data: traces or documents</span>
+          <span class="cost">Entry: low</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=NLP%20%26%20Topic%20Modeling">NLP &amp; Topic Modeling → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="02">
+        <h3>Embed the Graph</h3>
+        <div class="what">
+          node2vec-style random-walk embeddings or GNN hidden states turn each node into
+          a vector. Similarity in embedding space ≈ structural equivalence — the bridge
+          between graph theory and every sklearn-style pipeline you already know.
+        </div>
+        <div class="req">
+          <span class="data">Data: one network, optionally node attributes</span>
+          <span class="cost">Entry: medium</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Machine%20Learning%20Prediction">Machine Learning Prediction → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="03">
+        <h3>Predict Links &amp; Labels</h3>
+        <div class="what">
+          Rank unobserved dyads (the lab below), or classify nodes by their embeddings.
+          Split by <i>time</i>, not at random: predict 2026 from 2024, or you are scoring
+          interpolation, not foresight. Report precision@k and calibration, not just AUC.
+        </div>
+        <div class="req">
+          <span class="data">Data: network + honest split</span>
+          <span class="cost">Entry: medium</span>
+        </div>
+      </div>
+
+      <div class="model" data-step="04">
+        <h3>Detect with ML</h3>
+        <div class="what">
+          Modularity methods for speed, deep clustering when communities overlap or are
+          latent. Validate partitions against theory-driven groupings — a community the
+          algorithm finds but the theory cannot name is a finding, not a conclusion.
+        </div>
+        <div class="req">
+          <span class="data">Data: network, theory of groups</span>
+          <span class="cost">Entry: medium–high</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Community%20Detection%20%26%20Clustering">Community Detection &amp; Clustering → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="05">
+        <h3>Simulate &amp; Stress-Test</h3>
+        <div class="what">
+          Generate synthetic networks with planted structure, run agent-based models, and
+          ask whether your pipeline recovers what you planted. If the method cannot find
+          a known community, it will happily invent an unknown one.
+        </div>
+        <div class="req">
+          <span class="data">Data: a generative model</span>
+          <span class="cost">Entry: medium</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Agent-Based%20Modeling">Agent-Based Modeling → methodology map</a>.</div>
+      </div>
+
+      <div class="model" data-step="06">
+        <h3>Explain &amp; Govern</h3>
+        <div class="what">
+          Interpret which structural features drive predictions; audit bias and privacy
+          exposure in relational data; resist causal language — an accurate predictor of
+          collaboration is not evidence that collaboration is predictable <i>in nature</i>.
+          For causal claims, cross to <b>Guide No. 2</b>.
+        </div>
+        <div class="req">
+          <span class="data">Data: model + audit + theory</span>
+          <span class="cost">Entry: frontier</span>
+        </div>
+        <div class="maplink">Framed in the methodology map: <a href="../../methods/index.html?m=Causal%20Machine%20Learning">Causal Machine Learning → methodology map</a>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Laboratory</span>
+    <h2>The Prediction Lab</h2>
+    <div class="lead">
+      A collaboration network of twelve cities. Six pairs are on the verge of signing —
+      three of them did, just after the observation window closed. Those three are hidden
+      from you: they are the <b>future</b>. Pick a scoring metric, rank the ten candidate
+      pairs, then reveal how many future ties your metric caught in its top three.
+      This is link prediction, the way Liben-Nowell &amp; Kleinberg framed it.
+    </div>
+    <div class="play">
+      <div class="toolbar">
+        <label>Scoring metric</label>
+        <div class="metrics-row" id="pills">
+          <button class="pill active" data-m="cn" type="button">Common neighbors</button>
+          <button class="pill" data-m="aa" type="button">Adamic–Adar</button>
+          <button class="pill" data-m="pa" type="button">Pref. attachment</button>
+          <button class="pill" data-m="katz" type="button">Katz β=0.1</button>
+        </div>
+        <span class="hint" id="metricHint"></span>
+      </div>
+      <svg id="net" viewBox="0 0 640 380" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="mets">
+        <div class="met"><div class="k">Observed ties</div><div class="v" id="mObs">–</div></div>
+        <div class="met"><div class="k">Future ties hidden</div><div class="v" id="mFut">3</div></div>
+        <div class="met"><div class="k">Metric</div><div class="v" id="mMet" style="font-size:14px">–</div></div>
+        <div class="met"><div class="k">Future ties in top 3</div><div class="v" id="mHits">?</div></div>
+      </div>
+      <div class="cands" id="candList" style="display:none">
+        <div class="row head"><span class="pair">Pair</span><span class="bar"></span><span class="score">Score</span></div>
+      </div>
+      <div class="toolbar" style="margin-top:12px">
+        <button id="score" type="button">Score candidates</button>
+        <button id="reveal" type="button" class="ghost" disabled>Reveal the future</button>
+        <button id="newround" type="button" class="ghost">New round</button>
+      </div>
+      <div class="verdictline" id="verdict">Ten candidate city pairs — three of them signed just after the observation window closed. The graph remembers what the spreadsheet forgets: structure leaks the future, if you score it right.</div>
+      <div class="footnote">
+        Candidates are unobserved pairs at observation time; the three future ties are held out
+        at random each round. Topology metrics are the ancestors of learned embeddings —
+        node2vec and GNNs learn such scores from data instead of hand-writing them.
+        A teaching toy: real pipelines split by time and report precision@k with confidence.
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Supplies</span>
+    <h2>Toolkit &amp; Canon</h2>
+    <div class="lead">What we install, and what we keep within arm's reach.</div>
+    <div class="duo">
+      <div class="panel">
+        <h3>Software</h3>
+        <ul>
+          <li><b>Python:</b> <i>networkx</i> / <i>igraph</i> / <i>graph-tool</i> for the graph itself; <i>scikit-learn</i> for classical ML; <i>PyTorch Geometric</i> or <i>DGL</i> for GNNs; <i>Karate Club</i> or <i>gensim</i> for embeddings; <i>spaCy</i> (or an LLM, carefully) for relation extraction.</li>
+          <li><b>R:</b> <i>igraph</i> + <i>tidygraph</i> + <i>ggraph</i> for analysis and drawing; keep <i>statnet</i> nearby — statistical models are how you check what the black box found.</li>
+          <li><b>LLM assistants:</b> excellent for boilerplate and data wrangling — and prolific hallucinators of APIs. Run every line; trust nothing unexecuted.</li>
+          <li><b>Benchmarks:</b> SNAP (Stanford), KONECT, and Network Repository for standard graphs — karate club, dolphins, political blogs, citation networks.</li>
+        </ul>
+      </div>
+      <div class="panel books">
+        <h3>Canon</h3>
+        <ul>
+          <li><b>Wasserman &amp; Faust (1994)</b>, <i>Social Network Analysis: Methods and Applications</i> — the immune system.</li>
+          <li><b>Liben-Nowell &amp; Kleinberg (2007)</b>, "The Link-Prediction Problem for Social Networks," <i>JASIST</i>.</li>
+          <li><b>Perozzi, Al-Rfou &amp; Skiena (2014)</b>, "DeepWalk," <i>KDD</i> · <b>Grover &amp; Leskovec (2016)</b>, "node2vec," <i>KDD</i>.</li>
+          <li><b>Kipf &amp; Welling (2017)</b>, "Semi-Supervised Classification with Graph Convolutional Networks," <i>ICLR</i>.</li>
+          <li><b>Hamilton, Ying &amp; Leskovec (2017)</b>, "Inductive Representation Learning on Large Graphs" (GraphSAGE), <i>NeurIPS</i>.</li>
+          <li><b>Veličković et&nbsp;al. (2018)</b>, "Graph Attention Networks," <i>ICLR</i> · <b>Hamilton (2020)</b>, <i>Graph Representation Learning</i>.</li>
+          <li><b>Lazer et&nbsp;al. (2009)</b>, "Computational Social Science," <i>Science</i> · <b>Lazer et&nbsp;al. (2020)</b>, the ten-year reckoning.</li>
+          <li><b>Barabási (2016)</b>, <i>Network Science</i> · <b>Borgatti, Everett &amp; Johnson (2013)</b>, <i>Analyzing Social Networks</i>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 ReGovNet Research Group · Tiny Atlas, an open academic commons</span>
+    <span><a href="../../index.html">Atlas Home</a> · <a href="../index.html">All Guides</a> · <a href="../policy-networks/index.html">← No. 4: Policy Networks</a> · <a href="../../pa/index.html">PA Theory Map</a> · <span class="coords">22.1987° N · 113.5439° E</span> · <a href="../../index.html#feedback">Corrections</a></span>
+  </footer>
+
+</div>
+
+<script>
+/* ---- dotted paper texture ---- */
+(function(){
+  const d = document.getElementById("dots");
+  const s = 26, W = Math.ceil(innerWidth/s)+2, H = Math.ceil(innerHeight/s)+2;
+  let html = "";
+  for(let i=0;i<W;i++)for(let j=0;j<H;j++)
+    html += `<circle cx="${i*s}" cy="${j*s}" r="0.8" fill="#1a1712" opacity="0.045"/>`;
+  d.innerHTML = `<g>${html}</g>`;
+  d.setAttribute("width",innerWidth); d.setAttribute("height",innerHeight);
+})();
+
+/* ---- prediction lab ---- */
+(function(){
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById("net");
+
+  /* base network: 12 cities, two clusters + 1 observed bridge (core: 18 ties) */
+  const POS = [[120,90],[200,60],[90,180],[210,170],[150,250],[70,310],[240,310],
+               [430,100],[520,80],[470,190],[560,180],[500,290]];
+  const CORE = [[0,1],[0,2],[0,3],[1,2],[1,4],[2,3],[2,5],[3,4],[3,5],[5,6],[4,6],
+                [7,8],[7,9],[8,9],[9,10],[9,11],[10,11],[7,10]];
+  /* six plausible new ties — three are held out as the "future" each round */
+  const POOL = [[0,4],[1,3],[8,10],[7,11],[1,7],[5,10]];
+  /* persistent non-ties: the decoy candidates (mixed signals) */
+  const DECOYS = [[0,5],[1,5],[2,6],[8,11],[0,6],[5,8],[6,9]];
+  const N = 12;
+  const key = (a,b)=>a<b?a+"-"+b:b+"-"+a;
+  const HINTS = {
+    cn:"Shared partners only. Sees cliques, blind to degrees and distance.",
+    aa:"Rare mutual partners count most — down-weights hubs as witnesses.",
+    pa:"Popularity contest: degree product. Rich-get-richer, structure-blind.",
+    katz:"All paths up to length 4, decayed 0.1^l. The long-range seer."
+  };
+  const NAMES = {cn:"Common neighbors", aa:"Adamic–Adar", pa:"Pref. attachment", katz:"Katz β=0.1"};
+
+  let seed = 41;
+  const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+
+  let metric = "cn";
+  let hidden = [];      /* 3 held-out future ties */
+  let observed = [];    /* the other 20 */
+  let candidates = [];  /* 12 pairs: 3 future + 9 plausible non-ties */
+  let revealed = false;
+  let scored = false;
+
+  function adjOf(edgeList){
+    const A = Array.from({length:N},()=>Array(N).fill(0));
+    edgeList.forEach(([u,v])=>{A[u][v]=1;A[v][u]=1;});
+    return A;
+  }
+  const A = adjOf(CORE.concat(POOL));   /* the full graph, for degree/hub display */
+  const deg = A.map(r=>r.reduce((a,b)=>a+b,0));
+
+  function newRound(){
+    /* hold out 3 of the 6 plausible new ties */
+    const idx = POOL.map((_,i)=>i);
+    for(let i=idx.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; }
+    hidden = idx.slice(0,3).map(i=>POOL[i]);
+    const hset = new Set(hidden.map(([u,v])=>key(u,v)));
+    observed = CORE.concat(POOL.filter(([u,v])=>!hset.has(key(u,v))));
+
+    candidates = hidden.map(([u,v])=>({u,v,future:true}))
+      .concat(DECOYS.map(([u,v])=>({u,v,future:false})));
+    for(let i=candidates.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [candidates[i],candidates[j]]=[candidates[j],candidates[i]]; }
+
+    revealed = false; scored = false;
+    document.getElementById("reveal").disabled = true;
+    document.getElementById("mHits").textContent = "?";
+    document.getElementById("mObs").textContent = observed.length;
+    document.getElementById("mMet").textContent = NAMES[metric];
+    document.getElementById("metricHint").textContent = HINTS[metric];
+    document.getElementById("verdict").innerHTML =
+      "Ten candidate city pairs — three of them signed just after the observation window closed. "+
+      "The graph remembers what the spreadsheet forgets: structure leaks the future, if you score it right.";
+    renderList(null);
+    draw();
+  }
+
+  function matMul(X,Y){
+    const Z = Array.from({length:N},()=>Array(N).fill(0));
+    for(let i=0;i<N;i++)for(let k=0;k<N;k++){ if(!X[i][k])continue;
+      for(let j=0;j<N;j++) Z[i][j]+=X[i][k]*Y[k][j]; }
+    return Z;
+  }
+
+  function scores(m){
+    const AO = adjOf(observed);
+    const cn = (a,b)=>{let c=0;for(let k=0;k<N;k++)c+=AO[a][k]*AO[b][k];return c;};
+    const dO = AO.map(r=>r.reduce((x,y)=>x+y,0));
+    const out = candidates.map(c=>{
+      const {u,v} = c; let s = 0;
+      if(m==="cn") s = cn(u,v);
+      else if(m==="aa"){
+        for(let k=0;k<N;k++) if(AO[u][k]&&AO[v][k]&&dO[k]>1) s += 1/Math.log(dO[k]);
+      } else if(m==="pa") s = dO[u]*dO[v];
+      else { /* katz beta=0.1, paths of length 1..4 */
+        const beta = 0.1;
+        let P = AO.map(r=>r.slice());
+        const acc = AO.map(r=>r.map(x=>x*beta));
+        for(let l=2;l<=4;l++){
+          P = matMul(P,AO);
+          for(let i=0;i<N;i++)for(let j=0;j<N;j++) acc[i][j]+=Math.pow(beta,l)*P[i][j];
+        }
+        s = acc[u][v];
+      }
+      return {...c, score:s};
+    });
+    out.sort((a,b)=>b.score-a.score);
+    return out;
+  }
+
+  function renderList(ranked){
+    const list = document.getElementById("candList");
+    list.querySelectorAll(".row:not(.head)").forEach(r=>r.remove());
+    if(!ranked){ list.style.display="none"; return; }
+    list.style.display="";
+    const max = Math.max(...ranked.map(r=>Math.abs(r.score)), 1e-9);
+    ranked.slice(0,8).forEach((r,i)=>{
+      const row = document.createElement("div");
+      row.className = "row" + (revealed ? (r.future ? " hit" : " miss") : "");
+      row.innerHTML = `<span class="pair">C${r.u+1}–C${r.v+1}</span>`+
+        `<span class="bar"><i style="width:${(Math.abs(r.score)/max*100).toFixed(1)}%"></i></span>`+
+        `<span class="score">${r.score.toFixed(r.score<1&&r.score>0?2:1)}</span>`;
+      list.appendChild(row);
+    });
+  }
+
+  function draw(){
+    svg.innerHTML = "";
+    const hset = new Set(hidden.map(([u,v])=>key(u,v)));
+    const shown = revealed ? hidden : [];
+    observed.forEach(([a,b])=>{
+      const l = document.createElementNS(NS,"line");
+      l.setAttribute("class","edge");
+      l.setAttribute("x1",POS[a][0]); l.setAttribute("y1",POS[a][1]);
+      l.setAttribute("x2",POS[b][0]); l.setAttribute("y2",POS[b][1]);
+      svg.appendChild(l);
+    });
+    shown.forEach(([a,b])=>{
+      const l = document.createElementNS(NS,"line");
+      l.setAttribute("class","future");
+      l.setAttribute("x1",POS[a][0]); l.setAttribute("y1",POS[a][1]);
+      l.setAttribute("x2",POS[b][0]); l.setAttribute("y2",POS[b][1]);
+      svg.appendChild(l);
+    });
+    POS.forEach((p,i)=>{
+      const c = document.createElementNS(NS,"circle");
+      c.setAttribute("class","node"+(deg[i]>=5?" hub":""));
+      c.setAttribute("cx",p[0]); c.setAttribute("cy",p[1]); c.setAttribute("r",12);
+      svg.appendChild(c);
+      const t = document.createElementNS(NS,"text");
+      t.setAttribute("x",p[0]); t.setAttribute("y",p[1]+3.5);
+      t.setAttribute("text-anchor","middle");
+      t.setAttribute("style","font-size:8.5px;fill:#fffdf7;font-weight:600;pointer-events:none");
+      t.textContent = "C"+(i+1);
+      svg.appendChild(t);
+    });
+  }
+
+  document.getElementById("pills").addEventListener("click", e=>{
+    const b = e.target.closest(".pill"); if(!b) return;
+    metric = b.dataset.m;
+    document.querySelectorAll(".pill").forEach(p=>p.classList.toggle("active",p===b));
+    scored = false; revealed = false;
+    document.getElementById("reveal").disabled = true;
+    document.getElementById("mMet").textContent = NAMES[metric];
+    document.getElementById("metricHint").textContent = HINTS[metric];
+    document.getElementById("mHits").textContent = "?";
+    renderList(null);
+    draw();
+  });
+
+  document.getElementById("score").addEventListener("click", ()=>{
+    const ranked = scores(metric);
+    scored = true;
+    renderList(ranked);
+    document.getElementById("reveal").disabled = false;
+    document.getElementById("verdict").innerHTML =
+      `<b>${NAMES[metric]}</b> ranks its top pairs above. Notice what it cannot see — every metric is a theory of why ties form. `+
+      `Now reveal the future and count the hits.`;
+  });
+
+  document.getElementById("reveal").addEventListener("click", ()=>{
+    if(!scored) return;
+    revealed = true;
+    const ranked = scores(metric);
+    renderList(ranked);
+    draw();
+    const top3 = ranked.slice(0,3);
+    const hits = top3.filter(r=>r.future).length;
+    document.getElementById("mHits").textContent = hits+" / 3";
+    const v = document.getElementById("verdict");
+    if(hits===3)
+      v.innerHTML = `<b>Three for three.</b> ${NAMES[metric]} saw the future — structure leaked everything. `+
+        `But remember: we held ties out <i>at random</i>. Real prediction splits by time, and the past is a less honest mirror.`;
+    else if(hits===2)
+      v.innerHTML = `<b>Two of three.</b> A good metric, an imperfect oracle. The missed tie is the lesson: `+
+        `every score encodes one theory of attachment, and reality keeps more than one book.`;
+    else if(hits===1)
+      v.innerHTML = `<b>One of three.</b> Topology helps, but the future is not a shadow of the present. `+
+        `This is why learned methods — node2vec, GNNs — combine many structural signals instead of trusting one.`;
+    else
+      v.innerHTML = `<b>Blind this round.</b> Even honest structure rarely predicts a specific dyad. `+
+        `Report that null proudly: knowing what cannot be predicted is what separates science from horoscopes.`;
+  });
+
+  document.getElementById("newround").addEventListener("click", newRound);
+
+  newRound();
+})();
+</script>
+</body>
+</html>
