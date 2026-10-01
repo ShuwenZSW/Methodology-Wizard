@@ -151,7 +151,7 @@
   .maplegend i{width:18px;height:3px;border-radius:2px}
 
   /* ---- guide cards ---- */
-  .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .trio{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
   .gcard{
     display:block;text-decoration:none;color:inherit;position:relative;
     background:var(--paper);border:1px solid var(--line);border-radius:10px;
@@ -164,6 +164,7 @@
   .gcard.g1 .stripe{background:linear-gradient(90deg,var(--gold),var(--qual) 55%,var(--quant))}
   .gcard.g2 .stripe{background:linear-gradient(90deg,var(--mixed),var(--gold) 55%,var(--qual))}
   .gcard.g3 .stripe{background:linear-gradient(90deg,var(--quant),var(--mixed) 55%,var(--gold))}
+  .gcard.g4 .stripe{background:linear-gradient(90deg,var(--gold),var(--quant) 55%,var(--mixed))}
   .gcard h3{font-family:Georgia,"Times New Roman",serif;font-size:19px;font-weight:400;margin-bottom:3px}
   .gcard .cnt{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
   .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
@@ -270,6 +271,15 @@
         <div class="cnt">No. 3 · Case Study Research</div>
         <div class="chips">
           <span>Case selection</span><span>Mill's methods</span><span>Process tracing</span><span>Comparison</span><span>fsQCA</span><span>Nested analysis</span>
+        </div>
+        <div class="go">Read the guide</div>
+      </a>
+      <a class="gcard g4" href="policy-networks/index.html">
+        <span class="stripe"></span>
+        <h3>A Field Guide to Policy Networks</h3>
+        <div class="cnt">No. 4 · Social Network Analysis in PA</div>
+        <div class="chips">
+          <span>Policy networks</span><span>Governance networks</span><span>Hollow state</span><span>ICA framework</span><span>Brokerage</span><span>ERGM in policy networks</span><span>Network effectiveness</span>
         </div>
         <div class="go">Read the guide</div>
       </a>
