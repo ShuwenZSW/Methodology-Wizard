@@ -621,12 +621,18 @@ addEventListener("resize", ()=>fitView(false));
   root.children.forEach(t => t.collapsed = false);
   refresh();
   setTimeout(() => {
+    if(target.children.length){ target.collapsed = false; refresh(); }
     const k = Math.max(0.8, Math.min(1.15, view.k));
     view.k = k;
     view.x = innerWidth * 0.55 - (target.x + target.w * 0.5) * k;
     view.y = innerHeight * 0.5 - target.y * k;
     applyView(true);
-    showMethodPanel(target);
+    if(target.children.length){
+      const g = nodeEls.get(target.id);
+      if(g){ g.classList.add("selected"); selectedNode = g; }
+    } else {
+      showMethodPanel(target);
+    }
   }, 1500);
 })();
 </script>
