@@ -48,7 +48,7 @@
 
   .wrap{
     position:relative;z-index:1;max-width:900px;margin:0 auto;
-    padding:72px 32px 90px;
+    padding:118px 32px 90px;
     animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) .1s backwards;
   }
   @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -184,15 +184,54 @@
   footer a:hover{color:var(--ink)}
 
   @media (max-width:760px){
-    .wrap{padding:48px 20px 60px}
+    .wrap{padding:96px 20px 60px}
     h1{font-size:36px}
     .cards,.cards.two{grid-template-columns:1fr}
     .principal{flex-direction:column}
     .compass{display:none}
   }
+
+  /* ---- global top navigation ---- */
+  .topnav{position:fixed;top:0;left:0;right:0;z-index:60;
+    background:rgba(246,241,231,.72);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid rgba(221,211,191,.7)}
+  .tn-inner{max-width:1020px;margin:0 auto;padding:0 24px;height:46px;
+    display:flex;align-items:center;gap:28px}
+  .tn-brand{font-family:Georgia,"Times New Roman",serif;font-size:15.5px;color:var(--ink);
+    text-decoration:none;letter-spacing:.01em;white-space:nowrap}
+  .tn-brand:hover{color:var(--gold)}
+  .tn-links{display:flex;gap:24px;margin-left:auto;align-items:center}
+  .tn-links a{font-size:12px;letter-spacing:.05em;color:var(--muted);text-decoration:none;
+    transition:color .18s;position:relative;white-space:nowrap}
+  .tn-links a:hover{color:var(--ink)}
+  .tn-links a.on{color:var(--ink);font-weight:600}
+  .tn-links a.on::after{content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+    width:4px;height:4px;border-radius:50%;background:var(--gold)}
+  @media (max-width:760px){
+    .tn-inner{gap:14px;padding:0 16px}
+    .tn-links{gap:13px;overflow-x:auto;scrollbar-width:none}
+    .tn-links::-webkit-scrollbar{display:none}
+    .tn-links a{font-size:11px}
+  }
 </style>
 </head>
 <body>
+
+<nav class="topnav">
+  <div class="tn-inner">
+    <a class="tn-brand" href="../index.html">Tiny Atlas</a>
+    <div class="tn-links">
+      <a href="../methods/index.html">Methodology</a>
+      <a href="../pa/index.html">Public Administration</a>
+      <a href="../guides/index.html">Field Guides</a>
+      <a href="../team/index.html" class="on">Team</a>
+      <a href="../index.html#feedback">Feedback</a>
+    </div>
+  </div>
+</nav>
+
 
 <svg id="dots"></svg>
 
@@ -201,7 +240,6 @@
 <div class="wrap">
 
   <header>
-    <a class="home-btn" href="../index.html">← Atlas Home</a>
     <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
       <circle class="ring1" cx="50" cy="50" r="47"/>
       <circle class="ring2" cx="50" cy="50" r="40"/>

@@ -60,7 +60,7 @@
 
   /* ---- header ---- */
   header{
-    position:fixed;top:34px;left:40px;z-index:10;pointer-events:none;
+    position:fixed;top:66px;left:40px;z-index:10;pointer-events:none;
     animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .7s backwards;
   }
   header .kicker{
@@ -98,13 +98,13 @@
 
   /* ---- logo ---- */
   #logo{
-    position:fixed;top:34px;right:40px;z-index:10;height:40px;width:auto;
+    position:fixed;top:66px;right:40px;z-index:10;height:40px;width:auto;
     animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .8s backwards;
   }
 
   /* ---- controls ---- */
   #controls{
-    position:fixed;top:92px;right:40px;z-index:10;display:flex;gap:8px;
+    position:fixed;top:124px;right:40px;z-index:10;display:flex;gap:8px;
     animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .9s backwards;
   }
   #controls button{
@@ -157,15 +157,54 @@
   .link.hl{stroke-width:2.2 !important}
 
   @media (max-width:820px){
-    header{left:20px;top:20px}
+    header{left:20px;top:58px}
     header h1{font-size:21px}
     #legend{left:20px;bottom:20px}
-    #controls{right:20px;top:20px}
+    #controls{right:20px;top:58px}
     #zoom{right:20px;bottom:20px}
+  }
+
+  /* ---- global top navigation ---- */
+  .topnav{position:fixed;top:0;left:0;right:0;z-index:60;
+    background:rgba(246,241,231,.72);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid rgba(221,211,191,.7)}
+  .tn-inner{max-width:1020px;margin:0 auto;padding:0 24px;height:46px;
+    display:flex;align-items:center;gap:28px}
+  .tn-brand{font-family:Georgia,"Times New Roman",serif;font-size:15.5px;color:var(--ink);
+    text-decoration:none;letter-spacing:.01em;white-space:nowrap}
+  .tn-brand:hover{color:var(--gold)}
+  .tn-links{display:flex;gap:24px;margin-left:auto;align-items:center}
+  .tn-links a{font-size:12px;letter-spacing:.05em;color:var(--muted);text-decoration:none;
+    transition:color .18s;position:relative;white-space:nowrap}
+  .tn-links a:hover{color:var(--ink)}
+  .tn-links a.on{color:var(--ink);font-weight:600}
+  .tn-links a.on::after{content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+    width:4px;height:4px;border-radius:50%;background:var(--gold)}
+  @media (max-width:760px){
+    .tn-inner{gap:14px;padding:0 16px}
+    .tn-links{gap:13px;overflow-x:auto;scrollbar-width:none}
+    .tn-links::-webkit-scrollbar{display:none}
+    .tn-links a{font-size:11px}
   }
 </style>
 </head>
 <body>
+
+<nav class="topnav">
+  <div class="tn-inner">
+    <a class="tn-brand" href="../index.html">Tiny Atlas</a>
+    <div class="tn-links">
+      <a href="../methods/index.html" class="on">Methodology</a>
+      <a href="../pa/index.html">Public Administration</a>
+      <a href="../guides/index.html">Field Guides</a>
+      <a href="../team/index.html">Team</a>
+      <a href="../index.html#feedback">Feedback</a>
+    </div>
+  </div>
+</nav>
+
 
 <svg id="dots"></svg>
 <svg id="grain" aria-hidden="true"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#gr)"/></svg>
@@ -178,7 +217,6 @@
   <h1>Methodology List <em>in</em> Social Sciences</h1>
   <div class="sub"><b>Shuwen Zhang, Ph.D.</b> · shuwenzhang@um.edu.mo · ReGovNet Research Group</div>
   <div class="sub" style="margin-top:4px;color:var(--faint)">3 paradigms · 16 categories · 72 methods — click nodes to explore</div>
-  <div class="sub" style="margin-top:8px"><a class="home-btn" href="../index.html">← Atlas Home</a>&nbsp;&nbsp;<a class="sister" href="../pa/index.html">→ Public Administration Theories &amp; Research Topics</a></div>
 </header>
 
 <div id="controls">
