@@ -8,10 +8,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
-<meta name="description" content="The Tiny Atlas field guides as one expedition map: three trails — Networks, Causes, Cases — from foundations to frontier, with cross-trails where they meet.">
+<meta name="description" content="The Tiny Atlas field guides as one expedition map: three trails — Networks, Causes, Cases — from foundations to frontier, a gold spur past Frontier Camp into applied territory (Policy Networks, Network Intelligence), and cross-trails where they meet.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="The Expedition · Tiny Atlas Field Guides">
-<meta property="og:description" content="Three guided trails — Networks, Causes, Cases — drawn as one interactive learning map. Hover a waypoint to preview a step; follow a trail to its guide.">
+<meta property="og:description" content="Five guided trails — Networks, Causes, Cases, then the applied frontier of Policy Networks and Network Intelligence — drawn as one interactive expedition map. Hover a waypoint to preview a step; follow a trail to its guide.">
 <meta property="og:image" content="https://shuwenzsw.github.io/Methodology-Wizard/assets/og-cover.png">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -222,24 +222,28 @@
     <h1>The <em>Expedition</em></h1>
     <div class="tagline">
       Three trails, one map. <b>Networks</b>, <b>Causes</b>, and <b>Cases</b> each climb from
-      foundations to a frontier — and they cross where real research needs both.
+      foundations to a frontier — crossing where real research needs both. Past the
+      <b>Frontier Camp</b> the trails turn applied: networks that govern, networks that learn.
       Hover any waypoint to preview the step; click a summit to open its guide.
     </div>
   </header>
 
   <section>
     <span class="num">The Map</span>
-    <h2>Three Trails from the Trailhead</h2>
+    <h2>Three Trails and a Frontier Branch</h2>
     <div class="lead">
       Every guide walks the same rhythm: <b>foundations first, then a path of models or
-      designs, then a frontier</b>. The dashed arcs mark where trails lean on each other.
+      designs, then a frontier</b>. The dashed arcs mark where trails lean on each other;
+      the gold spur past <b>Frontier Camp</b> is where method turns into application.
     </div>
     <div class="mapcard">
-      <svg id="expedition" viewBox="0 0 960 620"></svg>
+      <svg id="expedition" viewBox="0 0 960 720"></svg>
       <div class="maplegend">
         <span><i style="background:#0e7d66"></i>No. 1 · Networks</span>
         <span><i style="background:#c8501f"></i>No. 2 · Causes</span>
         <span><i style="background:#3a4fd0"></i>No. 3 · Cases</span>
+        <span><i style="background:#b8892e"></i>No. 4 · Policy Networks</span>
+        <span><i style="background:#7c5cbf"></i>No. 5 · Network Intelligence</span>
       </div>
     </div>
   </section>
@@ -420,6 +424,75 @@
     const g = el("g", {class:"summit"});
     const ring = el("circle", {class:"ring", cx:tr.end[0], cy:tr.end[1], r:16, stroke:tr.color}, g);
     const core = el("circle", {class:"core", cx:tr.end[0], cy:tr.end[1], r:9, fill:tr.color}, g);
+    const lab = el("text", {class:"sumlab", x:tr.end[0], y:tr.end[1]-26, "text-anchor":"middle"}, g);
+    lab.textContent = tr.name;
+    const sub = el("text", {class:"sumsub", x:tr.end[0], y:tr.end[1]+30, "text-anchor":"middle", fill:tr.color}, g);
+    sub.textContent = tr.frontier;
+    const go = el("text", {class:"sumgo", x:tr.end[0], y:tr.end[1]+43, "text-anchor":"middle"}, g);
+    go.textContent = tr.sub + " →";
+    g.style.cursor = "pointer";
+    g.addEventListener("click", () => location.href = tr.href);
+    g.addEventListener("pointermove", e => {
+      tip.style.display="block";
+      tip.style.left=(e.clientX+14)+"px"; tip.style.top=(e.clientY+14)+"px";
+      tip.innerHTML = `<b>${tr.sub}</b><br>A Field Guide to ${tr.name}<br><span style="color:#b8a87e">open guide →</span>`;
+    });
+    g.addEventListener("pointerleave", () => tip.style.display="none");
+  });
+
+  /* frontier branch: a gold road below the method trails, from trailhead to applications */
+  const CAMP = [280, 600];
+  const FTRAILS = [
+    { color:"#b8892e", name:"Policy Networks", sub:"Field Guide No. 4", href:"policy-networks/index.html",
+      end:[520,624], frontier:"SNA in Public Administration", labAbove:true,
+      steps:[["Policy networks","where networks govern"],["ERGM in the wild","closure under risk"]]},
+    { color:"#7c5cbf", name:"Network Intelligence", sub:"Field Guide No. 5", href:"ai-networks/index.html",
+      end:[820,672], frontier:"AI × SNA", labAbove:false,
+      steps:[["Link prediction","score the tie that forms next"],["GNN & embeddings","the graph computes"]]},
+  ];
+
+  /* gold road: trailhead -> camp */
+  const roadPts = cubic(START, [115,440], [195,555], CAMP, 120);
+  let road = `M${roadPts[0][0]} ${roadPts[0][1]}`;
+  for(let i=1;i<roadPts.length;i+=4) road += ` L${roadPts[i][0].toFixed(1)} ${roadPts[i][1].toFixed(1)}`;
+  el("path", {class:"trail", d:road, stroke:"#b8892e", opacity:.75});
+  const rp = roadPts[Math.round(0.45*(roadPts.length-1))];
+  const rl = el("text", {class:"wpl", x:rp[0]+6, y:rp[1]-10, "text-anchor":"middle"});
+  rl.textContent = "the application road";
+  /* camp marker */
+  el("circle", {class:"thring", cx:CAMP[0], cy:CAMP[1], r:11});
+  el("circle", {class:"thdot", cx:CAMP[0], cy:CAMP[1], r:5, fill:"#b8892e"});
+  const cl2 = el("text", {class:"sumsub", x:CAMP[0], y:CAMP[1]+27, "text-anchor":"middle", fill:"#b8892e"});
+  cl2.textContent = "Frontier Camp";
+  const ct = el("text", {class:"sumlab", x:CAMP[0], y:CAMP[1]-19, "text-anchor":"middle", "font-size":"12"});
+  ct.textContent = "Applications";
+
+  FTRAILS.forEach(tr => {
+    const midY = (CAMP[1]+tr.end[1])/2;
+    const pts = cubic(CAMP, [CAMP[0]+120, midY-14], [tr.end[0]-160, midY], tr.end, 120);
+    let dPath = `M${pts[0][0]} ${pts[0][1]}`;
+    for(let i=1;i<pts.length;i+=4) dPath += ` L${pts[i][0].toFixed(1)} ${pts[i][1].toFixed(1)}`;
+    el("path", {class:"trail", d:dPath, stroke:tr.color, opacity:.75});
+    const n = tr.steps.length;
+    tr.steps.forEach((st, i) => {
+      const t = (i+0.9)/(n+0.6);
+      const p = pts[Math.round(t*(pts.length-1))];
+      const c = el("circle", {class:"wp", cx:p[0], cy:p[1], r:4, stroke:tr.color});
+      c.addEventListener("pointermove", e => {
+        tip.style.display="block";
+        tip.style.left=(e.clientX+14)+"px"; tip.style.top=(e.clientY+14)+"px";
+        tip.innerHTML = `<b>${tr.name} · ${st[0]}</b><br>${st[1]}<br><span style="color:#b8a87e">open guide →</span>`;
+      });
+      c.addEventListener("pointerleave", () => tip.style.display="none");
+      c.addEventListener("click", () => location.href = tr.href);
+      const ty = p[1] + (tr.labAbove ? -13 : 21);
+      const lab = el("text", {class:"wpl", x:p[0], y:ty, "text-anchor":"middle"});
+      lab.innerHTML = `<tspan>${st[0]}</tspan>`;
+    });
+    /* summit flag */
+    const g = el("g", {class:"summit"});
+    el("circle", {class:"ring", cx:tr.end[0], cy:tr.end[1], r:16, stroke:tr.color}, g);
+    el("circle", {class:"core", cx:tr.end[0], cy:tr.end[1], r:9, fill:tr.color}, g);
     const lab = el("text", {class:"sumlab", x:tr.end[0], y:tr.end[1]-26, "text-anchor":"middle"}, g);
     lab.textContent = tr.name;
     const sub = el("text", {class:"sumsub", x:tr.end[0], y:tr.end[1]+30, "text-anchor":"middle", fill:tr.color}, g);
