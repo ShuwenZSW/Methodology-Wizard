@@ -293,6 +293,51 @@
     .tn-links::-webkit-scrollbar{display:none}
     .tn-links a{font-size:11px}
   }
+
+  /* ============ Tiny Atlas v2 · Apple-modern theme ============ */
+  :root{
+    --bg:#f7f6f2;
+    --paper:#ffffff;
+    --ink:#1d1d1f;
+    --muted:#6e6e73;
+    --faint:#a1a1a6;
+    --line:#e7e5df;
+  }
+  body{background:var(--bg)}
+  ::selection{background:rgba(184,137,46,.2)}
+  /* quiet surfaces: dotted paper & grain retired */
+  #dots,#grain{display:none}
+  /* typography: tighter, calmer */
+  h1{font-size:52px;letter-spacing:-.03em;line-height:1.06}
+  h1.hero-title{font-size:68px}
+  h1::after{display:none}
+  .tagline::first-letter{font-family:inherit;font-size:inherit;float:none;line-height:inherit;padding:0;color:inherit}
+  section{margin-bottom:64px}
+  section h2{font-size:24px;letter-spacing:-.015em}
+  .lead{font-size:14px}
+  /* surfaces: white cards, generous radius, soft layered shadows */
+  .concept,.measure,.panel,.model,.play,.map-card,.gcard,.tile,.card,.principal,.expedition{
+    border-radius:16px;
+    box-shadow:0 1px 2px rgba(0,0,0,.04),0 10px 30px -22px rgba(0,0,0,.12);
+  }
+  .principal{box-shadow:0 24px 56px -32px rgba(0,0,0,.22)}
+  .concept:hover,.measure:hover,.model:hover,.map-card:hover,.gcard:hover,.card:hover{
+    box-shadow:0 28px 56px -28px rgba(0,0,0,.2);
+  }
+  .tile{border-radius:22px}
+  /* vintage corner ticks retired */
+  .concept::before,.concept::after,.measure::before,.measure::after,.panel::before,.panel::after{display:none}
+  /* buttons & fields: clean pills, focus rings */
+  .home-btn,.play button,.fb button{border-radius:999px}
+  .fb select,.fb input,.fb textarea{background:#fff;border-radius:10px}
+  .fb select:focus,.fb input:focus,.fb textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,137,46,.15)}
+  /* model path: calmer rail */
+  .path{border-left:2px solid var(--line)}
+  /* frosted nav on the new ground */
+  .topnav{background:rgba(247,246,242,.78);border-bottom:1px solid rgba(231,229,223,.85)}
+  /* map-page chrome */
+  #controls button,#zoom button{border-radius:999px}
+  #panel{border-radius:18px;box-shadow:0 28px 70px -34px rgba(0,0,0,.35)}
 </style>
 </head>
 <body>
