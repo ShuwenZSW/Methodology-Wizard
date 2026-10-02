@@ -339,6 +339,26 @@
   /* map-page chrome */
   #controls button,#zoom button{border-radius:999px}
   #panel{border-radius:18px;box-shadow:0 28px 70px -34px rgba(0,0,0,.35)}
+
+  /* ---- nav v3: grouped dropdowns ---- */
+  .tn-item{position:relative}
+  .tn-parent{display:inline-flex;align-items:center;gap:5px;cursor:default}
+  .tn-parent .caret{opacity:.55;transition:transform .2s ease}
+  .tn-item:hover .caret,.tn-item:focus-within .caret{transform:rotate(180deg)}
+  .tn-drop{position:absolute;top:calc(100% + 12px);left:50%;transform:translate(-50%,6px);
+    min-width:258px;background:#fff;border:1px solid var(--line);border-radius:14px;
+    box-shadow:0 24px 60px -24px rgba(0,0,0,.25);padding:8px;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .18s ease,transform .18s ease,visibility .18s}
+  .tn-item:hover .tn-drop,.tn-item:focus-within .tn-drop{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0)}
+  .tn-drop::before{content:"";position:absolute;top:-12px;left:0;right:0;height:12px}
+  .tn-drop a{display:flex;flex-direction:column;gap:2px;padding:9px 12px;border-radius:9px;text-decoration:none}
+  .tn-drop a:hover{background:rgba(184,137,46,.08)}
+  .tn-drop a b{font-size:12.5px;font-weight:600;color:var(--ink);letter-spacing:0}
+  .tn-drop a i{font-style:normal;font-size:10.5px;color:var(--faint);letter-spacing:.02em}
+  .tn-parent.on{color:var(--ink);font-weight:600}
+  .tn-parent.on::after{content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+    width:4px;height:4px;border-radius:50%;background:var(--gold)}
 </style>
 </head>
 <body>
@@ -347,9 +367,26 @@
   <div class="tn-inner">
     <a class="tn-brand" href="../../index.html">Tiny Atlas</a>
     <div class="tn-links">
-      <a href="../../methods/index.html">Methodology</a>
-      <a href="../../pa/index.html">Public Administration</a>
-      <a href="../../guides/index.html" class="on">Field Guides</a>
+      <div class="tn-item">
+        <span class="tn-parent" tabindex="0">Maps<svg class="caret" viewBox="0 0 10 6" width="9" height="5" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+        <div class="tn-drop">
+          <a href="../../methods/index.html"><b>Methodology List in Social Sciences</b><i>72 methods · 3 paradigms</i></a>
+          <a href="../../pa/index.html"><b>Public Administration Theories</b><i>36 theories · 3 schools</i></a>
+        </div>
+      </div>
+      <div class="tn-item">
+        <span class="tn-parent on" tabindex="0">Field Guides<svg class="caret" viewBox="0 0 10 6" width="9" height="5" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+        <div class="tn-drop">
+          <a href="../../guides/index.html"><b>The Expedition — Overview</b><i>all seven guides on one trail map</i></a>
+          <a href="../../guides/measurement/index.html"><b>No. 0 · Measurement &amp; Data Collection</b><i>the base camp</i></a>
+          <a href="../../guides/sna/index.html"><b>No. 1 · Networks</b><i>centrality to ERGM</i></a>
+          <a href="../../guides/causal-inference/index.html"><b>No. 2 · Causes</b><i>identification designs</i></a>
+          <a href="../../guides/cases/index.html"><b>No. 3 · Cases</b><i>process tracing · fsQCA</i></a>
+          <a href="../../guides/policy-networks/index.html"><b>No. 4 · Policy Networks</b><i>SNA in Public Administration</i></a>
+          <a href="../../guides/ai-networks/index.html"><b>No. 5 · Network Intelligence</b><i>AI × networks</i></a>
+          <a href="../../guides/regional-governance/index.html"><b>No. 6 · Regional Governance</b><i>polycentricity &amp; scale</i></a>
+        </div>
+      </div>
       <a href="../../team/index.html">Team</a>
       <a href="../../index.html#feedback">Feedback</a>
     </div>
