@@ -275,10 +275,10 @@
   }
 
   /* ---- showcase tiles ---- */
-  .showcase{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:46px}
+  .showcase{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:46px}
   .tile{position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;
     border-radius:20px;border:1px solid var(--line);background:var(--paper);
-    padding:30px 26px 26px;min-height:292px;
+    padding:30px 26px 64px;min-height:250px;
     transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s ease,border-color .3s}
   .tile:hover{transform:translateY(-6px);border-color:rgba(184,137,46,.6);
     box-shadow:0 34px 64px -32px rgba(26,23,18,.4)}
@@ -288,6 +288,7 @@
   .tile.t1 .orb{background:radial-gradient(circle at 35% 35%, rgba(14,125,102,.5), rgba(62,79,208,.4) 55%, rgba(200,80,31,.35))}
   .tile.t2 .orb{background:radial-gradient(circle at 35% 35%, rgba(62,79,208,.45), rgba(200,80,31,.38) 55%, rgba(184,137,46,.4))}
   .tile.t3 .orb{background:radial-gradient(circle at 35% 35%, rgba(184,137,46,.5), rgba(42,157,143,.42) 60%, rgba(14,125,102,.35))}
+  .tile.t4 .orb{background:radial-gradient(circle at 35% 35%, rgba(124,92,191,.48), rgba(74,101,114,.42) 55%, rgba(58,79,208,.35))}
   .tile .cnt{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
   .tile h2{font-family:Georgia,"Times New Roman",serif;font-size:23px;font-weight:400;
     line-height:1.2;letter-spacing:-.01em;margin-bottom:10px}
@@ -465,6 +466,7 @@
         <div class="tn-drop">
           <a href="methods/index.html"><b>Methodology List in Social Sciences</b><i>72 methods · 3 paradigms</i></a>
           <a href="pa/index.html"><b>Public Administration Theories</b><i>36 theories · 3 schools</i></a>
+          <a href="measure/index.html"><b>Measurement &amp; Data Collection</b><i>35 concepts · 7 branches</i></a>
         </div>
       </div>
       <div class="tn-item">
@@ -499,8 +501,8 @@
     <div class="kicker">ReGovNet Research Group · Tiny Atlas</div>
     <h1 class="hero-title">Tiny <em>Atlas</em></h1>
     <div class="tagline">
-      Small maps of big fields. <b>Two interactive maps</b> — research methodology and
-      Public Administration theory — plus <b>seven field guides</b> with hands-on
+      Small maps of big fields. <b>Three interactive maps</b> — research methodology,
+      Public Administration theory, and measurement — plus <b>seven field guides</b> with hands-on
       laboratories. An open atlas, continuously corrected by its readers.
     </div>
     <div class="byline">
@@ -526,7 +528,15 @@
          frameworks, and links into the methodology map.</p>
       <span class="go">Enter the map</span>
     </a>
-    <a class="tile t3" href="guides/">
+    <a class="tile t3" href="measure/index.html">
+      <span class="orb"></span>
+      <div class="cnt">Measurement Map</div>
+      <h2>Measurement &amp;<br>Data Collection</h2>
+      <p>35 concepts across seven branches — scales, validity, reliability, error and bias,
+         data sources, sampling, and cross-context comparability.</p>
+      <span class="go">Enter the map</span>
+    </a>
+    <a class="tile t4" href="guides/">
       <span class="orb"></span>
       <div class="cnt">Field Guides</div>
       <h2>The Expedition —<br>Seven Guides &amp; Laboratories</h2>

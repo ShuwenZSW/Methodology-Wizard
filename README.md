@@ -10,6 +10,7 @@ never go stale.
 | **Home** | Group introduction, map entries, community feedback box | https://shuwenzsw.github.io/Methodology-Wizard/ |
 | **Methodology Map** | 3 paradigms · 16 categories · 72 methods, each with an adoption card (when to use, data, assumptions, skill, priority) | https://shuwenzsw.github.io/Methodology-Wizard/methods/ |
 | **Public Administration Map** | 3 schools · 9 branches · 36 theories, each with a canon card (core proposition, key concepts, founders, classic readings, frameworks, research-design guide) — supports `?t=` deep links | https://shuwenzsw.github.io/Methodology-Wizard/pa/ |
+| **Measurement Map** | 7 branches · 35 concepts — scales of measurement, validity, reliability, error & bias, data sources, sampling & coverage, comparability — each with a canon card (core proposition, key concepts, founders, classic readings, frameworks, research-design guide) — supports `?t=` deep links | https://shuwenzsw.github.io/Methodology-Wizard/measure/ |
 | **Team** | The ReGovNet Research Group — regional governance, governance networks, interlocal management; methodological strengths in causal inference and social network analysis; led by Shuwen Zhang | https://shuwenzsw.github.io/Methodology-Wizard/team/ |
 | **Field Guides overview** | "The Expedition" — the seven guides' model paths drawn as one interactive trail map, with a measurement base camp, cross-trail arcs, a frontier branch, and guide cards | https://shuwenzsw.github.io/Methodology-Wizard/guides/ |
 | **Field Guide No. 0: Measurement** | Measurement & data collection as base camp — constructs and operationalization, Stevens's scale levels, validity and reliability, sampling and coverage, invariance, the model path (construct → indicators → collection → reliability & validity → invariance → documentation), an interactive Reliability Lab on attenuation, software, datasets, and the canon | https://shuwenzsw.github.io/Methodology-Wizard/guides/measurement/ |
@@ -46,11 +47,15 @@ never go stale.
 | `pa/data_pa.py` | All content: `TREE` (theory hierarchy) + `PROFILES` (theory cards) | Yes — content lives here |
 | `pa/build_pa.py` | Generator: validates data, injects both maps' data, emits method-name table for cross-links | No |
 | `pa/template_pa.html` | Map page template (design + panel + linkifier) | Only for design changes |
+| `measure/` | Measurement & Data Collection map site | |
+| `measure/data_measure.py` | All content: `TREE` (concept hierarchy) + `PROFILES` (concept cards) | Yes — content lives here |
+| `measure/build_measure.py` | Generator: validates data, injects both maps' data, emits method-name table for cross-links | No |
+| `measure/template_me.html` | Map page template (design + panel + linkifier) | Only for design changes |
 | `logo.png` | Research group logo, shared by all pages | Replace the file to update |
 | `assets/` | Tiny Atlas brand assets: `favicon.svg` + PNG icons, `og-cover.png` share card, `gen_brand.py` generator | Regenerate with `python assets/gen_brand.py` |
 
-Generated files `methods/index.html` and `pa/index.html` are **never** edited by
-hand — they are rebuilt from the data files on every change.
+Generated files `methods/index.html`, `pa/index.html`, and `measure/index.html` are
+**never** edited by hand — they are rebuilt from the data files on every change.
 
 ---
 
@@ -69,14 +74,21 @@ Required fields: `use` (core proposition), `explain`, `concepts` (list),
 `founders`, `classics` (list), `frameworks` (list), `apply` (research-design
 guide).
 
+### Concept cards (`measure/data_measure.py`)
+
+One profile per leaf node in `TREE`, same seven-field structure as theory
+cards: `use`, `explain`, `concepts`, `founders`, `classics`, `frameworks`,
+`apply`. The seven branch nodes carry a `color` key that maps into the
+`COLORS` table in `measure/template_me.html`.
+
 ### Method cross-links
 
-The `apply` text of theory cards is auto-linkified: any mention of a method
-node from the methodology map (plus the aliases in `METHOD_ALIASES` inside
-`pa/build_pa.py`, e.g. `fsQCA`, `RCTs`, `vignette`) becomes a clickable link
-that opens the methodology map at that method's card
-(`methods/index.html?m=<name>`). To add or adjust aliases, edit
-`METHOD_ALIASES` in `pa/build_pa.py`.
+The `apply` text of theory and concept cards is auto-linkified: any mention of
+a method node from the methodology map (plus the aliases in `METHOD_ALIASES`
+inside `pa/build_pa.py` / `measure/build_measure.py`, e.g. `fsQCA`, `RCTs`,
+`IRT`) becomes a clickable link that opens the methodology map at that
+method's card (`methods/index.html?m=<name>`). To add or adjust aliases, edit
+`METHOD_ALIASES` in the respective build script.
 
 ---
 
