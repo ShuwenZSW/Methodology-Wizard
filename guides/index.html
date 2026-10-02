@@ -8,10 +8,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
-<meta name="description" content="The Tiny Atlas field guides as one expedition map: three trails — Networks, Causes, Cases — from foundations to frontier, a gold spur past Frontier Camp into applied territory (Policy Networks, Network Intelligence, Regional Governance), and cross-trails where they meet.">
+<meta name="description" content="The Tiny Atlas field guides as one expedition map: a Base Camp (Measurement & Data Collection, No. 0), three trails — Networks, Causes, Cases — from foundations to frontier, a gold spur past Frontier Camp into applied territory (Policy Networks, Network Intelligence, Regional Governance), and cross-trails where they meet.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="The Expedition · Tiny Atlas Field Guides">
-<meta property="og:description" content="Six guided trails — Networks, Causes, Cases, then the applied frontier of Policy Networks, Network Intelligence, and Regional Governance — drawn as one interactive expedition map. Hover a waypoint to preview a step; follow a trail to its guide.">
+<meta property="og:description" content="Seven guided trails — from the Measurement base camp through Networks, Causes, Cases, to the applied frontier of Policy Networks, Network Intelligence, and Regional Governance — drawn as one interactive expedition map. Hover a waypoint to preview a step; follow a trail to its guide.">
 <meta property="og:image" content="https://shuwenzsw.github.io/Methodology-Wizard/assets/og-cover.png">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -167,6 +167,8 @@
   .gcard.g4 .stripe{background:linear-gradient(90deg,var(--gold),var(--quant) 55%,var(--mixed))}
   .gcard.g5 .stripe{background:linear-gradient(90deg,var(--quant),var(--mixed) 45%,var(--gold))}
   .gcard.g6 .stripe{background:linear-gradient(90deg,var(--gold),#2a9d8f)}
+  .gcard.g0 .stripe{background:linear-gradient(90deg,#4a6572,var(--gold))}
+  .trio .gcard.g0{grid-column:1 / -1}
   .gcard h3{font-family:Georgia,"Times New Roman",serif;font-size:19px;font-weight:400;margin-bottom:3px}
   .gcard .cnt{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
   .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
@@ -221,25 +223,28 @@
     <div class="kicker">Tiny Atlas · Field Guides</div>
     <h1>The <em>Expedition</em></h1>
     <div class="tagline">
-      Three trails, one map. <b>Networks</b>, <b>Causes</b>, and <b>Cases</b> each climb from
-      foundations to a frontier — crossing where real research needs both. Past the
-      <b>Frontier Camp</b> the trails turn applied: networks that govern, networks that
-      learn, regions that choose how to organize. Hover any waypoint to preview the step;
-      click a summit to open its guide.
+      Three trails, one map — and a <b>Base Camp</b> beneath them all. <b>Networks</b>,
+      <b>Causes</b>, and <b>Cases</b> each climb from foundations to a frontier, crossing
+      where real research needs both. Past the <b>Frontier Camp</b> the trails turn
+      applied: networks that govern, networks that learn, regions that choose how to
+      organize. Hover any waypoint to preview the step; click a summit to open its guide.
     </div>
   </header>
 
   <section>
     <span class="num">The Map</span>
-    <h2>Three Trails and a Frontier Branch</h2>
+    <h2>From Base Camp: Three Trails and a Frontier Branch</h2>
     <div class="lead">
       Every guide walks the same rhythm: <b>foundations first, then a path of models or
-      designs, then a frontier</b>. The dashed arcs mark where trails lean on each other;
-      the gold spur past <b>Frontier Camp</b> is where method turns into application.
+      designs, then a frontier</b>. The <b>Base Camp</b> at the trailhead is measurement
+      itself — No. 0, where every expedition starts. The dashed arcs mark where trails
+      lean on each other; the gold spur past <b>Frontier Camp</b> is where method turns
+      into application.
     </div>
     <div class="mapcard">
       <svg id="expedition" viewBox="0 0 960 720"></svg>
       <div class="maplegend">
+        <span><i style="background:#4a6572"></i>No. 0 · Measurement</span>
         <span><i style="background:#0e7d66"></i>No. 1 · Networks</span>
         <span><i style="background:#c8501f"></i>No. 2 · Causes</span>
         <span><i style="background:#3a4fd0"></i>No. 3 · Cases</span>
@@ -255,6 +260,15 @@
     <h2>Pick a Trail</h2>
     <div class="lead">Each card lists its waypoints in order — the same steps you will meet on the map above.</div>
     <div class="trio">
+      <a class="gcard g0" href="measurement/index.html">
+        <span class="stripe"></span>
+        <h3>A Field Guide to Measurement &amp; Data Collection</h3>
+        <div class="cnt">No. 0 · The Base Camp</div>
+        <div class="chips">
+          <span>Constructs &amp; operationalization</span><span>Stevens's scales</span><span>Validity</span><span>Reliability &amp; α</span><span>Sampling &amp; coverage</span><span>CFA / IRT</span><span>Invariance</span><span>Reliability Lab</span>
+        </div>
+        <div class="go">Read the guide</div>
+      </a>
       <a class="gcard g1" href="sna/index.html">
         <span class="stripe"></span>
         <h3>A Field Guide to Networks</h3>
@@ -398,6 +412,46 @@
     (parent||svg).appendChild(e);
     return e;
   };
+
+  /* base camp: measurement underlies every trail */
+  const BASE = { color:"#4a6572", name:"Base Camp", sub:"Field Guide No. 0", href:"measurement/index.html",
+    at:[150,105], frontier:"Measurement & Data",
+    steps:[["Constructs & scales","what exists before data"],["Sampling & collection","who answers — and who doesn't"]] };
+  const basePts = cubic(BASE.at, [128,180], [106,248], START, 120);
+  let basePath = `M${basePts[0][0]} ${basePts[0][1]}`;
+  for(let i=1;i<basePts.length;i+=4) basePath += ` L${basePts[i][0].toFixed(1)} ${basePts[i][1].toFixed(1)}`;
+  el("path", {class:"trail", d:basePath, stroke:BASE.color, opacity:.75});
+  const bn = BASE.steps.length;
+  BASE.steps.forEach((st, i) => {
+    const t = (i+0.9)/(bn+0.6);
+    const p = basePts[Math.round(t*(basePts.length-1))];
+    const c = el("circle", {class:"wp", cx:p[0], cy:p[1], r:4, stroke:BASE.color});
+    c.addEventListener("pointermove", e => {
+      tip.style.display="block";
+      tip.style.left=(e.clientX+14)+"px"; tip.style.top=(e.clientY+14)+"px";
+      tip.innerHTML = `<b>${BASE.name} · ${st[0]}</b><br>${st[1]}<br><span style="color:#b8a87e">open guide →</span>`;
+    });
+    c.addEventListener("pointerleave", () => tip.style.display="none");
+    c.addEventListener("click", () => location.href = BASE.href);
+  });
+  const bg = el("g", {class:"summit"});
+  el("circle", {class:"thring", cx:BASE.at[0], cy:BASE.at[1], r:11}, bg);
+  el("circle", {class:"thdot", cx:BASE.at[0], cy:BASE.at[1], r:5, fill:BASE.color}, bg);
+  el("circle", {cx:BASE.at[0], cy:BASE.at[1], r:26, fill:"transparent"}, bg);
+  const blab = el("text", {class:"sumlab", x:BASE.at[0], y:BASE.at[1]-19, "text-anchor":"middle"}, bg);
+  blab.textContent = "Base Camp";
+  const bsub = el("text", {class:"sumsub", x:BASE.at[0], y:BASE.at[1]+27, "text-anchor":"middle", fill:BASE.color}, bg);
+  bsub.textContent = "Measurement & Data";
+  const bgo = el("text", {class:"sumgo", x:BASE.at[0], y:BASE.at[1]+40, "text-anchor":"middle"}, bg);
+  bgo.textContent = BASE.sub + " →";
+  bg.style.cursor = "pointer";
+  bg.addEventListener("click", () => location.href = BASE.href);
+  bg.addEventListener("pointermove", e => {
+    tip.style.display="block";
+    tip.style.left=(e.clientX+14)+"px"; tip.style.top=(e.clientY+14)+"px";
+    tip.innerHTML = `<b>${BASE.sub}</b><br>A Field Guide to Measurement &amp; Data Collection<br><span style="color:#b8a87e">open guide →</span>`;
+  });
+  bg.addEventListener("pointerleave", () => tip.style.display="none");
 
   /* trails + waypoints */
   TRAILS.forEach((tr, ti) => {
