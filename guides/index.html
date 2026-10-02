@@ -8,10 +8,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
-<meta name="description" content="The Tiny Atlas field guides as one expedition map: three trails — Networks, Causes, Cases — from foundations to frontier, a gold spur past Frontier Camp into applied territory (Policy Networks, Network Intelligence), and cross-trails where they meet.">
+<meta name="description" content="The Tiny Atlas field guides as one expedition map: three trails — Networks, Causes, Cases — from foundations to frontier, a gold spur past Frontier Camp into applied territory (Policy Networks, Network Intelligence, Regional Governance), and cross-trails where they meet.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="The Expedition · Tiny Atlas Field Guides">
-<meta property="og:description" content="Five guided trails — Networks, Causes, Cases, then the applied frontier of Policy Networks and Network Intelligence — drawn as one interactive expedition map. Hover a waypoint to preview a step; follow a trail to its guide.">
+<meta property="og:description" content="Six guided trails — Networks, Causes, Cases, then the applied frontier of Policy Networks, Network Intelligence, and Regional Governance — drawn as one interactive expedition map. Hover a waypoint to preview a step; follow a trail to its guide.">
 <meta property="og:image" content="https://shuwenzsw.github.io/Methodology-Wizard/assets/og-cover.png">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -166,7 +166,7 @@
   .gcard.g3 .stripe{background:linear-gradient(90deg,var(--quant),var(--mixed) 55%,var(--gold))}
   .gcard.g4 .stripe{background:linear-gradient(90deg,var(--gold),var(--quant) 55%,var(--mixed))}
   .gcard.g5 .stripe{background:linear-gradient(90deg,var(--quant),var(--mixed) 45%,var(--gold))}
-  .trio .gcard.g5{grid-column:1 / -1}
+  .gcard.g6 .stripe{background:linear-gradient(90deg,var(--gold),#2a9d8f)}
   .gcard h3{font-family:Georgia,"Times New Roman",serif;font-size:19px;font-weight:400;margin-bottom:3px}
   .gcard .cnt{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
   .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
@@ -223,8 +223,9 @@
     <div class="tagline">
       Three trails, one map. <b>Networks</b>, <b>Causes</b>, and <b>Cases</b> each climb from
       foundations to a frontier — crossing where real research needs both. Past the
-      <b>Frontier Camp</b> the trails turn applied: networks that govern, networks that learn.
-      Hover any waypoint to preview the step; click a summit to open its guide.
+      <b>Frontier Camp</b> the trails turn applied: networks that govern, networks that
+      learn, regions that choose how to organize. Hover any waypoint to preview the step;
+      click a summit to open its guide.
     </div>
   </header>
 
@@ -244,6 +245,7 @@
         <span><i style="background:#3a4fd0"></i>No. 3 · Cases</span>
         <span><i style="background:#b8892e"></i>No. 4 · Policy Networks</span>
         <span><i style="background:#7c5cbf"></i>No. 5 · Network Intelligence</span>
+        <span><i style="background:#2a9d8f"></i>No. 6 · Regional Governance</span>
       </div>
     </div>
   </section>
@@ -295,6 +297,15 @@
         <div class="cnt">No. 5 · AI × Social Network Analysis</div>
         <div class="chips">
           <span>Computational social science</span><span>Link prediction</span><span>node2vec &amp; embeddings</span><span>Graph neural networks</span><span>ML community detection</span><span>Synthetic networks</span><span>Network AI ethics</span>
+        </div>
+        <div class="go">Read the guide</div>
+      </a>
+      <a class="gcard g6" href="regional-governance/index.html">
+        <span class="stripe"></span>
+        <h3>A Field Guide to Regional Governance</h3>
+        <div class="cnt">No. 6 · Polycentricity &amp; Scale</div>
+        <div class="chips">
+          <span>The Tiebout Tradition</span><span>Metropolitan reform</span><span>Interlocal management</span><span>ICA &amp; scale</span><span>Multilevel governance</span><span>City-regions</span><span>Polycentricity Lab</span>
         </div>
         <div class="go">Read the guide</div>
       </a>
@@ -444,11 +455,14 @@
   const CAMP = [280, 600];
   const FTRAILS = [
     { color:"#b8892e", name:"Policy Networks", sub:"Field Guide No. 4", href:"policy-networks/index.html",
-      end:[520,624], frontier:"SNA in Public Administration", labAbove:true,
+      end:[470,640], frontier:"SNA in Public Administration",
       steps:[["Policy networks","where networks govern"],["ERGM in the wild","closure under risk"]]},
     { color:"#7c5cbf", name:"Network Intelligence", sub:"Field Guide No. 5", href:"ai-networks/index.html",
-      end:[820,672], frontier:"AI × SNA", labAbove:false,
+      end:[660,640], frontier:"AI × SNA",
       steps:[["Link prediction","score the tie that forms next"],["GNN & embeddings","the graph computes"]]},
+    { color:"#2a9d8f", name:"Regional Governance", sub:"Field Guide No. 6", href:"regional-governance/index.html",
+      end:[830,640], frontier:"Polycentricity & Scale",
+      steps:[["Polycentricity","ordered autonomy"],["Interlocal choice","cooperation under scale"]]},
   ];
 
   /* gold road: trailhead -> camp */
@@ -485,9 +499,7 @@
       });
       c.addEventListener("pointerleave", () => tip.style.display="none");
       c.addEventListener("click", () => location.href = tr.href);
-      const ty = p[1] + (tr.labAbove ? -13 : 21);
-      const lab = el("text", {class:"wpl", x:p[0], y:ty, "text-anchor":"middle"});
-      lab.innerHTML = `<tspan>${st[0]}</tspan>`;
+      /* frontier waypoints: dot + tooltip only, no text labels (keeps the three summits uncluttered) */
     });
     /* summit flag */
     const g = el("g", {class:"summit"});
