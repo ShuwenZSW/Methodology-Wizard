@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wellbeing Shelf · Tiny Atlas · ReGovNet Research Group</title>
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<meta name="description" content="An evidence-first shelf of practices for lowering stress and anxiety — for researchers and everyone else. Each remedy states its dose, its strength of evidence, and its citation.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Wellbeing Shelf · Tiny Atlas">
+<meta property="og:description" content="Ten remedies for stress and anxiety with real trial evidence behind them — dose, evidence tier, and citation on every card.">
+<meta property="og:image" content="https://shuwenzsw.github.io/Methodology-Wizard/assets/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    --bg:#f6f1e7;
+    --ink:#1a1712;
+    --muted:#6f6a5e;
+    --faint:#a89f8d;
+    --paper:#fffdf7;
+    --qual:#0e7d66;
+    --quant:#3a4fd0;
+    --mixed:#c8501f;
+    --line:#ddd3bf;
+    --gold:#b8892e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  ::selection{background:rgba(184,137,46,.25)}
+
+  #dots{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+  .wrap{
+    position:relative;z-index:1;max-width:960px;margin:0 auto;
+    padding:118px 32px 90px;
+    animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) .1s backwards;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---- header ---- */
+  header{margin-bottom:44px}
+  .kicker{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .kicker::before{content:"";width:34px;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+  h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:52px;font-weight:400;letter-spacing:-.02em;line-height:1.1;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(120deg,var(--qual),var(--quant) 55%,var(--mixed) 85%,var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1::after{
+    content:"";display:block;width:120px;height:3px;margin-top:18px;border-radius:2px;
+    background:linear-gradient(90deg,var(--gold),var(--mixed) 55%,var(--quant));
+  }
+  .tagline{margin-top:16px;font-size:15px;color:var(--muted);line-height:1.6;max-width:680px}
+  .tagline b{color:var(--ink);font-weight:600}
+
+  section{margin-bottom:48px}
+  section h2{
+    font-family:Georgia,"Times New Roman",serif;font-size:27px;font-weight:400;
+    margin-bottom:6px;
+  }
+  .lead{font-size:15.5px;line-height:1.65;color:var(--muted);max-width:680px;margin-bottom:24px}
+  .lead b{color:var(--ink);font-weight:600}
+
+  /* ---- care note ---- */
+  .care{
+    border:1px dashed var(--line);border-radius:14px;padding:18px 22px;
+    font-size:13.5px;line-height:1.65;color:var(--muted);background:var(--paper);
+    margin-bottom:44px;
+  }
+  .care b{color:var(--ink)}
+  .care a{color:var(--quant);text-decoration:none;border-bottom:1px dashed var(--quant)}
+
+  /* ---- group headings ---- */
+  .grp{margin-bottom:30px}
+  .grp-hd{display:flex;align-items:baseline;gap:14px;margin-bottom:16px}
+  .grp-hd .n{
+    font-family:Georgia,serif;font-size:15px;color:var(--gold);font-style:italic;
+  }
+  .grp-hd h3{
+    font-family:Georgia,"Times New Roman",serif;font-size:21px;font-weight:400;
+  }
+  .grp-hd .sub{font-size:12px;color:var(--faint);letter-spacing:.06em;margin-left:auto;text-transform:uppercase}
+
+  /* ---- remedy cards ---- */
+  .remedies{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .remedy{
+    position:relative;background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    padding:22px 24px 18px;
+    box-shadow:0 1px 2px rgba(0,0,0,.04),0 10px 30px -22px rgba(0,0,0,.12);
+    transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s ease;
+  }
+  .remedy:hover{transform:translateY(-3px);box-shadow:0 24px 48px -26px rgba(26,23,18,.3)}
+  .remedy h4{
+    font-family:Georgia,"Times New Roman",serif;font-size:18px;font-weight:400;
+    margin-bottom:8px;padding-right:88px;line-height:1.25;
+  }
+  .tier{
+    position:absolute;top:20px;right:20px;
+    font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    padding:3px 9px;border-radius:999px;
+  }
+  .tier.strong{color:var(--qual);border:1px solid var(--qual)}
+  .tier.moderate{color:var(--gold);border:1px solid var(--gold)}
+  .tier.emerging{color:var(--faint);border:1px solid var(--faint)}
+  .dose{
+    display:inline-block;font-size:10.5px;letter-spacing:.05em;color:var(--ink);
+    padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--bg);
+    margin-bottom:10px;
+  }
+  .remedy .what{font-size:13.5px;line-height:1.6;color:var(--muted);margin-bottom:12px}
+  .remedy .what b{color:var(--ink);font-weight:600}
+  .remedy .ev{
+    border-top:1px dashed var(--line);padding-top:10px;
+    font-size:11.5px;line-height:1.55;color:var(--muted);
+  }
+  .remedy .ev .lab{
+    font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
+    display:block;margin-bottom:4px;
+  }
+  .remedy .ev i{color:var(--ink);font-style:italic}
+
+  /* ---- suggest / footer ---- */
+  .join{
+    border:1px solid var(--line);border-radius:14px;padding:18px 22px;
+    font-size:13.5px;line-height:1.65;color:var(--muted);background:var(--paper);
+  }
+  .join b{color:var(--ink)}
+  .join a{color:var(--quant);text-decoration:none;border-bottom:1px dashed var(--quant)}
+  footer{
+    display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+    padding-top:22px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--faint);
+  }
+  footer a{color:var(--muted);text-decoration:none}
+  footer a:hover{color:var(--ink)}
+  .coords{letter-spacing:.14em;text-transform:uppercase;font-size:10px}
+
+  /* ---- global top navigation ---- */
+  .topnav{position:fixed;top:0;left:0;right:0;z-index:60;
+    background:rgba(247,246,242,.78);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid rgba(231,229,223,.85)}
+  .tn-inner{max-width:1020px;margin:0 auto;padding:0 24px;height:46px;
+    display:flex;align-items:center;gap:28px}
+  .tn-brand{font-family:Georgia,"Times New Roman",serif;font-size:17px;color:var(--ink);
+    text-decoration:none;letter-spacing:.01em;white-space:nowrap}
+  .tn-brand:hover{color:var(--gold)}
+  .tn-links{display:flex;gap:24px;margin-left:auto;align-items:center}
+  .tn-links a{font-size:13px;letter-spacing:.05em;color:var(--muted);text-decoration:none;
+    transition:color .18s;position:relative;white-space:nowrap}
+  .tn-links a:hover{color:var(--ink)}
+  .tn-links a.on{color:var(--ink);font-weight:600}
+  .tn-links a.on::after{content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+    width:4px;height:4px;border-radius:50%;background:var(--gold)}
+  .tn-item{position:relative}
+  .tn-parent{display:inline-flex;align-items:center;gap:5px;cursor:default}
+  .tn-parent .caret{opacity:.55;transition:transform .2s ease}
+  .tn-item:hover .caret,.tn-item:focus-within .caret{transform:rotate(180deg)}
+  .tn-drop{position:absolute;top:calc(100% + 12px);left:50%;transform:translate(-50%,6px);
+    min-width:258px;background:#fff;border:1px solid var(--line);border-radius:14px;
+    box-shadow:0 24px 60px -24px rgba(0,0,0,.25);padding:8px;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .18s ease,transform .18s ease,visibility .18s}
+  .tn-item:hover .tn-drop,.tn-item:focus-within .tn-drop{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0)}
+  .tn-drop::before{content:"";position:absolute;top:-12px;left:0;right:0;height:12px}
+  .tn-drop a{display:flex;flex-direction:column;gap:2px;padding:9px 12px;border-radius:9px;text-decoration:none}
+  .tn-drop a:hover{background:rgba(184,137,46,.08)}
+  .tn-drop a b{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:0}
+  .tn-drop a i{font-style:normal;font-size:11.5px;color:var(--faint);letter-spacing:.02em}
+  @media (max-width:760px){
+    .tn-inner{gap:14px;padding:0 16px}
+    .tn-links{gap:13px;overflow-x:auto;scrollbar-width:none}
+    .tn-links::-webkit-scrollbar{display:none}
+  }
+
+  @media (max-width:760px){
+    .remedies{grid-template-columns:1fr}
+    h1{font-size:36px}
+    .wrap{padding:100px 20px 70px}
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="tn-inner">
+    <a class="tn-brand" href="../index.html">Tiny Atlas</a>
+    <div class="tn-links">
+      <div class="tn-item">
+        <span class="tn-parent" tabindex="0">Maps<svg class="caret" viewBox="0 0 10 6" width="9" height="5" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+        <div class="tn-drop">
+          <a href="../methods/index.html"><b>Methodology List in Social Sciences</b><i>72 methods · 3 paradigms</i></a>
+          <a href="../pa/index.html"><b>Public Administration Theories</b><i>36 theories · 3 schools</i></a>
+          <a href="../measure/index.html"><b>Measurement &amp; Data Collection</b><i>35 concepts · 7 branches</i></a>
+        </div>
+      </div>
+      <div class="tn-item">
+        <span class="tn-parent" tabindex="0">Field Guides<svg class="caret" viewBox="0 0 10 6" width="9" height="5" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+        <div class="tn-drop">
+          <a href="../guides/index.html"><b>The Expedition — Overview</b><i>all seven guides on one trail map</i></a>
+          <a href="../guides/measurement/index.html"><b>No. 0 · Measurement &amp; Data Collection</b><i>the base camp</i></a>
+          <a href="../guides/sna/index.html"><b>No. 1 · Networks</b><i>centrality to ERGM</i></a>
+          <a href="../guides/causal-inference/index.html"><b>No. 2 · Causes</b><i>identification designs</i></a>
+          <a href="../guides/cases/index.html"><b>No. 3 · Cases</b><i>process tracing · fsQCA</i></a>
+          <a href="../guides/policy-networks/index.html"><b>No. 4 · Policy Networks</b><i>SNA in Public Administration</i></a>
+          <a href="../guides/ai-networks/index.html"><b>No. 5 · Network Intelligence</b><i>AI × networks</i></a>
+          <a href="../guides/regional-governance/index.html"><b>No. 6 · Regional Governance</b><i>polycentricity &amp; scale</i></a>
+        </div>
+      </div>
+      <a href="../wellbeing/index.html">Wellbeing</a>
+      <a href="../team/index.html">Team</a>
+      <a href="../index.html#feedback">Feedback</a>
+    </div>
+  </div>
+</nav>
+
+<svg id="dots"></svg>
+
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Tiny Atlas · Wellbeing</div>
+    <h1>The Wellbeing <em>Shelf</em></h1>
+    <div class="tagline">
+      Research runs on the researcher. This shelf collects remedies for stress and
+      anxiety that have <b>real trial evidence</b> behind them — each card states the
+      dose, the strength of the evidence, and the citation. No gurus, no miracle
+      supplements: <b>if it is on this shelf, someone ran the study.</b>
+    </div>
+  </header>
+
+  <div class="care">
+    <b>A note of care.</b> This shelf is educational, not medical advice — it complements
+    professional care; it never replaces it. If anxiety persists for more than two weeks,
+    impairs your work or sleep, or comes with panic attacks or thoughts of self-harm,
+    please contact a licensed mental-health professional or your institution's counseling
+    service. Asking for help early is what the evidence would prescribe.
+  </div>
+
+  <section>
+    <div class="grp">
+      <div class="grp-hd">
+        <span class="n">i.</span><h3>Move</h3><span class="sub">the body first</span>
+      </div>
+      <div class="remedies">
+        <div class="remedy">
+          <span class="tier strong">strong</span>
+          <h4>Aerobic Exercise</h4>
+          <span class="dose">30–45 min · 3–5 × / week · brisk</span>
+          <p class="what"><b>The single best-evidenced remedy on this shelf.</b> Walking fast
+            counts. In the largest observational study of its kind (1.2 million US adults),
+            all exercise types were associated with better mental health, with
+            30–45 minutes, 3–5 times a week, hitting the optimum.</p>
+          <div class="ev"><span class="lab">The evidence</span>
+            Chekroud, S. R. et&nbsp;al. (2018). Association between physical exercise and mental
+            health in 1.2 million individuals in the USA between 2011 and 2015: a
+            cross-sectional study. <i>The Lancet Psychiatry, 5</i>(9), 739–746.
+          </div>
+        </div>
+        <div class="remedy">
+          <span class="tier strong">strong</span>
+          <h4>Sleep, Defended</h4>
+          <span class="dose">7–9 h · fixed wake time · screens out of the bedroom</span>
+          <p class="what"><b>The cheapest effect size in the literature.</b> A meta-analysis of
+            randomized trials found that improving sleep quality produced significant,
+            medium-sized improvements in mental health — with larger effects on anxiety
+            and depression than most interventions achieve for insomnia's comorbidities.</p>
+          <div class="ev"><span class="lab">The evidence</span>
+            Scott, A. J., Webb, T. L., Martyn-St James, M., Rowse, G., &amp; Weich, S. (2021).
+            Improving sleep quality leads to better mental health: a meta-analysis of
+            randomised controlled trials. <i>Sleep Medicine Reviews, 60</i>, 101556.
+          </div>
+        </div>
+        <div class="remedy">
+          <span class="tier moderate">moderate</span>
+          <h4>Slow, Diaphragmatic Breathing</h4>
+          <span class="dose">5–10 min · ~6 breaths/min · belly-led</span>
+          <p class="what">Inhale ~4 s, exhale ~6 s, let the belly do the work. In an RCT,
+            eight weeks of diaphragmatic breathing significantly lowered salivary cortisol
+            and improved attention and affect. Physiological reviews converge on
+            ~6 breaths per minute as the resonant zone.</p>
+          <div class="ev"><span class="lab">The evidence</span>
+            Ma, X. et&nbsp;al. (2017). The effect of diaphragmatic breathing on attention, negative
+            affect and stress in healthy adults. <i>Frontiers in Human Neuroscience, 11</i>, 432 ·
+            Zaccaro, A. et&nbsp;al. (2018). How breath-control can change your life: a systematic
+            review on psycho-physiological correlates of slow breathing. <i>Frontiers in
+            Human Neuroscience, 12</i>, 353.
+          </div>
+        </div>
+        <div class="remedy">
+          <span class="tier moderate">moderate</span>
+          <h4>Progressive Muscle Relaxation</h4>
+          <span class="dose">10–15 min · head to toe</span>
+          <p class="what">Tense each muscle group for ~5 seconds, release for ~30, notice the
+            contrast. Meta-analytic evidence shows PMR reliably outperforms waitlist and
+            placebo controls for anxiety — a structured, learnable skill, no equipment.</p>
+          <div class="ev"><span class="lab">The evidence</span>
+            Conrad, A., &amp; Roth, W. T. (2007). Muscle relaxation therapy for anxiety
+            disorders: it works but how? <i>Journal of Anxiety Disorders, 21</i>(3), 243–264.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grp">
+      <div class="grp-hd">
+        <span class="n">ii.</span><h3>Still</h3><span class="sub">train attention</span>
+      </div>
+      <div class="remedies">
+        <div class="remedy">
+          <span class="tier strong">strong</span>
+          <h4>Cognitive Behavioral Therapy (CBT)</h4>
+          <span class="dose">8–12 sessions · guided or structured self-help</span>
+          <p class="what"><b>The reference standard for anxiety.</b> Meta-analyses of
+            placebo-controlled trials find medium-to-large effects for adult anxiety
+            disorders, and internet-delivered CBT (iCBT) achieves outcomes comparable to
+            face-to-face therapy in controlled comparisons — accessible from any desk.</p>
+          <div class="ev"><span class="lab">The evidence</span>
+            Hofmann, S. G., &amp; Smits, J. A. J. (2008). Cognitive-behavioral therapy for adult
+            anxiety disorders: a meta-analysis of randomized placebo-controlled trials.
+            <i>Journal of Clinical Psychiatry, 69</i>(4), 621–632 · Andrews, G. et&nbsp;al. (2018).
+            Computer therapy for the anxiety and depression disorders is effective,
+            acceptable and practical health care: an updated meta-analysis.
+            <i>Journal of Anxiety Disorders, 55</i>, 1–15.
+          </div>
+        </div>
+        <div class="remedy">
+          <span class="tier moderate">moderate</span>
+          <h4>Mindfulness Meditation (MBSR-style)</h4>
+          <span class="dose">8-week course · or 10–20 min/day</span>
+          <p class="what">Body-scan, breath attention, letting thoughts pass. In a JAMA review
+            of 47 trials with 3,515 participants, mindfulness programs showed <b>moderate
+            evidence for improving anxiety</b> at eight weeks — small-to-moderate effects,
+            but consistently safe, with no evidence of harm.</p>
+          <div class="ev"><span class="lab">The evidence</span>
+            Goyal, M. et&nbsp;al. (2014). Meditation programs for psychological stress and
+            well-being: a systematic review and meta-analysis.
+            <i>JAMA Internal Medicine, 174</i>(3), 357–368.
+          </div>
+        </div>
+        <div class="remedy">
+          <span class="tier moderate">moderate</span>
+          <h4>Expressive Writing</h4>
+          <span class="dose">15–20 min · 3–4 sessions · private</span>
+          <p class="what">Write, in an uncensored way, your deepest thoughts and feelings about
+            what is stressing you. Across 146 studies the benefits are small but reliable,
+            and strongest for physical health — one of the few remedies you can do at
+            your desk with a notebook.</p>
+          <div class="ev"><span class="lab">The evidence</span>
+            Frattaroli, J. (2006). Experimental disclosure and its moderators: a
+            meta-analysis. <i>Psychological Bulletin, 132</i>(6), 823–865 ·
+            Pennebaker, J. W., &amp; Beall, S. K. (1986). Confronting a traumatic event:
+            toward an understanding of inhibition and disease. <i>Journal of Abnormal
+            Psychology, 95</i>(3), 274–281.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grp">
+      <div class="grp-hd">
+        <span class="n">iii.</span><h3>World</h3><span class="sub">leave the desk</span>
+      </div>
+      <div class="remedies">
+        <div class="remedy">
+          <span class="tier strong">strong</span>
+          <h4>Real Social Connection</h4>
+          <span class="dose">one real conversation a day · scheduled like a meeting</span>
+          <p class="what">Across 148 studies (308,849 participants), people with strong social
+            relationships had a <b>50% greater likelihood of survival</b> — an effect
+            comparable to quitting smoking, and larger than obesity or alcohol. A call
+            beats a scroll: aim for voice or presence, not feeds.</p>
+          <div class="ev"><span class="lab">The evidence</span>
+            Holt-Lunstad, J., Smith, T. B., &amp; Layton, J. B. (2010). Social relationships
+            and mortality risk: a meta-analytic review. <i>PLoS Medicine, 7</i>(7), e1000316.
+          </div>
+        </div>
+        <div class="remedy">
+          <span class="tier moderate">moderate</span>
+          <h4>Nature Exposure / Forest Bathing</h4>
+          <span class="dose">≥ 2 h/week · slow walking · senses open</span>
+          <p class="what">Shinrin-yoku — walk slowly in green space, no phone, attention on
+            senses. In a 20,000-person study, ≥120 minutes per week in nature was the
+            threshold associated with good health and high wellbeing; controlled studies
+            show cortisol and blood-pressure reductions.</p>
+          <div class="ev"><span class="lab">The evidence</span>
+            White, M. P. et&nbsp;al. (2019). Spending at least 120 minutes a week in nature is
+            associated with good health and wellbeing. <i>Scientific Reports, 9</i>, 7730 ·
+            Hansen, M. M., Jones, R., &amp; Tocchini, K. (2017). Shinrin-Yoku (forest bathing)
+            and nature therapy: a state-of-the-art review. <i>International Journal of
+            Environmental Research and Public Health, 14</i>(8), 851.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grp">
+      <div class="grp-hd">
+        <span class="n">iv.</span><h3>Work</h3><span class="sub">recover on purpose</span>
+      </div>
+      <div class="remedies">
+        <div class="remedy">
+          <span class="tier moderate">moderate</span>
+          <h4>Psychological Detachment — the Shutdown Ritual</h4>
+          <span class="dose">end-of-day · 5 min · then no email</span>
+          <p class="what"><b>Built for researchers.</b> The recovery literature finds that
+            mentally switching off from work during off-hours is the single strongest
+            recovery experience predicting wellbeing and lower exhaustion. Concrete
+            protocol: write tomorrow's first step on a card, close the laptop, and let the
+            unfinished be unfinished until morning.</p>
+          <div class="ev"><span class="lab">The evidence</span>
+            Sonnentag, S., &amp; Fritz, C. (2007). The Recovery Experience Questionnaire:
+            development and validation of a measure for assessing recuperation and
+            unwinding from work. <i>Journal of Occupational Health Psychology, 12</i>(3),
+            204–221.
+          </div>
+        </div>
+        <div class="remedy">
+          <span class="tier emerging">emerging</span>
+          <h4>Micro-breaks, Taken Seriously</h4>
+          <span class="dose">5–10 min between deep-work blocks · away from the screen</span>
+          <p class="what">Short detachment breaks across the workday — standing, stretching,
+            a window, a corridor walk — show accumulating evidence for sustaining
+            attention and lowering end-of-day fatigue. The evidence base is younger than
+            the classics above, but the cost of the experiment is zero.</p>
+          <div class="ev"><span class="lab">The evidence</span>
+            Albulescu, P., Macsinga, I., Rusu, A., Sulea, C., Bodnaru, A., &amp; Tulbure, B. T.
+            (2022). "Give me a break!" A systematic review and meta-analysis on the
+            efficacy of micro-breaks for increasing well-being and performance.
+            <i>PLoS ONE, 17</i>(8), e0272460.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Suggest a Remedy</h2>
+    <div class="join">
+      <b>Missing something?</b> If you know a practice with solid trial evidence that
+      belongs on this shelf — or a correction to a citation — use the
+      <a href="../index.html#feedback">feedback box</a> on the home page. Every addition is
+      reviewed against the same standard: a real study, a real effect, a real citation.
+      Good contributions are credited in the repository history.
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 ReGovNet Research Group · Tiny Atlas, an open academic commons</span>
+    <span class="coords">22.1987° N · 113.5439° E</span>
+    <span><a href="../index.html">Atlas Home</a> · <a href="https://github.com/ShuwenZSW/Methodology-Wizard">Repository</a> · <a href="mailto:shuwenzhang@um.edu.mo">Contact</a></span>
+  </footer>
+
+</div>
+
+<script>
+/* ---- dotted paper texture ---- */
+(function(){
+  const d = document.getElementById("dots");
+  const s = 26, W = Math.ceil(innerWidth/s)+2, H = Math.ceil(innerHeight/s)+2;
+  let html = "";
+  for(let i=0;i<W;i++)for(let j=0;j<H;j++)
+    html += `<circle cx="${i*s}" cy="${j*s}" r="0.8" fill="#1a1712" opacity="0.045"/>`;
+  d.innerHTML = `<g>${html}</g>`;
+  d.setAttribute("width",innerWidth); d.setAttribute("height",innerHeight);
+})();
+</script>
+</body>
+</html>
