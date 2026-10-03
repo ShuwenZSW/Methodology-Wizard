@@ -301,6 +301,7 @@
   .tile.t3 .orb{background:radial-gradient(circle at 35% 35%, rgba(184,137,46,.5), rgba(42,157,143,.42) 60%, rgba(14,125,102,.35))}
   .tile.t4 .orb{background:radial-gradient(circle at 35% 35%, rgba(124,92,191,.48), rgba(74,101,114,.42) 55%, rgba(58,79,208,.35))}
   .tile.t5 .orb{background:radial-gradient(circle at 35% 35%, rgba(14,125,102,.5), rgba(184,137,46,.45) 55%, rgba(42,157,143,.38))}
+  .tile.t6 .orb{background:radial-gradient(circle at 35% 35%, rgba(58,79,208,.48), rgba(26,23,18,.42) 55%, rgba(184,137,46,.4))}
   .tile .cnt{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
   .tile h2{font-family:Georgia,"Times New Roman",serif;font-size:23px;font-weight:400;
     line-height:1.2;letter-spacing:-.01em;margin-bottom:10px}
@@ -329,26 +330,10 @@
     .tile.wide .orb{width:120px;height:120px}
   }
 
-  /* ---- team strip ---- */
-  .teamline{margin-bottom:46px}
-  .teamline a{display:flex;align-items:center;gap:16px;flex-wrap:wrap;text-decoration:none;
-    color:var(--muted);font-size:13px;line-height:1.5;
-    border:1px dashed var(--line);border-radius:14px;padding:16px 22px;
-    transition:border-color .2s,color .2s}
-  .teamline a:hover{border-color:var(--gold);color:var(--ink)}
-  .teamline b{color:var(--ink);font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:15px}
-  .teamline .go{margin-left:auto;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-    font-weight:600;color:var(--gold);white-space:nowrap}
+  /* ---- team module: unified with the other module tiles ---- */
+  .teamline .tile.wide{margin-bottom:0}
 
   /* ============ Tiny Atlas v2 · Apple-modern theme ============ */
-  :root{
-    --bg:#f7f6f2;
-    --paper:#ffffff;
-    --ink:#1d1d1f;
-    --muted:#6e6e73;
-    --faint:#a1a1a6;
-    --line:#e7e5df;
-  }
   body{background:var(--bg)}
   ::selection{background:rgba(184,137,46,.2)}
   /* quiet surfaces: dotted paper & grain retired */
@@ -448,8 +433,6 @@
   .map-card p{font-size:14px}
   .map-card .go{font-size:13px}
   .chips span{font-size:11.5px}
-  .teamline a{font-size:14.5px}
-  .teamline b{font-size:17px}
   /* navigation */
   .tn-brand{font-size:17px}
   .tn-links a{font-size:13px}
@@ -534,7 +517,10 @@
 
 <div class="wrap">
 
-  <img id="logo" src="logo.png" alt="ReGovNet Research Group">
+  <svg id="logo" viewBox="0 0 320 104" role="img" aria-label="ReGovNet Research Group">
+    <text x="6" y="66" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="62" font-weight="650" letter-spacing="-1">Re<tspan fill="#2f6fd6">Gov</tspan><tspan fill="#1a1712">Net</tspan></text>
+    <text x="9" y="93" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="12.5" font-weight="600" letter-spacing="4.6" fill="#a89f8d">RESEARCH GROUP</text>
+  </svg>
 
   <header>
     <div class="kicker">ReGovNet Research Group · Tiny Atlas</div>
@@ -638,11 +624,27 @@
   </section>
 
   <section class="teamline">
-    <a href="team/index.html">
-      <b>The Cartographers</b>
-      <span>A small Public Administration research group — regional governance, governance
-            networks, interlocal management — led by Shuwen Zhang.</span>
-      <span class="go">Meet the team</span>
+    <div class="sechd">
+      <span class="num">Team</span>
+      <h2>The Cartographers</h2>
+      <div class="lead">The people behind the maps. A small Public Administration research
+        group — regional governance, governance networks, interlocal management — led by
+        Shuwen Zhang.</div>
+    </div>
+    <a class="tile wide t6" href="team/index.html">
+      <span class="orb"></span>
+      <div>
+        <div class="cnt">ReGovNet Research Group</div>
+        <h2>The people behind the maps</h2>
+        <p>Researchers from Public Administration who study how regions and local governments
+           govern together — and build the methodological tools to study it well: causal
+           inference and social network analysis.</p>
+        <div class="gchips">
+          <span>Regional Governance</span><span>Governance Networks</span>
+          <span>Interlocal Management</span><span>Causal Inference</span><span>SNA</span>
+        </div>
+        <span class="go">Meet the team</span>
+      </div>
     </a>
   </section>
 
