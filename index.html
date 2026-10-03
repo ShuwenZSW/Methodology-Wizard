@@ -274,8 +274,19 @@
     .tn-links a{font-size:11px}
   }
 
+  /* ---- section headers ---- */
+  .sechd{margin-bottom:20px}
+  .sechd .num{
+    display:inline-block;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold);font-weight:700;margin-bottom:6px;
+  }
+  .sechd .num::before{content:"";display:inline-block;width:22px;height:1px;background:var(--gold);
+    vertical-align:middle;margin-right:9px}
+  .sechd h2{margin-bottom:6px}
+  .sechd .lead{color:var(--muted);max-width:640px}
+
   /* ---- showcase tiles ---- */
-  .showcase{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:46px}
+  .showcase{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:46px}
   .tile{position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;
     border-radius:20px;border:1px solid var(--line);background:var(--paper);
     padding:30px 26px 64px;min-height:250px;
@@ -297,6 +308,25 @@
     text-transform:uppercase;font-weight:600;color:var(--ink)}
   .tile .go::after{content:" \2192";color:var(--gold);display:inline-block;transition:transform .2s ease}
   .tile:hover .go::after{transform:translateX(4px)}
+
+  /* ---- wide guide tile ---- */
+  .tile.wide{
+    display:grid;grid-template-columns:200px 1fr;gap:28px;align-items:center;
+    min-height:200px;padding:30px 34px 66px;
+  }
+  .tile.wide .orb{position:relative;top:auto;right:auto;width:170px;height:170px;margin:0 auto}
+  .tile.wide .cnt{margin-bottom:8px}
+  .tile.wide h2{margin-bottom:8px}
+  .tile.wide p{max-width:560px;margin-bottom:14px}
+  .gchips{display:flex;flex-wrap:wrap;gap:6px}
+  .gchips span{
+    font-size:10.5px;letter-spacing:.04em;color:var(--muted);
+    padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--bg);
+  }
+  @media (max-width:760px){
+    .tile.wide{grid-template-columns:1fr;gap:14px;padding:26px 22px 60px}
+    .tile.wide .orb{width:120px;height:120px}
+  }
 
   /* ---- team strip ---- */
   .teamline{margin-bottom:46px}
@@ -511,38 +541,65 @@
     </div>
   </header>
 
-  <section class="showcase">
-    <a class="tile t1" href="methods/index.html">
+  <section>
+    <div class="sechd">
+      <span class="num">Maps</span>
+      <h2>Three Maps of the Territory</h2>
+      <div class="lead">Interactive cartographies — click any node for its canon card:
+        core proposition, key concepts, founders, classic readings, frameworks, and
+        what it takes to apply it.</div>
+    </div>
+    <div class="showcase">
+      <a class="tile t1" href="methods/index.html">
+        <span class="orb"></span>
+        <div class="cnt">Methodology Map</div>
+        <h2>Methodology List<br>in Social Sciences</h2>
+        <p>72 methods across three paradigms — each opens an adoption card: when to use it,
+           data required, assumptions, skill.</p>
+        <span class="go">Enter the map</span>
+      </a>
+      <a class="tile t2" href="pa/index.html">
+        <span class="orb"></span>
+        <div class="cnt">Public Administration Map</div>
+        <h2>Public Administration<br>Theories &amp; Research Topics</h2>
+        <p>36 theories in three schools — core propositions, founders, classic readings,
+           frameworks, and links into the methodology map.</p>
+        <span class="go">Enter the map</span>
+      </a>
+      <a class="tile t3" href="measure/index.html">
+        <span class="orb"></span>
+        <div class="cnt">Measurement Map</div>
+        <h2>Measurement &amp;<br>Data Collection</h2>
+        <p>35 concepts across seven branches — scales, validity, reliability, error and bias,
+           data sources, sampling, and cross-context comparability.</p>
+        <span class="go">Enter the map</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="sechd">
+      <span class="num">Field Guides</span>
+      <h2>The Expedition — Seven Guides &amp; Laboratories</h2>
+      <div class="lead">Narrative trails for the applied craft — from the measurement base
+        camp to the AI frontier. Every guide walks a model path with an interactive
+        laboratory, software, datasets, and a canon.</div>
+    </div>
+    <a class="tile wide t4" href="guides/">
       <span class="orb"></span>
-      <div class="cnt">Methodology Map</div>
-      <h2>Methodology List<br>in Social Sciences</h2>
-      <p>72 methods across three paradigms — each opens an adoption card: when to use it,
-         data required, assumptions, skill.</p>
-      <span class="go">Enter the map</span>
-    </a>
-    <a class="tile t2" href="pa/index.html">
-      <span class="orb"></span>
-      <div class="cnt">Public Administration Map</div>
-      <h2>Public Administration<br>Theories &amp; Research Topics</h2>
-      <p>36 theories in three schools — core propositions, founders, classic readings,
-         frameworks, and links into the methodology map.</p>
-      <span class="go">Enter the map</span>
-    </a>
-    <a class="tile t3" href="measure/index.html">
-      <span class="orb"></span>
-      <div class="cnt">Measurement Map</div>
-      <h2>Measurement &amp;<br>Data Collection</h2>
-      <p>35 concepts across seven branches — scales, validity, reliability, error and bias,
-         data sources, sampling, and cross-context comparability.</p>
-      <span class="go">Enter the map</span>
-    </a>
-    <a class="tile t4" href="guides/">
-      <span class="orb"></span>
-      <div class="cnt">Field Guides</div>
-      <h2>The Expedition —<br>Seven Guides &amp; Laboratories</h2>
-      <p>From a measurement base camp to the applied frontier — every guide walks a
-         model path with an interactive laboratory.</p>
-      <span class="go">Start the expedition</span>
+      <div>
+        <div class="cnt">Field Guides · Overview</div>
+        <h2>Start where your question starts</h2>
+        <p>The Expedition overview draws all seven trails as one interactive map —
+           base camp, cross-trail arcs, and the frontier branch — with a guide card
+           for every stop.</p>
+        <div class="gchips">
+          <span>No. 0 Measurement</span><span>No. 1 Networks</span><span>No. 2 Causes</span>
+          <span>No. 3 Cases</span><span>No. 4 Policy Networks</span><span>No. 5 Network Intelligence</span>
+          <span>No. 6 Regional Governance</span>
+        </div>
+        <span class="go">Start the expedition</span>
+      </div>
     </a>
   </section>
 
