@@ -107,6 +107,23 @@
     font-size:19px;line-height:1.5;color:var(--ink);max-width:560px;
   }
 
+  /* ---- contribution steps ---- */
+  .steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--line);
+    border-radius:14px;background:var(--paper);overflow:hidden;margin-top:14px}
+  .step{padding:22px 24px;border-left:1px solid var(--line)}
+  .step:first-child{border-left:none}
+  .step-no{
+    font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:24px;
+    color:var(--gold);display:block;margin-bottom:8px;
+  }
+  .step h4{
+    font-family:Georgia,"Times New Roman",serif;font-size:16.5px;font-weight:400;
+    margin-bottom:8px;
+  }
+  .step p{font-size:12.5px;line-height:1.65;color:var(--muted)}
+  .step p b{color:var(--ink);font-weight:600}
+  .step a{color:var(--quant);text-decoration:none;border-bottom:1px dashed var(--quant)}
+
   /* ---- suggest / footer ---- */
   .join{
     border:1px solid var(--line);border-radius:14px;padding:18px 22px;
@@ -169,6 +186,9 @@
     .note-rail{text-align:left;display:flex;align-items:baseline;gap:12px}
     .note-rail::after{display:none}
     .note-no{font-size:22px}
+    .steps{grid-template-columns:1fr}
+    .step{border-left:none;border-top:1px solid var(--line)}
+    .step:first-child{border-top:none}
   }
 </style>
 </head>
@@ -302,13 +322,30 @@
   </section>
 
   <section>
-    <h2>Contribute a Field Note</h2>
-    <div class="join">
-      <b>Have a note that carried you through your early years?</b> A small move, a rule of
-      thumb, a ritual that actually worked — send it through the
-      <a href="../index.html#feedback">feedback box</a> on the home page. Notes are reviewed
-      for usefulness and honesty, credited in the repository history, and numbered in the
-      order they arrive.
+    <h2>How to Contribute No. 05</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step-no">1</span>
+        <h4>Write it</h4>
+        <p>One move, one scene, one point. What to do, when to do it, and the single
+          line someone should remember. Honest beats impressive — the best notes sound
+          like advice over coffee, not a keynote.</p>
+      </div>
+      <div class="step">
+        <span class="step-no">2</span>
+        <h4>Send it</h4>
+        <p>Use the <a href="../index.html#feedback">feedback box</a> on the home page and
+          choose <b>Wellbeing Shelf</b> as the topic. A few sentences are enough; we will
+          help with the wording. If it is a remedy with trial evidence, it goes to the
+          Evidence Shelf instead.</p>
+      </div>
+      <div class="step">
+        <span class="step-no">3</span>
+        <h4>Get credited</h4>
+        <p>Notes are reviewed for usefulness and honesty, then numbered in the order they
+          arrive — yours could be No. 05. Contributors are credited by name in the page
+          and the repository history (anonymous on request).</p>
+      </div>
     </div>
   </section>
 
