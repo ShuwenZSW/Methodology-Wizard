@@ -8,10 +8,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<meta name="description" content="Field Guide No. 0 — Measurement and data collection: constructs, scale levels, validity, reliability, sampling, and measurement invariance. With an interactive Reliability Lab.">
+<meta name="description" content="Field Guide No. 0 — Measurement and data collection: constructs, scale levels, validity, reliability, sampling, and measurement invariance. With interactive Reliability and Invariance Labs.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="A Field Guide to Measurement &amp; Data Collection · Tiny Atlas">
-<meta property="og:description" content="Before any model, someone decided what to count and whom to ask. From Stevens's scales to the attenuation formula — with an interactive Reliability Lab. Field Guide No. 0 by the ReGovNet Research Group.">
+<meta property="og:description" content="Before any model, someone decided what to count and whom to ask. From Stevens's scales to the invariance hierarchy — with interactive Reliability and Invariance Labs. Field Guide No. 0 by the ReGovNet Research Group.">
 <meta property="og:image" content="https://shuwenzsw.github.io/Methodology-Wizard/assets/og-cover.png">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -701,6 +701,72 @@
   </section>
 
   <section>
+    <span class="num">Laboratory II</span>
+    <h2>The Invariance Lab</h2>
+    <div class="lead">
+      Two countries, four survey items, one latent construct — <i>trust in government</i>.
+      This lab fits a real two-group factor model to simulated data and lets the invariance
+      hierarchy arbitrate what may be compared: <b>configural</b> (same structure),
+      <b>metric</b> (equal loadings — comparable slopes), <b>scalar</b> (equal intercepts —
+      comparable means). Inject measurement non-invariance and watch how much of the
+      observed cross-country gap is artifact.
+      The concepts: <a href="../../measure/index.html?t=Measurement%20Invariance" style="color:var(--quant);text-decoration:none;border-bottom:1px dashed var(--quant)">Measurement Invariance → measurement map</a>.
+    </div>
+    <style>
+      .invbars{display:flex;flex-direction:column;gap:7px;margin:4px 0 2px}
+      .invbars .irow{display:grid;grid-template-columns:64px 1fr 1fr 74px;align-items:center;gap:10px}
+      .invbars .ilab{font-size:10.5px;letter-spacing:.06em;color:var(--faint);text-transform:uppercase}
+      .invbars .track{height:15px;border-radius:999px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+      .invbars .fill{height:100%;border-radius:999px;transition:width .35s cubic-bezier(.16,1,.3,1)}
+      .invbars .fill.a{background:var(--quant)}
+      .invbars .fill.b{background:var(--gold)}
+      .invbars .ival{font-family:Georgia,serif;font-size:12.5px;color:var(--ink);white-space:nowrap}
+      .invbars .ival .a{color:var(--quant)}  .invbars .ival .b{color:var(--gold)}
+      .invleg{display:flex;gap:16px;font-size:10.5px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;margin:2px 0 10px}
+      .invleg span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+      .invleg .a::before{background:var(--quant)}  .invleg .b::before{background:var(--gold)}
+      .modcards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0 4px}
+      .modcard{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--bg)}
+      .modcard h4{font-family:Georgia,serif;font-size:15px;font-weight:400;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+      .modcard .badge{font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:2px 8px;border-radius:999px}
+      .modcard .badge.ok{color:var(--teal);border:1px solid var(--teal)}
+      .modcard .badge.bad{color:var(--mixed);border:1px solid var(--mixed)}
+      .modcard .badge.na{color:var(--faint);border:1px solid var(--line)}
+      .modcard table{width:100%;border-collapse:collapse;font-size:11.5px}
+      .modcard td{padding:2.5px 0;color:var(--muted)}
+      .modcard td:last-child{text-align:right;font-family:Georgia,serif;color:var(--ink);font-size:12.5px}
+      .modcard .dcf td:last-child{color:var(--teal)}
+      .modcard .dcf.fail td:last-child{color:var(--mixed);font-weight:700}
+      @media (max-width:760px){ .modcards{grid-template-columns:1fr} .invbars .irow{grid-template-columns:52px 1fr 1fr 62px} }
+    </style>
+    <div class="play">
+      <div class="toolbar">
+        <label>True gap κ <input type="range" id="sGap" min="-1" max="1" step="0.05" value="0.45"><span class="val" id="vGap">0.45</span></label>
+        <label>Item 4 shift δ <input type="range" id="sDif" min="-0.9" max="0.9" step="0.05" value="0"><span class="val" id="vDif">0.00</span></label>
+        <label>Item 2 loading (B) <input type="range" id="sLam" min="0.3" max="1.3" step="0.05" value="0.8"><span class="val" id="vLam">0.80</span></label>
+        <button id="resample2" type="button">Resample</button>
+        <span class="hint">500 respondents per country · item = intercept + loading × trust + noise</span>
+      </div>
+      <div class="invleg"><span class="a">Country A</span><span class="b">Country B</span></div>
+      <div class="invbars" id="invBars"></div>
+      <div class="mets">
+        <div class="met"><div class="k">Observed gap</div><div class="v" id="mObs">–</div></div>
+        <div class="met"><div class="k">True gap (scale pts)</div><div class="v" id="mTrue">–</div></div>
+        <div class="met"><div class="k">κ̂ under scalar model</div><div class="v" id="mKappa">–</div></div>
+      </div>
+      <div class="modcards" id="modCards"></div>
+      <div class="verdictline" id="verdict2"></div>
+      <div class="footnote">
+        Two-group confirmatory factor analysis toy (4 indicators, 1 factor, marker-item
+        identification). Each model is fit by maximum likelihood to the simulated sample
+        moments; χ², CFI, and RMSEA are computed from the normal-theory discrepancy
+        function, exactly as in <i>lavaan</i>'s metric. The ΔCFI ≤ .01 criterion follows
+        Cheung &amp; Rensvold (2002). Values are illustrative — the arbitrations are not.
+      </div>
+    </div>
+  </section>
+
+  <section>
     <span class="num">Supplies</span>
     <h2>Toolkit &amp; Canon</h2>
     <div class="lead">What we install, and what we keep within arm's reach.</div>
@@ -924,6 +990,270 @@
   document.getElementById("resample").addEventListener("click", ()=>{ seed = (seed*2654435761)>>>0 || 11; gen(); draw(); });
 
   gen(); draw();
+})();
+
+/* ---- invariance lab ---- */
+(function(){
+  const P = 4;
+  const LAM_A = [1, .8, .9, .85];       // loadings (item 1 is the marker)
+  const NU    = [3.4, 3.0, 2.6, 3.8];  // intercepts (shared)
+  const TH    = [.8, .9, .85, .9];     // residual variances
+  const N = 500;
+
+  /* linear congruential RNG + Box–Muller, like the reliability lab */
+  let seed = 7;
+  const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+  let spare = null;
+  function norm(){
+    if(spare !== null){ const v = spare; spare = null; return v; }
+    let u = 0; while(u === 0) u = rnd();
+    const r = Math.sqrt(-2*Math.log(u)), t = 2*Math.PI*rnd();
+    spare = r*Math.sin(t);
+    return r*Math.cos(t);
+  }
+
+  /* ---- 4x4 SPD matrix helpers (Cholesky) ---- */
+  function chol(A){
+    const L = new Array(16).fill(0);
+    for(let i=0;i<4;i++) for(let j=0;j<=i;j++){
+      let s = A[i*4+j];
+      for(let k=0;k<j;k++) s -= L[i*4+k]*L[j*4+k];
+      if(i===j) L[i*4+i] = Math.sqrt(Math.max(s, 1e-12));
+      else L[i*4+j] = s / L[j*4+j];
+    }
+    return L;
+  }
+  function logdet(A){ const L = chol(A); let s = 0; for(let i=0;i<4;i++) s += Math.log(L[i*4+i]); return 2*s; }
+  function sol(A, b){
+    const L = chol(A), y = new Array(4), x = new Array(4);
+    for(let i=0;i<4;i++){ let s=b[i]; for(let k=0;k<i;k++) s-=L[i*4+k]*y[k]; y[i]=s/L[i*4+i]; }
+    for(let i=3;i>=0;i--){ let s=y[i]; for(let k=i+1;k<4;k++) s-=L[k*4+i]*x[k]; x[i]=s/L[i*4+i]; }
+    return x;
+  }
+  function trInvMul(A, B){ /* tr(B·A⁻¹) for symmetric A,B */
+    let t = 0;
+    for(let j=0;j<4;j++){
+      const e = [0,0,0,0]; e[j] = 1;
+      const x = sol(A, e);
+      for(let i=0;i<4;i++) t += B[i*4+j]*x[i];
+    }
+    return t;
+  }
+
+  let GAP = 0.45, DIF = 0, LAM2B = 0.8;
+
+  /* simulate two-group sample -> means and covariance matrices */
+  function sample(){
+    const lamB = [1, LAM2B, .9, .85];
+    const nuB  = NU.map((v,i) => v + (i===3 ? DIF : 0));
+    const out = [];
+    [[LAM_A, NU, 0], [lamB, nuB, GAP]].forEach(([lam, nu, kap]) => {
+      const m = [0,0,0,0], S = new Array(16).fill(0);
+      for(let r=0;r<N;r++){
+        const eta = kap + norm();                       // latent: mean kap, var 1
+        const x = [];
+        for(let i=0;i<4;i++) x[i] = nu[i] + lam[i]*eta + Math.sqrt(TH[i])*norm();
+        for(let i=0;i<4;i++){ m[i]+=x[i]; for(let j=0;j<4;j++) S[i*4+j]+=x[i]*x[j]; }
+      }
+      for(let i=0;i<4;i++) m[i]/=N;
+      for(let i=0;i<4;i++) for(let j=0;j<4;j++) S[i*4+j] = S[i*4+j]/N - m[i]*m[j];
+      out.push({m, S});
+    });
+    return out;
+  }
+
+  /* normal-theory ML discrepancy for one group */
+  function Fg(S, m, par){
+    const lam = par.lam, th = par.th, nu = par.nu, kap = par.kap, phi = par.phi;
+    const Sig = new Array(16).fill(0);
+    for(let i=0;i<4;i++) for(let j=0;j<4;j++) Sig[i*4+j] = phi*lam[i]*lam[j] + (i===j ? th[i] : 0);
+    const mu = nu.map((v,i) => v + lam[i]*kap);
+    const d = m.map((v,i) => v - mu[i]);
+    const Sd = sol(Sig, d);
+    const q = d.reduce((s,v,i) => s + v*Sd[i], 0);
+    return logdet(Sig) + trInvMul(Sig, S) + q - logdet(S) - P;
+  }
+
+  /* unpack a parameter vector into per-group parameter objects
+     (θ and φ are raw; out-of-range values are penalized in the objective) */
+  function unpack(level, x){
+    let o = 0;
+    const rd = n => { const r = x.slice(o, o+n); o += n; return r; };
+    const gA = { lam:[1,0,0,0], th:[0,0,0,0], nu:[0,0,0,0], kap:0, phi:1 };
+    const gB = { lam:[1,0,0,0], th:[0,0,0,0], nu:[0,0,0,0], kap:0, phi:1 };
+    if(level === "cfg"){
+      gA.lam = [1, ...rd(3)]; gA.th = rd(4); gA.nu = rd(4);
+      gB.lam = [1, ...rd(3)]; gB.th = rd(4); gB.nu = rd(4);
+    } else if(level === "met"){
+      const lam = rd(3);
+      gA.lam = [1, ...lam]; gA.th = rd(4); gA.nu = rd(4);
+      gB.lam = [1, ...lam]; gB.th = rd(4); gB.nu = rd(4);
+      gB.kap = rd(1)[0]; gB.phi = rd(1)[0];
+    } else { /* sca: shared loadings and shared intercepts */
+      const lam = rd(3), nu = rd(4);
+      gA.lam = [1, ...lam]; gA.nu = nu; gA.th = rd(4);
+      gB.lam = [1, ...lam]; gB.nu = nu; gB.th = rd(4);
+      gB.kap = rd(1)[0]; gB.phi = rd(1)[0];
+    }
+    return [gA, gB];
+  }
+
+  function penalty(g){
+    let p = 0;
+    g.th.forEach(t => { if(t < .05) p += 1e4*(.05-t)*(.05-t); });
+    if(g.phi < .1) p += 1e4*(.1-g.phi)*(.1-g.phi);
+    return p;
+  }
+
+  function objFor(level, dat){
+    return x => {
+      const [gA, gB] = unpack(level, x);
+      return Fg(dat[0].S, dat[0].m, gA) + Fg(dat[1].S, dat[1].m, gB)
+           + penalty(gA) + penalty(gB);
+    };
+  }
+
+  /* Adam with clipped numeric gradients and bounded parameters */
+  function adam(f, x0, iters){
+    const n = x0.length, m = new Array(n).fill(0), v = new Array(n).fill(0);
+    const x = x0.slice();
+    for(let t=1;t<=iters;t++){
+      const g = new Array(n);
+      for(let i=0;i<n;i++){
+        const h = 1e-4 * (1 + Math.abs(x[i]));
+        const xp = x.slice(), xm = x.slice();
+        xp[i] += h; xm[i] -= h;
+        let gi = (f(xp) - f(xm)) / (2*h);
+        gi = Math.max(-30, Math.min(30, gi));
+        g[i] = gi;
+      }
+      for(let i=0;i<n;i++){
+        m[i] = .9*m[i] + .1*g[i];
+        v[i] = .999*v[i] + .001*g[i]*g[i];
+        let xi = x[i] - .02 * (m[i]/(1-Math.pow(.9,t))) / (Math.sqrt(v[i]/(1-Math.pow(.999,t))) + 1e-8);
+        x[i] = Math.max(-6, Math.min(6, xi));
+      }
+    }
+    return x;
+  }
+
+  const diag = S => [0,1,2,3].map(i => S[i*4+i]);
+
+  function initFor(level, dat){
+    const dA = diag(dat[0].S), dB = diag(dat[1].S);
+    if(level === "cfg")
+      return [ .8,.9,.85, ...dA.map(x=>x*.5), ...dat[0].m,
+               .8,.9,.85, ...dB.map(x=>x*.5), ...dat[1].m ];
+    if(level === "met")
+      return [ .8,.9,.85, ...dA.map(x=>x*.5), ...dat[0].m,
+               ...dB.map(x=>x*.5), ...dat[1].m, 0.4, 1 ];
+    return [ .8,.9,.85, ...dat[0].m,
+             ...dA.map(x=>x*.5), ...dB.map(x=>x*.5), 0.4, 1 ];
+  }
+
+  /* NOTE on chi-square: discrepancy F_g uses ML covariance; chi²_g = (n_g-1)·F_g.
+     With equal n, total chi² = (N-1)·(F_A + F_B) — which is what f(x) already is. */
+  function fitAll(dat){
+    const res = {};
+    ["cfg","met","sca"].forEach(lv => {
+      const f = objFor(lv, dat);
+      const x = adam(f, initFor(lv, dat), 420);
+      res[lv] = { x, F: f(x), df: { cfg:6, met:7, sca:11 }[lv] };
+      res[lv].chi = (N-1) * res[lv].F;
+    });
+    /* independence baseline: F0 = logdet(diag S) − logdet(S), per group */
+    let F0 = 0;
+    [0,1].forEach(g => {
+      const S = dat[g].S, D = new Array(16).fill(0);
+      for(let i=0;i<4;i++) D[i*4+i] = S[i*4+i];
+      F0 += logdet(D) - logdet(S);
+    });
+    const chi0 = (N-1) * F0, df0 = 12, Nt = 2*N;
+    ["cfg","met","sca"].forEach(lv => {
+      const r = res[lv];
+      r.cfi = 1 - Math.max(r.chi - r.df, 0) / Math.max(chi0 - df0, r.chi - r.df, 1e-9);
+      r.rmsea = Math.sqrt(Math.max(r.chi - r.df, 0) / (r.df * (Nt - 1)));
+    });
+    res.dMet = res.met.cfi - res.cfg.cfi;   // CFI change when constraining loadings (expected ≤ 0)
+    res.dSca = res.sca.cfi - res.met.cfi;   // CFI change when constraining intercepts (expected ≤ 0)
+    return res;
+  }
+
+  /* ---- rendering ---- */
+  const fmt = (x, d=3) => x.toFixed(d);
+  const CO = "#3a4fd0", CB = "#b8892e";
+
+  function draw(){
+    const dat = sample();
+    const R = fitAll(dat);
+    const [gA, gB] = unpack("sca", R.sca.x);
+    const meanLam = gA.lam.reduce((a,b)=>a+b,0) / 4;
+
+    /* item-mean bars */
+    const host = document.getElementById("invBars");
+    host.innerHTML = "";
+    for(let i=0;i<4;i++){
+      const row = document.createElement("div");
+      row.className = "irow";
+      row.innerHTML =
+        '<span class="ilab">Item ' + (i+1) + '</span>' +
+        '<span class="track"><span class="fill a" style="display:block;width:' + (dat[0].m[i]/5*100) + '%"></span></span>' +
+        '<span class="track"><span class="fill b" style="display:block;width:' + (dat[1].m[i]/5*100) + '%"></span></span>' +
+        '<span class="ival"><span class="a">' + fmt(dat[0].m[i],2) + '</span> · <span class="b">' + fmt(dat[1].m[i],2) + '</span></span>';
+      host.appendChild(row);
+    }
+
+    /* gap metrics */
+    const obsGap = (dat[1].m.reduce((a,b)=>a+b,0) - dat[0].m.reduce((a,b)=>a+b,0)) / 4;
+    const trueGap = GAP * (LAM_A.reduce((a,b)=>a+b,0)/4);
+    document.getElementById("mObs").textContent  = (obsGap>=0?"+":"") + fmt(obsGap,2);
+    document.getElementById("mTrue").textContent = (trueGap>=0?"+":"") + fmt(trueGap,2);
+    document.getElementById("mKappa").textContent = (gB.kap>=0?"+":"") + fmt(gB.kap,2);
+
+    /* model cards */
+    const cards = [
+      { key:"cfg", name:"Configural", note:"same structure", dcfi:null },
+      { key:"met", name:"Metric", note:"equal loadings", dcfi:R.dMet },
+      { key:"sca", name:"Scalar", note:"equal intercepts", dcfi:R.dSca },
+    ];
+    const mc = document.getElementById("modCards");
+    mc.innerHTML = "";
+    cards.forEach(c => {
+      const r = R[c.key];
+      const dOk = c.dcfi === null ? null : c.dcfi >= -.01;
+      const badge = c.dcfi === null
+        ? '<span class="badge na">baseline</span>'
+        : dOk ? '<span class="badge ok">ΔCFI ok</span>' : '<span class="badge bad">ΔCFI &gt; .01</span>';
+      const el = document.createElement("div");
+      el.className = "modcard";
+      el.innerHTML =
+        '<h4>' + c.name + ' <span style="font-size:10px;color:var(--faint);font-family:inherit">' + c.note + '</span> ' + badge + '</h4>' +
+        '<table>' +
+        '<tr><td>χ² (df=' + r.df + ')</td><td>' + fmt(r.chi,1) + '</td></tr>' +
+        '<tr><td>CFI</td><td>' + fmt(r.cfi) + '</td></tr>' +
+        '<tr><td>RMSEA</td><td>' + fmt(r.rmsea) + '</td></tr>' +
+        (c.dcfi === null ? '' : '<tr class="dcf' + (dOk?'':' fail') + '"><td>ΔCFI vs looser</td><td>' + (c.dcfi>=0?'+':'−') + fmt(Math.abs(c.dcfi)) + '</td></tr>') +
+        '</table>';
+      mc.appendChild(el);
+    });
+
+    /* verdict */
+    const v = document.getElementById("verdict2");
+    const artifact = obsGap - trueGap;
+    if(R.dMet < -.01)
+      v.innerHTML = "<b>Metric invariance fails.</b> The loadings differ across countries — the same item moves differently with trust in A than in B. Not even regression slopes are safely comparable yet. Fix the instrument (translate, cognitively test, adapt) before comparing anything.";
+    else if(R.dSca < -.01)
+      v.innerHTML = "<b>Intercepts differ — differential item functioning.</b> At equal trust, Country B answers item 4 differently. The observed gap (" + (obsGap>=0?"+":"") + fmt(obsGap,2) + " scale points) mixes the true gap (" + (trueGap>=0?"+":"") + fmt(trueGap,2) + ") with about " + (artifact>=0?"+":"") + fmt(artifact,2) + " points of measurement artifact. A raw mean comparison would mislead — model the DIF or drop the offending item.";
+    else
+      v.innerHTML = "<b>Scalar invariance holds.</b> Same structure, same loadings, same intercepts — the scale measures trust identically in both countries. The mean comparison is defensible: estimated true gap κ̂ = " + (gB.kap>=0?"+":"") + fmt(gB.kap,2) + " (true: " + (GAP>=0?"+":"") + fmt(GAP,2) + "). Now the observed difference is substance, not artifact.";
+  }
+
+  document.getElementById("sGap").addEventListener("input", e=>{ GAP = +e.target.value; document.getElementById("vGap").textContent = GAP.toFixed(2); draw(); });
+  document.getElementById("sDif").addEventListener("input", e=>{ DIF = +e.target.value; document.getElementById("vDif").textContent = DIF.toFixed(2); draw(); });
+  document.getElementById("sLam").addEventListener("input", e=>{ LAM2B = +e.target.value; document.getElementById("vLam").textContent = LAM2B.toFixed(2); draw(); });
+  document.getElementById("resample2").addEventListener("click", ()=>{ seed = (seed*2654435761)>>>0 || 7; draw(); });
+
+  draw();
 })();
 </script>
 </body>
