@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Wellbeing Shelf · Tiny Atlas · ReGovNet Research Group</title>
+<title>The Faculty Shelf · Wellbeing · Tiny Atlas · ReGovNet Research Group</title>
 <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
-<meta name="description" content="Research runs on the researcher. Two shelves: remedies for stress and anxiety with real trial evidence behind them, and field notes for new faculty — small moves that work in the academic trenches.">
+<meta name="description" content="Field notes for new faculty and early-career researchers — small, practical moves collected from the academic trenches: attention-budget calendars, AI as a morning curiosity machine, research before inbox, and small honest circles.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="The Wellbeing Shelf · Tiny Atlas">
-<meta property="og:description" content="Two shelves for the researcher: evidence-backed remedies for stress and anxiety, and field notes for new faculty.">
+<meta property="og:title" content="The Faculty Shelf · Tiny Atlas">
+<meta property="og:description" content="Field notes for new faculty — no effect sizes here, just small moves that work in the trenches.">
 <meta property="og:image" content="https://shuwenzsw.github.io/Methodology-Wizard/assets/og-cover.png">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -59,64 +59,55 @@
   }
   h1 em{
     font-style:normal;
-    background:linear-gradient(120deg,var(--qual),var(--quant) 55%,var(--mixed) 85%,var(--gold));
+    background:linear-gradient(120deg,var(--gold),var(--mixed) 60%,var(--gold));
     -webkit-background-clip:text;background-clip:text;color:transparent;
   }
   h1::after{
     content:"";display:block;width:120px;height:3px;margin-top:18px;border-radius:2px;
-    background:linear-gradient(90deg,var(--gold),var(--mixed) 55%,var(--quant));
+    background:linear-gradient(90deg,var(--gold),var(--mixed) 55%,var(--gold));
   }
   .tagline{margin-top:16px;font-size:15px;color:var(--muted);line-height:1.6;max-width:680px}
   .tagline b{color:var(--ink);font-weight:600}
+  .crumbs{font-size:12px;color:var(--faint);margin-top:16px;letter-spacing:.04em}
+  .crumbs a{color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line)}
+  .crumbs a:hover{color:var(--ink)}
 
   section{margin-bottom:48px}
+  .lead{font-size:15.5px;line-height:1.65;color:var(--muted);max-width:680px;margin-bottom:8px}
+  .lead b{color:var(--ink);font-weight:600}
 
-  /* ---- the two shelves ---- */
-  .shelves{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:44px}
-  .shelf{
-    position:relative;display:block;background:var(--paper);border:1px solid var(--line);
-    border-radius:18px;padding:30px 30px 28px;overflow:hidden;
-    color:var(--ink);text-decoration:none;
-    box-shadow:0 1px 2px rgba(0,0,0,.04),0 10px 30px -22px rgba(0,0,0,.12);
-    transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s ease;
+  /* ---- field notes: a journal, not a card grid ---- */
+  .notes{border-bottom:1px solid var(--line);margin-bottom:44px}
+  .note{
+    display:grid;grid-template-columns:180px 1fr;gap:36px;
+    padding:38px 0;border-top:1px solid var(--line);
   }
-  .shelf:hover{transform:translateY(-4px);box-shadow:0 28px 56px -26px rgba(26,23,18,.3)}
-  .shelf .orb{width:72px;height:72px;border-radius:50%;margin-bottom:20px}
-  .shelf.ev .orb{background:radial-gradient(circle at 35% 35%, rgba(14,125,102,.55), rgba(58,79,208,.42) 60%, rgba(42,157,143,.4))}
-  .shelf.fa .orb{background:radial-gradient(circle at 35% 35%, rgba(184,137,46,.6), rgba(200,80,31,.45) 60%, rgba(184,137,46,.38))}
-  .shelf .cnt{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
-  .shelf h2{
-    font-family:Georgia,"Times New Roman",serif;font-size:27px;font-weight:400;
-    letter-spacing:-.01em;line-height:1.15;margin-bottom:10px;
+  .note-rail{text-align:right;padding-top:4px}
+  .note-no{
+    font-family:Georgia,"Times New Roman",serif;font-style:italic;
+    font-size:30px;color:var(--gold);letter-spacing:-.01em;
   }
-  .shelf .d{font-size:13.5px;line-height:1.65;color:var(--muted)}
-  .shelf .d b{color:var(--ink);font-weight:600}
-  .shelf .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-  .shelf .chips span{
-    font-size:10.5px;letter-spacing:.06em;color:var(--muted);
-    border:1px solid var(--line);border-radius:999px;padding:3px 11px;background:var(--bg);
+  .note-scene{
+    display:block;margin-top:8px;
+    font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);
   }
-  .shelf .go{
-    margin-top:22px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
-    font-weight:600;color:var(--ink);
+  .note-rail::after{
+    content:"";display:inline-block;width:44px;height:1px;background:var(--line);margin-top:14px;
   }
-  .shelf .go::after{content:" \2192";color:var(--gold);display:inline-block;transition:transform .2s ease}
-  .shelf:hover .go::after{transform:translateX(4px)}
-
-  /* ---- care note ---- */
-  .care{
-    border:1px dashed var(--line);border-radius:14px;padding:18px 22px;
-    font-size:13.5px;line-height:1.65;color:var(--muted);background:var(--paper);
-    margin-bottom:44px;
+  .note-body h3{
+    font-family:Georgia,"Times New Roman",serif;font-size:24px;font-weight:400;
+    letter-spacing:-.01em;line-height:1.25;margin-bottom:12px;
   }
-  .care b{color:var(--ink)}
-  .care a{color:var(--quant);text-decoration:none;border-bottom:1px dashed var(--quant)}
+  .note-body p{font-size:14.5px;line-height:1.75;color:var(--muted);max-width:620px}
+  .note-body p b{color:var(--ink);font-weight:600}
+  .note-body p + p{margin-top:10px}
+  .note-body blockquote{
+    margin-top:22px;padding:2px 0 2px 20px;border-left:3px solid var(--gold);
+    font-family:Georgia,"Times New Roman",serif;font-style:italic;
+    font-size:19px;line-height:1.5;color:var(--ink);max-width:560px;
+  }
 
   /* ---- suggest / footer ---- */
-  section h2{
-    font-family:Georgia,"Times New Roman",serif;font-size:27px;font-weight:400;
-    margin-bottom:6px;
-  }
   .join{
     border:1px solid var(--line);border-radius:14px;padding:18px 22px;
     font-size:13.5px;line-height:1.65;color:var(--muted);background:var(--paper);
@@ -172,9 +163,12 @@
   }
 
   @media (max-width:760px){
-    .shelves{grid-template-columns:1fr}
     h1{font-size:36px}
     .wrap{padding:100px 20px 70px}
+    .note{grid-template-columns:1fr;gap:12px;padding:30px 0}
+    .note-rail{text-align:left;display:flex;align-items:baseline;gap:12px}
+    .note-rail::after{display:none}
+    .note-no{font-size:22px}
   }
 </style>
 </head>
@@ -224,67 +218,104 @@
 <div class="wrap">
 
   <header>
-    <div class="kicker">Tiny Atlas · Wellbeing</div>
-    <h1>The Wellbeing <em>Shelf</em></h1>
+    <div class="kicker">Tiny Atlas · Wellbeing · The Faculty Shelf</div>
+    <h1>Field Notes for New <em>Faculty</em></h1>
     <div class="tagline">
-      Research runs on the researcher. This module keeps two shelves: remedies for stress
-      and anxiety that have <b>real trial evidence</b> behind them, and field notes for
-      new faculty — small moves that work in the academic trenches. No gurus, no miracle
-      supplements: <b>if it is on these shelves, someone tested it.</b>
+      No effect sizes on this shelf — these are <b>field notes</b>: small, practical moves
+      collected for new faculty and early-career researchers. Test them the way you would
+      test any intervention: <b>try one for a month, keep what works.</b>
     </div>
+    <div class="crumbs"><a href="index.html">The Wellbeing Shelf</a> &nbsp;·&nbsp; The Faculty Shelf</div>
   </header>
 
   <section>
-    <div class="shelves">
-      <a class="shelf ev" href="evidence.html">
-        <span class="orb"></span>
-        <div class="cnt">Shelf I · Evidence</div>
-        <h2>The Evidence Shelf</h2>
-        <p class="d">Ten remedies for stress and anxiety with <b>real trial evidence</b> —
-          each card states the dose, the strength of the evidence, and the citation.</p>
-        <div class="chips">
-          <span>The Body</span><span>The Mind</span><span>The World</span><span>The Work</span>
+    <div class="notes">
+
+      <article class="note">
+        <div class="note-rail">
+          <span class="note-no">No. 01</span>
+          <span class="note-scene">The Calendar</span>
         </div>
-        <div class="go">Open the evidence shelf</div>
-      </a>
-      <a class="shelf fa" href="faculty.html">
-        <span class="orb"></span>
-        <div class="cnt">Shelf II · Field Notes</div>
-        <h2>The Faculty Shelf</h2>
-        <p class="d">Field notes for new faculty and early-career researchers. <b>No effect
-          sizes here</b> — collected wisdom, numbered in the order it arrived.</p>
-        <div class="chips">
-          <span>The Calendar</span><span>The Morning</span><span>The First Hour</span><span>The People</span>
+        <div class="note-body">
+          <h3>Treat Your Calendar as an Attention Budget, Not a Meeting List</h3>
+          <p>Every week, quietly block one or two <b>whole days</b> — by the day, not by the
+            hour. Treat each as if it were already fully booked with meetings; the meetings
+            are with your research. Colleagues will see a busy calendar and adapt, and your
+            research gets the one resource that never arrives on its own: unbroken time.</p>
+          <p>What is scarce in academic life today is not information, and not even money;
+            it is <b>attention</b>.</p>
+          <blockquote>What you protect is what grows.</blockquote>
         </div>
-        <div class="go">Open the faculty shelf</div>
-      </a>
+      </article>
+
+      <article class="note">
+        <div class="note-rail">
+          <span class="note-no">No. 02</span>
+          <span class="note-scene">The Morning</span>
+        </div>
+        <div class="note-body">
+          <h3>Let AI Be Your Morning Cognitive Opener</h3>
+          <p>Give your AI agent a standing brief — your research direction and the methods
+            you are strongest in. Each morning, ask for one random draw: a topic from a
+            field you know nothing about; a question inside your field but outside your
+            area; an advanced method you are weak in; or a fresh paper from a top journal
+            in your field. Ask it to <b>teach</b> you, and to end with a short reading
+            list.</p>
+          <p>The goal is not immediate utility. It is to put your mind into
+            learning-and-curiosity mode before the day's demands arrive. The effect is
+            strangely real: the mind, like a door, opens from the right key.</p>
+          <blockquote>Turn AI from an answer machine into a curiosity machine.</blockquote>
+        </div>
+      </article>
+
+      <article class="note">
+        <div class="note-rail">
+          <span class="note-no">No. 03</span>
+          <span class="note-scene">The First Hour</span>
+        </div>
+        <div class="note-body">
+          <h3>Your Research Before the Inbox</h3>
+          <p>Before email, before messages, before the news: give the first hour of the
+            working day to your own writing or analysis. Email is other people's agenda
+            for your attention; the early morning is the only part of the day that nobody
+            else has booked yet. Guard it the way you would guard a seminar slot.</p>
+          <blockquote>An hour of your own work before 9 a.m. is worth three after 5 p.m.</blockquote>
+        </div>
+      </article>
+
+      <article class="note">
+        <div class="note-rail">
+          <span class="note-no">No. 04</span>
+          <span class="note-scene">The People</span>
+        </div>
+        <div class="note-body">
+          <h3>A Small Circle Beats a Large Network</h3>
+          <p>Find two or three peers — in or near your field — who will read your drafts,
+            tell you the truth, and expect the same from you. Meet monthly; exchange work
+            before it is ready. Isolation is the hidden tax of early-career research, and
+            it appears on no workload form.</p>
+          <blockquote>Honest readers are the rarest resource in academia — rarer than funding.</blockquote>
+        </div>
+      </article>
+
     </div>
   </section>
 
-  <div class="care">
-    <b>A note of care.</b> The evidence shelf is educational, not medical advice — it
-    complements professional care; it never replaces it. If anxiety persists for more
-    than two weeks, impairs your work or sleep, or comes with panic attacks or thoughts
-    of self-harm, please contact a licensed mental-health professional or your
-    institution's counseling service. Asking for help early is what the evidence would
-    prescribe.
-  </div>
-
   <section>
-    <h2>Suggest a Remedy — or a Field Note</h2>
+    <h2>Contribute a Field Note</h2>
     <div class="join">
-      <b>Missing something?</b> If you know a practice with solid trial evidence, or a
-      field note that carried you through your early years, use the
-      <a href="../index.html#feedback">feedback box</a> on the home page. Remedies are
-      reviewed against the same standard: a real study, a real effect, a real citation.
-      Good contributions are credited in the repository history.
+      <b>Have a note that carried you through your early years?</b> A small move, a rule of
+      thumb, a ritual that actually worked — send it through the
+      <a href="../index.html#feedback">feedback box</a> on the home page. Notes are reviewed
+      for usefulness and honesty, credited in the repository history, and numbered in the
+      order they arrive.
     </div>
   </section>
 
   <footer>
     <span>© 2026 ReGovNet Research Group · Tiny Atlas, an open academic commons</span>
     <span class="coords">22.1987° N · 113.5439° E</span>
-    <span><a href="../index.html">Atlas Home</a> · <a href="https://github.com/ShuwenZSW/Methodology-Wizard">Repository</a> · <a href="mailto:shuwenzhang@um.edu.mo">Contact</a></span>
+    <span><a href="index.html">Wellbeing Shelf</a> · <a href="https://github.com/ShuwenZSW/Methodology-Wizard">Repository</a> · <a href="mailto:shuwenzhang@um.edu.mo">Contact</a></span>
   </footer>
 
 </div>
